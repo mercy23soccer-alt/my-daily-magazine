@@ -29,12 +29,12 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python generate_issue.py
 
-      - name: Commit article and covers
+      - name: Commit article and photos
         run: |
           git config --global user.name "Daily Bot"
           git config --global user.email "bot@example.com"
-          git add src/content/posts/ public/covers/
-          git commit -m "Publish Issue $(date +%Y-%m-%d)" || exit 0
+          git add src/content/posts/ public/
+          git commit -m "Publish Issue with Photos $(date +%Y-%m-%d)" || exit 0
           git push
 
       - name: Set up Node.js
