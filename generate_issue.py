@@ -36,7 +36,7 @@ SYSTEM_INSTRUCTION = """
 <h2 id="lead-story">1. Lead Story: Discovery & Process</h2>
 - JACS, Angewandte Chemie, Organic Letters, OPRD から1つのトピックを厳選。
 - 【必須】論文タイトル、著者、ジャーナル名、DOIリンク（例: [DOI: 10.1021/acs.oprd.xxxx](https://doi.org/10.1021/acs.oprd.xxxx)）を明記。
-- 【必須】```text による枠組みを使った等幅アスキーアート【反応式（SCHEME）】を掲載（文字ズレしないよう整えること）。
+- 【必須】```text による枠組みを使った等幅アスキーアート【反応式（SCHEME）】を掲載。
 - キログラム仕込みの除熱、スラリー移送、晶析、溶媒回収のリアルを現場視点で解説。
 
 <h2 id="news">2. Today's Curated News: 5 Picks</h2>
@@ -97,12 +97,12 @@ user_prompt = f"""
 本日の最新号を執筆してください。Markdown形式のみを出力してください。
 """
 
-# Gemini 呼び出し（混雑・レート制限対策リトライ）
+# 単一の確実なモデル（gemini-3.6-flash）で試行
 model_name = "gemini-3.6-flash"
 response = None
 
 print(f"--- モデル {model_name} で執筆開始 ---")
-for attempt in range(1, 6):
+for attempt in range(1, 4):
     try:
         response = client.models.generate_content(
             model=model_name,
@@ -110,25 +110,18 @@ for attempt in range(1, 6):
             config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
         )
         if response and response.text:
-            print("成功: 記事が書き上がりました！")
+            print("成功: 記事が完成しました！")
             break
     except Exception as e:
         err_str = str(e)
-        print(f"⚠️ 試行 {attempt}/5 でエラー検知: {err_str}")
-        if "503" in err_str:
-            wait_time = attempt * 15
-            print(f"Googleサーバー混雑中。{wait_time}秒待機して再試行します...")
-            time.sleep(wait_time)
-        elif "429" in err_str:
-            wait_time = 35
-            print(f"短時間アクセス制限（429）を検知。{wait_time}秒間クールダウンします...")
-            time.sleep(wait_time)
-        else:
-            time.sleep(8)
+        print(f"試行 {attempt}/3 でエラー検知: {err_str}")
+        if attempt < 3:
+            time.sleep(10)
 
-if not response:
-    print("すべての試行が制限またはエラーにより失敗しました。")
-    sys.exit(1)
+# Googleサーバーの混雑で記事生成できなかった場合のフェイルセーフ
+if not response or not response.text:
+    print("⚠️ サーバー混雑のため本日の記事新規生成をスキップします。既存の記事を維持してWebサイトのデプロイを続行します。")
+    sys.exit(0)
 
 # 3. リアルなスナップ写真を2枚生成
 os.makedirs("public/images", exist_ok=True)
@@ -158,8 +151,8 @@ def generate_and_save_photo(prompt_text, file_path):
             img.save(file_path, "JPEG")
             print(f"Imagenで生成成功: {file_path}")
             return
-    except Exception as e:
-        print(f"Imagen制限検知。フォトエンジンへ切替: {e}")
+    except Exception:
+        pass
 
     try:
         clean_prompt = quote(prompt_text)
