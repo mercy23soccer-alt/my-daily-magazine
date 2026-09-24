@@ -4,10 +4,10 @@ import requests
 from datetime import datetime
 from google import genai
 
-# 1. APIキーのチェック（設定されていない場合は分かりやすくエラーを出す）
+# 1. APIキーのチェック
 api_key = os.environ.get("GEMINI_API_KEY")
 if not api_key:
-    print("【エラー】GEMINI_API_KEY が見つかりません！Settings > Secrets に正しく登録されているか確認してください。")
+    print("【エラー】GEMINI_API_KEY が見つかりません！Settings > Secrets を確認してください。")
     sys.exit(1)
 
 # 2. 天気の取得（Open-Meteo）
@@ -40,7 +40,7 @@ prompt = f"""
 前置きや挨拶は一切書かず、記事のMarkdown本文のみを出力してください。
 """
 
-# 4. Gemini APIの呼び出し
+# 4. Gemini APIの呼び出し（最新の gemini-3.6-flash を使用）
 client = genai.Client(api_key=api_key)
 response = client.models.generate_content(
     model="gemini-3.6-flash",
