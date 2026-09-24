@@ -1,6 +1,7 @@
 import os
 import sys
 import io
+import time
 import requests
 from datetime import datetime
 from PIL import Image
@@ -54,11 +55,23 @@ user_prompt = f"""
 本日のIssue記事を執筆してください。Markdown形式のみを出力してください。
 """
 
-response = client.models.generate_content(
-    model="gemini-3.6-flash",
-    contents=user_prompt,
-    config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
-)
+# 混雑（503エラー）対策：最大3回自動でリトライする
+response = None
+for attempt in range(3):
+    try:
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=user_prompt,
+            config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
+        )
+        break
+    except Exception as e:
+        print(f"AI混雑のため再試行します (回数: {attempt + 1}/3)... {e}")
+        time.sleep(5)
+
+if not response:
+    print("AIの応答を取得できませんでした。")
+    sys.exit(1)
 
 # 3. 本日のグラフィック（イラスト）をAIで自動生成
 os.makedirs("public/covers", exist_ok=True)
@@ -82,7 +95,7 @@ try:
         img.save(cover_save_path, "JPEG")
         print(f"Generated daily graphic: {cover_save_path}")
 except Exception as e:
-    print(f"Image generation skipped or failed: {e}")
+    print(f"Image generation skipped: {e}")
     cover_rel_path = ""
 
 # 4. Markdownとして保存
