@@ -11,428 +11,311 @@ const latest = postList[0];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THE DAILY EXTRACT — Journal for Mind & Solitude</title>
+    <title>THE DAILY EXTRACT | Magazine for City Boys</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;600;800&family=Instrument+Serif:ital@0;1&family=Shippori+Mincho:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Noto+Serif+JP:wght@400;700&family=Oswald:wght@700&family=Work+Sans:ital,wght@0,800;1,900&display=swap" rel="stylesheet" />
     
-    <style is:global>
+    <!-- is:inline を指定してデザインの読み込みエラーを完全に防止 -->
+    <style is:inline>
       :root {
-        --paper: #f9f6f0;
-        --paper-sub: #f0ecdf;
-        --ink: #181716;
-        --ink-light: #524f4a;
-        --rust: #c84b31;
-        --mustard: #e6b325;
-        --rule: #201e1c;
-        --tint-border: rgba(24, 23, 22, 0.12);
+        --paper: #f8f6f0;
+        --desk: #ded8cb;
+        --ink: #1a1918;
+        --yellow: #fadc41;
+        --orange: #e85933;
+        --line: #1a1918;
+        --gray-box: #ede9df;
       }
-
       * { box-sizing: border-box; margin: 0; padding: 0; }
-      html { scroll-behavior: smooth; background-color: #e4dfd3; }
-      
+      html { scroll-behavior: smooth; background-color: var(--desk); }
       body {
         color: var(--ink);
-        font-family: "Shippori Mincho", "Noto Serif JP", serif;
-        line-height: 1.95;
-        letter-spacing: 0.02em;
+        font-family: "Noto Serif JP", serif;
+        line-height: 1.9;
         padding: 2.5rem 1rem 4rem;
         -webkit-font-smoothing: antialiased;
       }
 
-      .zine-sheet {
+      /* 雑誌の紙面コンテナ */
+      .magazine {
         max-width: 860px;
         margin: 0 auto;
         background-color: var(--paper);
-        border: 1px solid var(--rule);
-        box-shadow: 10px 10px 0px rgba(24, 23, 22, 0.95);
-        padding: clamp(1.8rem, 5vw, 3.8rem);
-        position: relative;
+        border: 2px solid var(--line);
+        box-shadow: 10px 10px 0px var(--line);
+        padding: clamp(1.5rem, 5vw, 3.5rem);
       }
 
-      /* Upper Foil Bar */
-      .top-deck {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        align-items: center;
-        gap: 1rem;
-        border-bottom: 2px solid var(--rule);
-        padding-bottom: 0.9rem;
-        font-family: "Chivo Mono", monospace;
-        font-size: 0.72rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
-      .edition-stamp {
-        background: var(--rule);
-        color: var(--paper);
-        padding: 0.2rem 0.6rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-      }
-
-      .geo-meta {
-        color: var(--ink-light);
+      /* 最上部のヘッダーバー */
+      .top-bar {
         display: flex;
-        gap: 1.2rem;
-      }
-
-      .archive-btn {
-        color: var(--ink);
-        text-decoration: none;
-        border: 1px solid var(--rule);
-        padding: 0.2rem 0.6rem;
-        font-weight: 700;
-        background: var(--paper-sub);
-        transition: all 0.15s ease;
-      }
-      .archive-btn:hover {
-        background: var(--mustard);
-        box-shadow: 2px 2px 0 var(--rule);
-      }
-
-      /* Masthead */
-      .masthead {
-        text-align: center;
-        padding: 3rem 0 2rem;
-        border-bottom: 3px double var(--rule);
-      }
-
-      .sub-journal-title {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.25em;
-        color: var(--rust);
-        margin-bottom: 0.6rem;
-        text-transform: uppercase;
-      }
-
-      .main-logo {
-        font-family: "Instrument Serif", serif;
-        font-size: clamp(3.2rem, 9.5vw, 5.8rem);
-        font-weight: 400;
-        line-height: 0.92;
-        letter-spacing: -0.02em;
-        text-transform: uppercase;
-      }
-
-      .main-logo em {
-        font-style: italic;
-        font-family: "Instrument Serif", serif;
-      }
-
-      .journal-lead-desc {
-        margin-top: 1.2rem;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--line);
+        padding-bottom: 0.8rem;
         font-family: "Chivo Mono", monospace;
         font-size: 0.75rem;
-        color: var(--ink-light);
+        font-weight: 700;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .badge-edition {
+        background-color: var(--yellow);
+        border: 1.5px solid var(--line);
+        padding: 0.2rem 0.6rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+      }
+      .archive-btn {
+        text-decoration: none;
+        color: var(--ink);
+        background: #fff;
+        border: 1.5px solid var(--line);
+        padding: 0.2rem 0.6rem;
+        font-weight: 700;
+        box-shadow: 2px 2px 0 var(--line);
+        transition: 0.1s;
+      }
+      .archive-btn:hover {
+        background: var(--yellow);
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 3px 0 var(--line);
+      }
+
+      /* マストヘッド（雑誌タイトル） */
+      .masthead {
+        text-align: center;
+        padding: 2.5rem 0 1.8rem;
+        border-bottom: 3px double var(--line);
+      }
+      .tagline {
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        color: var(--orange);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+      }
+      .logo {
+        font-family: "Work Sans", sans-serif;
+        font-size: clamp(2.8rem, 8vw, 5rem);
+        font-weight: 900;
+        font-style: italic;
+        line-height: 0.92;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+      }
+      .issue-sub {
+        margin-top: 1rem;
         display: flex;
         justify-content: center;
         gap: 1.5rem;
-        flex-wrap: wrap;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 700;
       }
 
-      .journal-lead-desc span {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-      }
-
-      /* Index Chips */
-      .chips-nav {
+      /* クイック目次タグ */
+      .quick-chips {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.4rem;
+        gap: 0.5rem;
         padding: 1.2rem 0;
-        border-bottom: 1px dashed var(--tint-border);
+        border-bottom: 1px dashed rgba(0,0,0,0.15);
       }
-
-      .chip-item {
-        font-family: "Space Grotesk", sans-serif;
+      .chip-link {
+        font-family: "Chivo Mono", monospace;
         font-size: 0.72rem;
         font-weight: 700;
         text-decoration: none;
         color: var(--ink);
-        background: var(--paper-sub);
-        border: 1px solid var(--rule);
-        padding: 0.25rem 0.55rem;
-        transition: transform 0.1s ease;
+        background: var(--gray-box);
+        border: 1px solid var(--line);
+        padding: 0.3rem 0.6rem;
+        transition: 0.1s;
+      }
+      .chip-link:hover {
+        background: var(--yellow);
+        transform: translateY(-2px);
+        box-shadow: 2px 2px 0 var(--line);
       }
 
-      .chip-item:hover {
-        background: var(--mustard);
-        transform: translateY(-1px);
-      }
-
-      /* Radio Unit (Hi-Fi Tape Deck Style) */
-      .hifi-deck {
-        margin: 1.8rem 0 2.5rem;
-        background: #1e1d1b;
-        color: #e5e2da;
-        border: 1px solid var(--rule);
+      /* モーニングラジオ（オーディオデッキ風） */
+      .radio-panel {
+        background: #1a1918;
+        color: #fff;
         padding: 0.9rem 1.4rem;
+        margin: 1.5rem 0 2.5rem;
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        gap: 1.5rem;
-      }
-
-      .deck-ctrl {
-        display: flex;
         align-items: center;
+        border: 2px solid var(--line);
+        box-shadow: 4px 4px 0 var(--line);
         gap: 1rem;
       }
-
-      .deck-btn {
-        background: var(--rust);
-        color: #fff;
+      .radio-btn {
+        background: var(--yellow);
+        color: var(--ink);
         border: 1px solid #000;
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        padding: 0.5rem 1rem;
+        font-family: "Chivo Mono", monospace;
+        font-weight: 800;
+        font-size: 0.8rem;
+        padding: 0.4rem 1rem;
         cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        box-shadow: 2px 2px 0px #000;
+        box-shadow: 2px 2px 0 #000;
       }
-
-      .deck-btn:active {
-        transform: translate(1px, 1px);
-        box-shadow: none;
-      }
-
-      .deck-monitor {
+      .radio-status {
         font-family: "Chivo Mono", monospace;
         font-size: 0.72rem;
-        letter-spacing: 0.05em;
-        color: #9c978b;
+        color: #bbb;
       }
 
-      /* Article Styling */
+      /* 記事本文のデザイン */
       .article-body {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
       }
-
-      /* Section Heads */
       .article-body h2 {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 1.35rem;
-        font-weight: 700;
+        font-family: "Oswald", sans-serif;
+        font-size: 1.45rem;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
-        border-top: 2px solid var(--rule);
-        border-bottom: 1px solid var(--rule);
-        background: var(--paper-sub);
+        letter-spacing: 0.03em;
+        background: var(--gray-box);
+        border-top: 2px solid var(--line);
+        border-bottom: 1.5px solid var(--line);
         padding: 0.5rem 0.8rem;
-        margin: 4rem 0 1.6rem;
-        scroll-margin-top: 2rem;
+        margin: 3.5rem 0 1.2rem;
+        scroll-margin-top: 1.5rem;
         display: flex;
-        align-items: baseline;
-        gap: 0.6rem;
+        align-items: center;
+        gap: 0.5rem;
       }
-
       .article-body h2::before {
-        content: "§";
-        color: var(--rust);
-        font-family: "Instrument Serif", serif;
-        font-size: 1.5rem;
-        line-height: 1;
+        content: "■";
+        color: var(--orange);
+        font-size: 0.85rem;
       }
-
       .article-body h3 {
-        font-family: "Shippori Mincho", serif;
+        font-family: "Noto Serif JP", serif;
         font-size: 1.15rem;
         font-weight: 700;
-        margin: 2rem 0 0.8rem;
-        color: var(--ink);
-        letter-spacing: 0.03em;
+        margin: 1.8rem 0 0.6rem;
       }
-
       .article-body p {
-        margin-bottom: 1.6rem;
+        margin-bottom: 1.5rem;
         text-align: justify;
-        text-justify: inter-ideograph;
-        font-size: 0.98rem;
-        color: #2b2825;
+        font-size: 0.96rem;
       }
 
-      /* 35mm Photo Gallery Layout */
+      /* 35mmスナップ写真（ポラロイド風額装） */
       .article-body img {
         width: 100%;
         max-width: 100%;
         height: auto;
         display: block;
-        margin: 2.8rem 0 1rem;
+        margin: 2.5rem 0;
         background: #fff;
-        padding: 8px 8px 18px 8px; /* Polaroid / Photo Print Matte */
-        border: 1px solid var(--rule);
-        box-shadow: 4px 5px 0px rgba(24, 23, 22, 0.85);
+        padding: 10px 10px 24px 10px; /* ポラロイド風の余白 */
+        border: 2px solid var(--line);
+        box-shadow: 6px 6px 0 var(--line);
         filter: contrast(1.03) saturate(1.05);
       }
 
-      /* Code / Reaction Scheme (Lab Blackboard) */
+      /* 化学反応式・コード枠（ラボの黒板風） */
       .article-body pre {
-        background: #17181a;
-        color: #e2e4e8;
-        border: 1px solid var(--rule);
-        box-shadow: 4px 4px 0px var(--rule);
+        background: #1c1d1f;
+        color: #f0f0f0;
         padding: 1.4rem;
+        border: 2px solid var(--line);
+        box-shadow: 4px 4px 0 var(--line);
+        overflow-x: auto;
         font-family: "Chivo Mono", monospace;
         font-size: 0.84rem;
-        line-height: 1.55;
-        overflow-x: auto;
-        margin: 2rem 0;
+        line-height: 1.5;
+        margin: 1.8rem 0;
       }
 
-      /* Blockquotes / Liner Notes */
-      .article-body blockquote {
-        margin: 2rem 0;
-        padding: 1.2rem 1.6rem;
-        background: #fdfbf7;
-        border-left: 3px solid var(--rust);
-        border-top: 1px solid var(--tint-border);
-        border-right: 1px solid var(--tint-border);
-        border-bottom: 1px solid var(--tint-border);
-        font-style: italic;
-        color: #383430;
-      }
-
-      /* Curated Lists */
-      .article-body ul, .article-body ol {
-        margin: 1.2rem 0 2rem 1.4rem;
-      }
-
-      .article-body li {
-        margin-bottom: 0.75rem;
-        font-size: 0.96rem;
-      }
-
-      .article-body strong {
-        font-weight: 700;
-        color: #000;
-      }
-
-      /* Editorial Links */
+      /* リンク（オレンジのアンダーライン） */
       .article-body a {
-        color: var(--rust);
+        color: var(--orange);
         text-decoration: none;
-        font-weight: 600;
-        border-bottom: 1.5px solid var(--rust);
+        font-weight: 700;
+        border-bottom: 1.5px solid var(--orange);
         padding-bottom: 1px;
-        transition: all 0.12s ease;
       }
-
       .article-body a:hover {
-        background: var(--mustard);
+        background: var(--yellow);
         color: #000;
-        border-color: #000;
       }
 
-      /* Colophon & Barcode */
-      .colophon-deck {
-        margin-top: 5rem;
-        border-top: 2px solid var(--rule);
-        padding-top: 2.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        gap: 1.5rem;
+      .article-body ul, .article-body ol {
+        margin: 1.2rem 0 1.8rem 1.4rem;
+      }
+      .article-body li {
+        margin-bottom: 0.6rem;
+        font-size: 0.95rem;
       }
 
-      .colophon-meta {
+      /* フッター奥付 */
+      .colophon {
+        margin-top: 4.5rem;
+        border-top: 2px solid var(--line);
+        padding-top: 1.8rem;
+        text-align: center;
         font-family: "Chivo Mono", monospace;
         font-size: 0.72rem;
-        color: var(--ink-light);
-        line-height: 1.7;
+        color: #777;
       }
-
-      .barcode-box {
-        font-family: "Chivo Mono", monospace;
-        font-size: 0.65rem;
-        letter-spacing: 0.25em;
-        text-align: right;
-      }
-
-      .barcode-lines {
-        display: inline-block;
-        height: 28px;
-        width: 140px;
-        background: repeating-linear-gradient(
-          to right,
-          #000 0px, #000 2px,
-          transparent 2px, transparent 4px,
-          #000 4px, #000 7px,
-          transparent 7px, transparent 9px,
-          #000 9px, #000 10px
-        );
-        margin-bottom: 4px;
-      }
-
-      @media (max-width: 650px) {
-        body { padding: 1rem 0.5rem 2rem; }
-        .zine-sheet { padding: 1.5rem 1.1rem; box-shadow: none; border-left: none; border-right: none; }
-        .top-deck { grid-template-columns: 1fr; gap: 0.5rem; }
-        .hifi-deck { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+      @media (max-width: 600px) {
+        .magazine { padding: 1.5rem 1rem; box-shadow: none; }
+        .radio-panel { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
       }
     </style>
   </head>
   <body>
-    <article class="zine-sheet">
+    <article class="magazine">
       <!-- Top Meta -->
-      <header class="top-deck">
+      <div class="top-bar">
         <div>
-          <span class="edition-stamp">ISSUE 01</span>
-        </div>
-        <div class="geo-meta">
-          <span>TOKYO / LAT 35.68 N</span>
-          <span>·</span>
-          <span>{latest ? latest.frontmatter.date : ""}</span>
-          <span>·</span>
-          <span>{latest ? latest.frontmatter.temp : ""}</span>
+          <span class="badge-edition">DAILY ISSUE</span>
+          <span>TOKYO / {latest ? latest.frontmatter.date : ""}</span>
         </div>
         <div>
-          <a href="/my-daily-magazine/archive/" class="archive-btn">ARCHIVE (全号) ↗</a>
-        </div>
-      </header>
-
-      <!-- Masthead -->
-      <div class="masthead">
-        <p class="sub-journal-title">A DAILY CHRONICLE FOR PROCESS, CULTURE & SOLITUDE</p>
-        <h1 class="main-logo">THE DAILY <em>EXTRACT</em></h1>
-        <div class="journal-lead-desc">
-          <span>MOTORCYCLE: HONDA GB350</span>
-          <span>/</span>
-          <span>SUNSET: {latest ? latest.frontmatter.sunset : ""}</span>
-          <span>/</span>
-          <span>AUDIO: WEST COAST CIPHER</span>
+          <a href="/my-daily-magazine/archive/" class="archive-btn">📁 ARCHIVE (全号) ↗</a>
         </div>
       </div>
 
-      <!-- Quick Index -->
-      <nav class="chips-nav">
-        <a href="#lead-story" class="chip-item">§01 DISCOVERY & PROCESS</a>
-        <a href="#news" class="chip-item">§02 CURATED 5 PICKS</a>
-        <a href="#market" class="chip-item">§03 MARKET CATALYST</a>
-        <a href="#music" class="chip-item">§04 THE CIPHER (KENDRICK)</a>
-        <a href="#book" class="chip-item">§05 BOOK ARCHIVE</a>
-        <a href="#curiosity" class="chip-item">§06 CURIOSITY EXPEDITION</a>
-        <a href="#escape" class="chip-item">§07 ESCAPE: STEAM & ROAST</a>
+      <!-- Masthead -->
+      <header class="masthead">
+        <p class="tagline">CHEMICAL PROCESS, HIP-HOP CIPHER & THE CITY ESCAPE</p>
+        <h1 class="logo">THE DAILY EXTRACT</h1>
+        <div class="issue-sub">
+          <span>RIDER: HONDA GB350</span>
+          <span>·</span>
+          <span>TEMP: {latest ? latest.frontmatter.temp : ""}</span>
+          <span>·</span>
+          <span>SUNSET: {latest ? latest.frontmatter.sunset : ""}</span>
+        </div>
+      </header>
+
+      <!-- Quick Jump Navigation -->
+      <nav class="quick-chips">
+        <a href="#lead-story" class="chip-link">🧪 論文スキーム</a>
+        <a href="#news" class="chip-link">📰 ニュース5選</a>
+        <a href="#market" class="chip-link">📈 注目株</a>
+        <a href="#music" class="chip-link">🎤 音楽/英語</a>
+        <a href="#book" class="chip-link">📚 推薦本</a>
+        <a href="#curiosity" class="chip-link">🧭 越境コラム</a>
+        <a href="#escape" class="chip-link">🧖 サウナ/日常</a>
       </nav>
 
-      <!-- Vintage Audio Player -->
-      <div class="hifi-deck">
-        <div class="deck-ctrl">
-          <button id="radio-toggle" class="deck-btn">
-            <span>▶</span> PLAY MORNING RADIO
-          </button>
+      <!-- Morning Radio Panel -->
+      <div class="radio-panel">
+        <div>
+          <button id="radio-toggle" class="radio-btn">📻 PLAY MORNING RADIO</button>
         </div>
-        <div id="radio-status" class="deck-monitor">HI-FI SYNTHESIZER : STANDBY</div>
+        <div id="radio-status" class="radio-status">AUDIO SYNTHESIS: READY</div>
       </div>
 
       <!-- Main Contents -->
@@ -445,20 +328,12 @@ const latest = postList[0];
       </main>
 
       <!-- Footer Colophon -->
-      <footer class="colophon-deck">
-        <div class="colophon-meta">
-          <p><strong>THE DAILY EXTRACT</strong> — PRINTED DIGITALLY FOR PRIVATE USE</p>
-          <p>CURATED AUTONOMOUSLY EVERY MORNING AT 06:00 JST.</p>
-          <p>© 2026 THE DAILY EXTRACT PUBLISHING. ALL RIGHTS RESERVED.</p>
-        </div>
-        <div class="barcode-box">
-          <div class="barcode-lines"></div>
-          <div>ISSN 2434-8929</div>
-        </div>
+      <footer class="colophon">
+        <p>© 2026 THE DAILY EXTRACT — PRINTED DIGITALLY FOR PRIVATE USE.</p>
       </footer>
     </article>
 
-    <!-- Audio Script -->
+    <!-- Speech Synthesis Script -->
     <script is:inline>
       const btn = document.getElementById("radio-toggle");
       const status = document.getElementById("radio-status");
@@ -474,8 +349,8 @@ const latest = postList[0];
         if (isPlaying) {
           window.speechSynthesis.cancel();
           isPlaying = false;
-          btn.innerHTML = "<span>▶</span> PLAY MORNING RADIO";
-          status.innerText = "HI-FI SYNTHESIZER : STOPPED";
+          btn.innerText = "📻 PLAY MORNING RADIO";
+          status.innerText = "AUDIO SYNTHESIS: STOPPED";
           return;
         }
 
@@ -485,7 +360,7 @@ const latest = postList[0];
         const textToRead = content.innerText
           .replace(/https?:\/\/\S+/g, "")
           .replace(/\[DOI:[^\]]+\]/g, "")
-          .substring(0, 4200);
+          .substring(0, 4000);
 
         utterance = new SpeechSynthesisUtterance(textToRead);
         utterance.lang = "ja-JP";
@@ -493,20 +368,20 @@ const latest = postList[0];
 
         utterance.onend = () => {
           isPlaying = false;
-          btn.innerHTML = "<span>▶</span> PLAY MORNING RADIO";
-          status.innerText = "BROADCAST COMPLETED";
+          btn.innerText = "📻 PLAY MORNING RADIO";
+          status.innerText = "AUDIO SYNTHESIS: FINISHED";
         };
 
         utterance.onerror = () => {
           isPlaying = false;
-          btn.innerHTML = "<span>▶</span> PLAY MORNING RADIO";
-          status.innerText = "TRANSMISSION ERROR";
+          btn.innerText = "📻 PLAY MORNING RADIO";
+          status.innerText = "AUDIO SYNTHESIS: ERROR";
         };
 
         window.speechSynthesis.speak(utterance);
         isPlaying = true;
-        btn.innerHTML = "<span>⏹</span> STOP BROADCAST";
-        status.innerText = "ON AIR : READING MORNING ISSUE";
+        btn.innerText = "⏹ STOP RADIO";
+        status.innerText = "BROADCASTING NOW...";
       });
     </script>
   </body>
