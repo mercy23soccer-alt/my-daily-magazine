@@ -30,7 +30,7 @@ SYSTEM_INSTRUCTION = """
 あなたは雑誌『POPEYE』の精神を宿した日刊Webマガジン『THE DAILY EXTRACT』の編集長です。
 読者は「化学のプロセス開発者であり、Honda GB350に乗り、ゴールドジムで鍛え、ケンドリック・ラマーの文化と英語を学び、株式投資にも明るく、サウナ・コーヒー、そして家族との時間を大切にするシティボーイ」です。
 
-以下のセクション構成（Markdown形式）で執筆してください。指定された2枚の写真タグを、文脈に合う自然な位置に必ず配置してください。
+以下のセクション構成で執筆してください。指定された2枚の写真用HTMLタグを、文脈に合う自然な位置に必ず配置してください。
 
 ---
 ### 1. Lead Story: Discovery & Process
@@ -49,7 +49,7 @@ SYSTEM_INSTRUCTION = """
 
 ### 3. Market Catalyst: 株式投資と注目テーマ
 - **本日の注目テーマ（1つ）**: 半導体材料、フロー合成、バイオものづくり、次世代バッテリー、水素キャリアなど、読者の知見が活きる産業テーマを解説。
-- **本日の厳選銘柄（1社）**: 大型株だけでなく、「知る人ぞ知る高収益な中小型株」「ニッチトップの化学・素材メーカー」「大化けの余地がある隠れた成長株」を1社ピックアップ。
+- **本日の厳選銘柄（1社）**: 「知る人ぞ知る高収益な中小型株」「ニッチトップの化学・素材メーカー」「大化け余地がある隠れた成長株」を1社ピックアップ。
   - 企業名、証券コード
   - どんなビジネスモデルで参入障壁（Moat）はどこか
   - なぜ今注目なのか（カタリスト、業績変化、需給、テーマ性）
@@ -72,26 +72,30 @@ SYSTEM_INSTRUCTION = """
 - 毎月新しい体験に挑むためのアイデア。読者が普段触れていない全く新しい世界（例：塊根植物・盆栽、レザーのビスポーク、現代建築の構造、発酵食品の科学、アンティーク時計など）の魅力と、初心者が足を踏み入れる第一歩を手引きする。
 
 ### 7. Escape: Route, Iron & Steam（日常と至福のルーティン）
-- 今日の天気に合わせ、愛車「Honda GB350」の鼓動、ゴールドジムでの筋トレ、サウナ（サウナイキタイリンク付き）、そして家族と囲むハンドドリップコーヒーの団欒を情緒豊かに描く。
+- 今日の天気に合わせ、愛車「Honda GB350」の鼓動、ゴールドジムでの筋トレ、サウナ（サウナイキタイリンク付き）、そして家族と囲むハンドドリップコーヒーの団欒を描く。
 - **【必須】リンク**: [🧖 サウナイキタイで施設を見る](https://sauna-ikitai.com/search?keyword=施設名)
 
 ### 8. Editor's Colophon
 - 実験室の器具や街の風景、今夜の気圧についての1行コラム。
 """
 
+# エラーを防ぐため、HTMLタグで画像を配置するよう指示
+img_tag_1 = f'<img src="/my-daily-magazine/images/{today}_scene1.jpg" alt="Today\'s Scene 1" />'
+img_tag_2 = f'<img src="/my-daily-magazine/images/{today}_scene2.jpg" alt="Today\'s Scene 2" />'
+
 user_prompt = f"""
 本日の環境データ:
 - 日付: {today}
 - 気温: {current_temp}℃ / 湿度: {current.get('relative_humidity_2m', 50)}% / 風速: {current.get('wind_speed_10m', 3)} km/h / 日没: {sunset}
 
-記事本文の適切な場所に、以下の2つの画像タグを必ず配置してください：
-![Today's Scene 1](./images/{today}_scene1.jpg)
-![Today's Scene 2](./images/{today}_scene2.jpg)
+記事本文の適切な場所に、以下の2つのHTMLタグをそのまま配置してください：
+{img_tag_1}
+{img_tag_2}
 
 本日の最新号を執筆してください。Markdown形式のみを出力してください。
 """
 
-# Gemini 混雑対策リトライ
+# Gemini 呼び出し（混雑対策リトライ付き）
 target_models = ["gemini-3.6-flash", "gemini-3.6-pro"]
 response = None
 
@@ -124,7 +128,7 @@ if not response:
     print("AIの応答を取得できませんでした。")
     sys.exit(1)
 
-# 3. リアルなスナップ写真を2枚生成（100%確実に生成・保存）
+# 3. リアルなスナップ写真を2枚生成
 os.makedirs("public/images", exist_ok=True)
 temp_val = float(current_temp) if current_temp.replace('.', '', 1).isdigit() else 20.0
 
@@ -141,7 +145,6 @@ scenes = [
 ]
 
 def generate_and_save_photo(prompt_text, file_path):
-    # 優先: Google Imagen 3 を試行
     try:
         img_res = client.models.generate_images(
             model="imagen-3.0-generate-002",
@@ -154,9 +157,9 @@ def generate_and_save_photo(prompt_text, file_path):
             print(f"Imagenで生成成功: {file_path}")
             return
     except Exception as e:
-        print(f"Imagen制限検知。確実な外部フォトエンジンへ自動切替: {e}")
+        print(f"Imagen制限検知。フォトエンジンへ切替: {e}")
 
-    # フォールバック: 外部の高速AIフォトジェネレータで100%確実に生成
+    # フォールバック画像生成
     try:
         clean_prompt = quote(prompt_text)
         url = f"https://image.pollinations.ai/prompt/{clean_prompt}?width=1200&height=675&nologo=true&seed={int(time.time())}"
