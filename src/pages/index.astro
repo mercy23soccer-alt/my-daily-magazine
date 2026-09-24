@@ -11,187 +11,432 @@ const latest = postList[0];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THE DAILY EXTRACT | For City Boys</title>
+    <title>THE DAILY EXTRACT — Journal for Mind & Solitude</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Noto+Serif+JP:wght@400;700&family=Oswald:wght@700&family=Work+Sans:ital,wght@0,800;1,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;600;800&family=Instrument+Serif:ital@0;1&family=Shippori+Mincho:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+    
     <style is:global>
       :root {
-        --paper: #f5f2eb;
-        --ink: #111111;
-        --yellow: #f8d12e;
-        --orange: #e85d3f;
-        --gray: #6e6b66;
-        --border: #1a1a1a;
+        --paper: #f9f6f0;
+        --paper-sub: #f0ecdf;
+        --ink: #181716;
+        --ink-light: #524f4a;
+        --rust: #c84b31;
+        --mustard: #e6b325;
+        --rule: #201e1c;
+        --tint-border: rgba(24, 23, 22, 0.12);
       }
+
       * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; background-color: #e4dfd3; }
+      
       body {
-        background-color: #dfdbd0;
         color: var(--ink);
-        font-family: "Noto Serif JP", serif;
-        line-height: 1.85;
-        padding: 2rem 1rem;
+        font-family: "Shippori Mincho", "Noto Serif JP", serif;
+        line-height: 1.95;
+        letter-spacing: 0.02em;
+        padding: 2.5rem 1rem 4rem;
+        -webkit-font-smoothing: antialiased;
       }
-      .magazine-wrapper {
+
+      .zine-sheet {
         max-width: 860px;
         margin: 0 auto;
         background-color: var(--paper);
-        border: 2px solid var(--border);
-        box-shadow: 8px 8px 0px var(--border);
-        padding: 2.5rem;
+        border: 1px solid var(--rule);
+        box-shadow: 10px 10px 0px rgba(24, 23, 22, 0.95);
+        padding: clamp(1.8rem, 5vw, 3.8rem);
+        position: relative;
       }
-      /* Top Bar */
-      .top-meta {
-        display: flex;
-        justify-content: space-between;
+
+      /* Upper Foil Bar */
+      .top-deck {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
         align-items: center;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 0.8rem;
+        gap: 1rem;
+        border-bottom: 2px solid var(--rule);
+        padding-bottom: 0.9rem;
         font-family: "Chivo Mono", monospace;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
-      .badge {
-        background-color: var(--yellow);
+
+      .edition-stamp {
+        background: var(--rule);
+        color: var(--paper);
         padding: 0.2rem 0.6rem;
-        border: 1px solid var(--border);
-        font-weight: bold;
+        font-weight: 800;
+        letter-spacing: 0.12em;
       }
+
+      .geo-meta {
+        color: var(--ink-light);
+        display: flex;
+        gap: 1.2rem;
+      }
+
+      .archive-btn {
+        color: var(--ink);
+        text-decoration: none;
+        border: 1px solid var(--rule);
+        padding: 0.2rem 0.6rem;
+        font-weight: 700;
+        background: var(--paper-sub);
+        transition: all 0.15s ease;
+      }
+      .archive-btn:hover {
+        background: var(--mustard);
+        box-shadow: 2px 2px 0 var(--rule);
+      }
+
       /* Masthead */
       .masthead {
         text-align: center;
-        padding: 2rem 0 1.5rem;
-        border-bottom: 3px double var(--border);
+        padding: 3rem 0 2rem;
+        border-bottom: 3px double var(--rule);
       }
-      .tagline {
-        font-family: "Chivo Mono", monospace;
-        font-size: 0.72rem;
-        letter-spacing: 0.18em;
-        color: var(--orange);
+
+      .sub-journal-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.78rem;
         font-weight: 700;
-        margin-bottom: 0.3rem;
-      }
-      .logo {
-        font-family: "Work Sans", sans-serif;
-        font-size: clamp(2.3rem, 6.5vw, 4rem);
-        font-weight: 900;
-        font-style: italic;
-        letter-spacing: -0.04em;
-        line-height: 0.95;
+        letter-spacing: 0.25em;
+        color: var(--rust);
+        margin-bottom: 0.6rem;
         text-transform: uppercase;
       }
-      .issue-sub {
-        margin-top: 0.8rem;
+
+      .main-logo {
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(3.2rem, 9.5vw, 5.8rem);
+        font-weight: 400;
+        line-height: 0.92;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+
+      .main-logo em {
+        font-style: italic;
+        font-family: "Instrument Serif", serif;
+      }
+
+      .journal-lead-desc {
+        margin-top: 1.2rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--ink-light);
         display: flex;
         justify-content: center;
         gap: 1.5rem;
-        font-family: "Chivo Mono", monospace;
-        font-size: 0.8rem;
+        flex-wrap: wrap;
+      }
+
+      .journal-lead-desc span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      /* Index Chips */
+      .chips-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding: 1.2rem 0;
+        border-bottom: 1px dashed var(--tint-border);
+      }
+
+      .chip-item {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.72rem;
         font-weight: 700;
+        text-decoration: none;
+        color: var(--ink);
+        background: var(--paper-sub);
+        border: 1px solid var(--rule);
+        padding: 0.25rem 0.55rem;
+        transition: transform 0.1s ease;
       }
-      /* Article Content */
-      .article-body {
-        font-size: 1rem;
-        margin-top: 2rem;
+
+      .chip-item:hover {
+        background: var(--mustard);
+        transform: translateY(-1px);
       }
-      .article-body h2, .article-body h3 {
-        font-family: "Oswald", sans-serif;
-        font-size: 1.5rem;
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-        border-top: 2px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        padding: 0.4rem 0.6rem;
-        margin: 3rem 0 1.2rem;
-        background-color: #ece8dc;
+
+      /* Radio Unit (Hi-Fi Tape Deck Style) */
+      .hifi-deck {
+        margin: 1.8rem 0 2.5rem;
+        background: #1e1d1b;
+        color: #e5e2da;
+        border: 1px solid var(--rule);
+        padding: 0.9rem 1.4rem;
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+
+      .deck-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .deck-btn {
+        background: var(--rust);
+        color: #fff;
+        border: 1px solid #000;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
         gap: 0.5rem;
+        box-shadow: 2px 2px 0px #000;
       }
-      .article-body h2::before, .article-body h3::before {
-        content: "■";
-        color: var(--orange);
-        font-size: 0.85rem;
+
+      .deck-btn:active {
+        transform: translate(1px, 1px);
+        box-shadow: none;
       }
-      .article-body h4 {
-        font-family: "Noto Serif JP", serif;
+
+      .deck-monitor {
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+        color: #9c978b;
+      }
+
+      /* Article Styling */
+      .article-body {
+        margin-top: 1rem;
+      }
+
+      /* Section Heads */
+      .article-body h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-top: 2px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        background: var(--paper-sub);
+        padding: 0.5rem 0.8rem;
+        margin: 4rem 0 1.6rem;
+        scroll-margin-top: 2rem;
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+
+      .article-body h2::before {
+        content: "§";
+        color: var(--rust);
+        font-family: "Instrument Serif", serif;
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+
+      .article-body h3 {
+        font-family: "Shippori Mincho", serif;
         font-size: 1.15rem;
         font-weight: 700;
-        margin: 1.2rem 0 0.6rem;
+        margin: 2rem 0 0.8rem;
+        color: var(--ink);
+        letter-spacing: 0.03em;
       }
+
       .article-body p {
-        margin-bottom: 1.4rem;
+        margin-bottom: 1.6rem;
         text-align: justify;
+        text-justify: inter-ideograph;
+        font-size: 0.98rem;
+        color: #2b2825;
       }
-      /* 35mm Snapshot Styling */
+
+      /* 35mm Photo Gallery Layout */
       .article-body img {
         width: 100%;
         max-width: 100%;
         height: auto;
         display: block;
-        margin: 2.2rem 0;
-        border: 2px solid var(--border);
-        box-shadow: 6px 6px 0px var(--border);
-        filter: contrast(1.04) saturate(1.05);
+        margin: 2.8rem 0 1rem;
+        background: #fff;
+        padding: 8px 8px 18px 8px; /* Polaroid / Photo Print Matte */
+        border: 1px solid var(--rule);
+        box-shadow: 4px 5px 0px rgba(24, 23, 22, 0.85);
+        filter: contrast(1.03) saturate(1.05);
       }
-      .article-body ul, .article-body ol {
-        margin: 1rem 0 1.5rem 1.5rem;
-      }
-      .article-body li {
-        margin-bottom: 0.6rem;
-      }
-      /* Scheme & Box */
+
+      /* Code / Reaction Scheme (Lab Blackboard) */
       .article-body pre {
-        background-color: #1e1e1e;
-        color: #e6e6e6;
-        padding: 1.2rem;
-        border: 2px solid var(--border);
+        background: #17181a;
+        color: #e2e4e8;
+        border: 1px solid var(--rule);
+        box-shadow: 4px 4px 0px var(--rule);
+        padding: 1.4rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.84rem;
+        line-height: 1.55;
         overflow-x: auto;
-        font-family: "Chivo Mono", monospace;
-        font-size: 0.85rem;
-        margin: 1.5rem 0;
+        margin: 2rem 0;
       }
-      .article-body a {
-        color: var(--orange);
+
+      /* Blockquotes / Liner Notes */
+      .article-body blockquote {
+        margin: 2rem 0;
+        padding: 1.2rem 1.6rem;
+        background: #fdfbf7;
+        border-left: 3px solid var(--rust);
+        border-top: 1px solid var(--tint-border);
+        border-right: 1px solid var(--tint-border);
+        border-bottom: 1px solid var(--tint-border);
+        font-style: italic;
+        color: #383430;
+      }
+
+      /* Curated Lists */
+      .article-body ul, .article-body ol {
+        margin: 1.2rem 0 2rem 1.4rem;
+      }
+
+      .article-body li {
+        margin-bottom: 0.75rem;
+        font-size: 0.96rem;
+      }
+
+      .article-body strong {
         font-weight: 700;
-        text-decoration: underline;
-        text-underline-offset: 3px;
+        color: #000;
       }
-      .colophon {
-        margin-top: 4rem;
-        border-top: 2px solid var(--border);
-        padding-top: 1.5rem;
-        text-align: center;
+
+      /* Editorial Links */
+      .article-body a {
+        color: var(--rust);
+        text-decoration: none;
+        font-weight: 600;
+        border-bottom: 1.5px solid var(--rust);
+        padding-bottom: 1px;
+        transition: all 0.12s ease;
+      }
+
+      .article-body a:hover {
+        background: var(--mustard);
+        color: #000;
+        border-color: #000;
+      }
+
+      /* Colophon & Barcode */
+      .colophon-deck {
+        margin-top: 5rem;
+        border-top: 2px solid var(--rule);
+        padding-top: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+
+      .colophon-meta {
         font-family: "Chivo Mono", monospace;
-        font-size: 0.75rem;
-        color: var(--gray);
+        font-size: 0.72rem;
+        color: var(--ink-light);
+        line-height: 1.7;
       }
-      @media (max-width: 600px) {
-        .magazine-wrapper { padding: 1.5rem 1rem; border-width: 1px; box-shadow: none; }
+
+      .barcode-box {
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-align: right;
+      }
+
+      .barcode-lines {
+        display: inline-block;
+        height: 28px;
+        width: 140px;
+        background: repeating-linear-gradient(
+          to right,
+          #000 0px, #000 2px,
+          transparent 2px, transparent 4px,
+          #000 4px, #000 7px,
+          transparent 7px, transparent 9px,
+          #000 9px, #000 10px
+        );
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 650px) {
+        body { padding: 1rem 0.5rem 2rem; }
+        .zine-sheet { padding: 1.5rem 1.1rem; box-shadow: none; border-left: none; border-right: none; }
+        .top-deck { grid-template-columns: 1fr; gap: 0.5rem; }
+        .hifi-deck { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
       }
     </style>
   </head>
   <body>
-    <div class="magazine-wrapper">
-      <div class="top-meta">
-        <div><span class="badge">DAILY ISSUE</span> TOKYO / {latest ? latest.frontmatter.date : ""}</div>
+    <article class="zine-sheet">
+      <!-- Top Meta -->
+      <header class="top-deck">
         <div>
-          {latest && <span>{latest.frontmatter.temp} · {latest.frontmatter.wind}</span>}
+          <span class="edition-stamp">ISSUE 01</span>
         </div>
-      </div>
-
-      <header class="masthead">
-        <p class="tagline">CHEMICAL PROCESS, HIP-HOP CIPHER & THE CITY ESCAPE</p>
-        <h1 class="logo">THE DAILY EXTRACT</h1>
-        <div class="issue-sub">
-          <span>RIDER: HONDA GB350</span>
+        <div class="geo-meta">
+          <span>TOKYO / LAT 35.68 N</span>
           <span>·</span>
-          <span>SUNSET: {latest ? latest.frontmatter.sunset : ""}</span>
+          <span>{latest ? latest.frontmatter.date : ""}</span>
+          <span>·</span>
+          <span>{latest ? latest.frontmatter.temp : ""}</span>
+        </div>
+        <div>
+          <a href="/my-daily-magazine/archive/" class="archive-btn">ARCHIVE (全号) ↗</a>
         </div>
       </header>
 
-      <main class="article-body">
+      <!-- Masthead -->
+      <div class="masthead">
+        <p class="sub-journal-title">A DAILY CHRONICLE FOR PROCESS, CULTURE & SOLITUDE</p>
+        <h1 class="main-logo">THE DAILY <em>EXTRACT</em></h1>
+        <div class="journal-lead-desc">
+          <span>MOTORCYCLE: HONDA GB350</span>
+          <span>/</span>
+          <span>SUNSET: {latest ? latest.frontmatter.sunset : ""}</span>
+          <span>/</span>
+          <span>AUDIO: WEST COAST CIPHER</span>
+        </div>
+      </div>
+
+      <!-- Quick Index -->
+      <nav class="chips-nav">
+        <a href="#lead-story" class="chip-item">§01 DISCOVERY & PROCESS</a>
+        <a href="#news" class="chip-item">§02 CURATED 5 PICKS</a>
+        <a href="#market" class="chip-item">§03 MARKET CATALYST</a>
+        <a href="#music" class="chip-item">§04 THE CIPHER (KENDRICK)</a>
+        <a href="#book" class="chip-item">§05 BOOK ARCHIVE</a>
+        <a href="#curiosity" class="chip-item">§06 CURIOSITY EXPEDITION</a>
+        <a href="#escape" class="chip-item">§07 ESCAPE: STEAM & ROAST</a>
+      </nav>
+
+      <!-- Vintage Audio Player -->
+      <div class="hifi-deck">
+        <div class="deck-ctrl">
+          <button id="radio-toggle" class="deck-btn">
+            <span>▶</span> PLAY MORNING RADIO
+          </button>
+        </div>
+        <div id="radio-status" class="deck-monitor">HI-FI SYNTHESIZER : STANDBY</div>
+      </div>
+
+      <!-- Main Contents -->
+      <main id="article-content" class="article-body">
         {latest ? (
           <latest.Content />
         ) : (
@@ -199,9 +444,70 @@ const latest = postList[0];
         )}
       </main>
 
-      <footer class="colophon">
-        <p>© 2026 THE DAILY EXTRACT — AUTONOMOUSLY CURATED FOR PRIVATE USE.</p>
+      <!-- Footer Colophon -->
+      <footer class="colophon-deck">
+        <div class="colophon-meta">
+          <p><strong>THE DAILY EXTRACT</strong> — PRINTED DIGITALLY FOR PRIVATE USE</p>
+          <p>CURATED AUTONOMOUSLY EVERY MORNING AT 06:00 JST.</p>
+          <p>© 2026 THE DAILY EXTRACT PUBLISHING. ALL RIGHTS RESERVED.</p>
+        </div>
+        <div class="barcode-box">
+          <div class="barcode-lines"></div>
+          <div>ISSN 2434-8929</div>
+        </div>
       </footer>
-    </div>
+    </article>
+
+    <!-- Audio Script -->
+    <script is:inline>
+      const btn = document.getElementById("radio-toggle");
+      const status = document.getElementById("radio-status");
+      let isPlaying = false;
+      let utterance = null;
+
+      btn.addEventListener("click", () => {
+        if (!("speechSynthesis" in window)) {
+          alert("お使いのブラウザは音声読み上げに対応していません。");
+          return;
+        }
+
+        if (isPlaying) {
+          window.speechSynthesis.cancel();
+          isPlaying = false;
+          btn.innerHTML = "<span>▶</span> PLAY MORNING RADIO";
+          status.innerText = "HI-FI SYNTHESIZER : STOPPED";
+          return;
+        }
+
+        const content = document.getElementById("article-content");
+        if (!content) return;
+
+        const textToRead = content.innerText
+          .replace(/https?:\/\/\S+/g, "")
+          .replace(/\[DOI:[^\]]+\]/g, "")
+          .substring(0, 4200);
+
+        utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = "ja-JP";
+        utterance.rate = 1.05;
+
+        utterance.onend = () => {
+          isPlaying = false;
+          btn.innerHTML = "<span>▶</span> PLAY MORNING RADIO";
+          status.innerText = "BROADCAST COMPLETED";
+        };
+
+        utterance.onerror = () => {
+          isPlaying = false;
+          btn.innerHTML = "<span>▶</span> PLAY MORNING RADIO";
+          status.innerText = "TRANSMISSION ERROR";
+        };
+
+        window.speechSynthesis.speak(utterance);
+        isPlaying = true;
+        btn.innerHTML = "<span>⏹</span> STOP BROADCAST";
+        status.innerText = "ON AIR : READING MORNING ISSUE";
+      });
+    </script>
   </body>
 </html>
