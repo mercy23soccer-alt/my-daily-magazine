@@ -55,27 +55,39 @@ user_prompt = f"""
 本日のIssue記事を執筆してください。Markdown形式のみを出力してください。
 """
 
-# 混雑対策：本命が混んでいたら予備モデルに自動で切り替える
-models_to_try = ["gemini-3.6-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+# 混雑（503）対策：現行の3.6系に絞り、しっかりと待ってリトライする
+target_models = ["gemini-3.6-flash", "gemini-3.6-pro"]
 response = None
 
-for model_name in models_to_try:
-    print(f"モデル {model_name} で記事執筆を試行中...")
-    try:
-        response = client.models.generate_content(
-            model=model_name,
-            contents=user_prompt,
-            config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
-        )
-        if response and response.text:
-            print(f"成功: {model_name} で記事が書き上がりました！")
-            break
-    except Exception as e:
-        print(f"{model_name} が混雑中のため予備モデルに切り替えます: {e}")
-        time.sleep(3)
+for model_name in target_models:
+    print(f"--- モデル {model_name} で執筆開始 ---")
+    for attempt in range(1, 5):
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=user_prompt,
+                config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
+            )
+            if response and response.text:
+                print(f"成功: {model_name} で記事が完成しました！")
+                break
+        except Exception as e:
+            err_str = str(e)
+            print(f"試行 {attempt}/4 失敗 ({model_name}): {err_str}")
+            if "503" in err_str:
+                wait_time = attempt * 10  # 10秒, 20秒, 30秒と待機時間を伸ばして待つ
+                print(f"Googleサーバー混雑中。{wait_time}秒待機して再試行します...")
+                time.sleep(wait_time)
+            elif "404" in err_str:
+                print(f"モデル {model_name} は利用できません。次のモデルへ移ります。")
+                break
+            else:
+                time.sleep(5)
+    if response and response.text:
+        break
 
 if not response:
-    print("すべてのモデルが混雑のため取得できませんでした。")
+    print("すべての試行が混雑により失敗しました。")
     sys.exit(1)
 
 # 3. 本日のグラフィック（イラスト）をAIで自動生成
