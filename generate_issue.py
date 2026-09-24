@@ -25,7 +25,7 @@ daily = weather_res.get("daily", {})
 current_temp = str(current.get("temperature_2m", "22"))
 sunset = daily.get("sunset", ["18:00"])[0].split("T")[-1]
 
-# 2. 記事執筆用プロンプト（YouTube Musicリンク・等幅化学式・目次アンカー対応）
+# 2. 記事執筆用プロンプト
 SYSTEM_INSTRUCTION = """
 あなたは雑誌『POPEYE』の精神を宿した日刊Webマガジン『THE DAILY EXTRACT』の編集長です。
 読者は「化学のプロセス開発者であり、Honda GB350に乗り、ゴールドジムで鍛え、ケンドリック・ラマーの文化と英語を学び、株式投資にも明るく、サウナ・コーヒー、そして家族との時間を大切にするシティボーイ」です。
@@ -97,37 +97,37 @@ user_prompt = f"""
 本日の最新号を執筆してください。Markdown形式のみを出力してください。
 """
 
-# Gemini 呼び出し（混雑対策リトライ付き / temperature=0.5）
-target_models = ["gemini-3.6-flash", "gemini-3.6-pro"]
+# Gemini 呼び出し（混雑・レート制限対策リトライ）
+model_name = "gemini-3.6-flash"
 response = None
 
-for model_name in target_models:
-    print(f"--- モデル {model_name} で執筆開始 ---")
-    for attempt in range(1, 5):
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=user_prompt,
-                config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.5),
-            )
-            if response and response.text:
-                print(f"成功: {model_name} で記事が完成しました！")
-                break
-        except Exception as e:
-            err_str = str(e)
-            if "503" in err_str:
-                wait_time = attempt * 10
-                print(f"サーバー混雑中。{wait_time}秒待機して再試行します...")
-                time.sleep(wait_time)
-            elif "404" in err_str:
-                break
-            else:
-                time.sleep(5)
-    if response and response.text:
-        break
+print(f"--- モデル {model_name} で執筆開始 ---")
+for attempt in range(1, 6):
+    try:
+        response = client.models.generate_content(
+            model=model_name,
+            contents=user_prompt,
+            config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
+        )
+        if response and response.text:
+            print("成功: 記事が書き上がりました！")
+            break
+    except Exception as e:
+        err_str = str(e)
+        print(f"⚠️ 試行 {attempt}/5 でエラー検知: {err_str}")
+        if "503" in err_str:
+            wait_time = attempt * 15
+            print(f"Googleサーバー混雑中。{wait_time}秒待機して再試行します...")
+            time.sleep(wait_time)
+        elif "429" in err_str:
+            wait_time = 35
+            print(f"短時間アクセス制限（429）を検知。{wait_time}秒間クールダウンします...")
+            time.sleep(wait_time)
+        else:
+            time.sleep(8)
 
 if not response:
-    print("AIの応答を取得できませんでした。")
+    print("すべての試行が制限またはエラーにより失敗しました。")
     sys.exit(1)
 
 # 3. リアルなスナップ写真を2枚生成
