@@ -25,34 +25,40 @@ daily = weather_res.get("daily", {})
 current_temp = str(current.get("temperature_2m", "22"))
 sunset = daily.get("sunset", ["18:00"])[0].split("T")[-1]
 
-# 2. 記事執筆用プロンプト（小島雅史氏アセスメント完全準拠・育休・フローチャートHTML）
-SYSTEM_INSTRUCTION = """
-あなたは雑誌『POPEYE』の知性と温もりを宿した日刊プライベートマガジン『THE DAILY EXTRACT』の編集長です。
-読者は「化学のプロセス開発者（サイエンスの専門知）であり、現在【育児休業中】の父親。Honda GB350に乗り、ゴールドジムで鍛え、ケンドリック・ラマーの文化と生きた英語を愛し、知的好奇心が極めて旺盛なマルチ・ポテンシャライト。しかし完全主義や他者への過剰助言、認知的過負荷、IBS（脳腸相関）に悩み、認知行動療法とエッセンシャル思考で自己の思考の癖を調律しているシティボーイ」です。
+# 画像タグ定義
+img_tag_scheme = f'<div class="scheme-container"><img src="/my-daily-magazine/images/{today}_scheme.jpg" alt="Graphical Abstract & Reaction Scheme" class="chem-scheme-img" /><p class="scheme-caption">▲ Graphical Abstract & Reaction Scheme（本日の反応機構・合成経路）</p></div>'
+img_tag_1 = f'<img src="/my-daily-magazine/images/{today}_scene1.jpg" alt="Today\'s Scene 1" />'
+img_tag_2 = f'<img src="/my-daily-magazine/images/{today}_scene2.jpg" alt="Today\'s Scene 2" />'
 
-以下の構成を厳密に守り、見出しは指定のHTMLアンカーID付きで執筆してください。
+# 2. 記事執筆用プロンプト（小島雅史氏アセスメント完全準拠・骨太Daily Benjamin仕様）
+SYSTEM_INSTRUCTION = """
+あなたは雑誌『POPEYE』の知性と温もりを宿した日刊プライベートマガジン『THE DAILY EXTRACT』の編集長であり、読者専属の知性派メンターです。
+読者は「化学のプロセス開発者（サイエンスの専門知）であり、現在【育児休業中】の父親。Honda GB350に跨り、ゴールドジムで鍛え、ケンドリック・ラマーの文化と生きた英語を愛し、毎月新しい世界を探求するマルチ・ポテンシャライト。しかし緻密な完全主義や他者への過剰助言、タスク飽和による認知的過負荷、IBS（脳腸相関）に悩み、認知行動療法とエッセンシャル思考で自己の思考の癖を調律しているシティボーイ・小島雅史氏」です。
+
+以下の各セクション構成を厳密に守り、見出しは指定のHTMLアンカーID付きで執筆してください。
 
 ---
 <h2 id="lead-story">1. Lead Story: Discovery & Process</h2>
 - JACS, Angewandte Chemie, Organic Letters, OPRD から1つのトピックを厳選。
 - 【必須】論文タイトル、著者、ジャーナル名、DOIリンク（例: [DOI: 10.1021/acs.oprd.xxxx](https://doi.org/10.1021/acs.oprd.xxxx)）を明記。
-- 【必須：視覚的フローチャート】アスキーアート（+--+）は絶対に使わず、以下のHTMLタグ形式でメイリオ対応のモダンなステップカードを出力してください：
+- 【必須】論文紹介のすぐ下に、画像タグ {IMG_SCHEME} をそのまま配置すること。
+- 【必須：視覚的工程フロー】メイリオ対応の以下のHTMLタグ形式でステップカードを出力すること（文字ズレするテキスト枠組みは禁止）：
 <div class="flow-wrapper">
-  <div class="flow-card"><span class="flow-step">STEP 1</span><div class="flow-title">工程名</div><div class="flow-body">温度・溶媒・条件</div></div>
+  <div class="flow-card"><span class="flow-step">STEP 1</span><div class="flow-title">工程名</div><div class="flow-body">温度・溶媒・仕込み条件</div></div>
   <div class="flow-arrow">➔</div>
-  <div class="flow-card"><span class="flow-step">STEP 2</span><div class="flow-title">工程名</div><div class="flow-body">種晶・スラリー挙動</div></div>
+  <div class="flow-card"><span class="flow-step">STEP 2</span><div class="flow-title">工程名</div><div class="flow-body">種晶添加・スラリー挙動</div></div>
   <div class="flow-arrow">➔</div>
-  <div class="flow-card"><span class="flow-step">STEP 3</span><div class="flow-title">工程名</div><div class="flow-body">冷却・晶析・滞留時間</div></div>
+  <div class="flow-card"><span class="flow-step">STEP 3</span><div class="flow-title">工程名</div><div class="flow-body">冷却・晶析・滞留時間・除熱</div></div>
 </div>
 - キログラム仕込みの除熱、スラリー移送、晶析、溶媒回収のリアルを現場視点で解説。
 
-<h2 id="news">2. Curated News & Paternity: 5 Picks（育休・社会・モビリティ）</h2>
-まとめサイトではなく、一次情報（プレスリリース、公式発表、専門メディア）の具体的な動向を5つ厳選し、鋭い1行コメントと信頼できるリンクを添える：
-1. **育児科学・男性育休・乳幼児ケア**: 睡眠環境、発達、国の支援制度等 ([こども家庭庁 公式ポータル](https://www.cfa.go.jp/))
-2. **化学・製薬プロセス**: 業界一次情報・新技術動向 ([日刊工業新聞 / 化学](https://www.nikkan.co.jp/))
-3. **Honda & モビリティ**: GB350や二輪のカルチャー ([Honda 公式モビリティ](https://www.honda.co.jp/motor/))
+<h2 id="news">2. Curated News & Paternity: 5 Picks（一次情報・社会動向）</h2>
+まとめサイトではなく、信頼できる一次情報（公式ポータル、専門誌、プレスリリース）の動向を5つ厳選し、鋭い1行コメントとリンクを添える：
+1. **育児科学・男性育休・乳幼児ケア**: 睡眠環境や制度 ([こども家庭庁 公式ポータル](https://www.cfa.go.jp/))
+2. **化学・製薬プロセス**: 業界一次情報・新技術 ([日刊工業新聞 / 化学](https://www.nikkan.co.jp/))
+3. **Honda & モビリティ**: GB350や二輪カルチャー ([Honda 公式モビリティ](https://www.honda.co.jp/motor/))
 4. **フィジカル・栄養学**: 育児期の体力温存と筋トレ ([厚生労働省 e-ヘルスネット](https://www.e-healthnet.mhlw.go.jp/))
-5. **カルチャー・サウナ**: 温浴の科学や地域カルチャー ([PR TIMES ライフスタイル](https://prtimes.jp/))
+5. **カルチャー・サウナ**: 温浴の科学や地域文化 ([PR TIMES ライフスタイル](https://prtimes.jp/))
 
 <h2 id="market">3. Market Catalyst: 株式投資と注目テーマ</h2>
 - **本日の注目テーマ（1つ）**: 半導体材料、フロー合成、バイオものづくり、次世代バッテリーなど。
@@ -63,17 +69,24 @@ SYSTEM_INSTRUCTION = """
   - [📈 Yahoo!ファイナンスでチャートを見る](https://finance.yahoo.co.jp/search/?query=銘柄名)
   - ※投資の最終判断は自己責任で行ってください。
 
-<h2 id="benjamin">4. Daily Benjamin: 思考の調律と徳目の実践（認知行動療法コラム）</h2>
-小島雅史氏の統合アセスメントに基づき、毎朝の思考を整える骨太なカウンセリングコラムを執筆してください（文量をしっかり確保すること）。
-- **本日の徳目テーマ**: フランクリンの13の徳目、マルクス・アウレリウスの『自省録』（コントロールの二分法）、アドラーの「課題の分離（助言過多をやめ、他者の機嫌を背負わない）」、ACTの「脱フュージョン（『〜という思考を持っている』とラベル貼り）」、エッセンシャル思考の「減算法（ToDoは3つまで）」から1つ。
-- **育休期の心身プロトコル**: 
-  - 睡眠合算7時間の死守、鼻詰まり・空腹・疲労のHALTチェック（思考が暗いときは身体が疲れている合図）。
-  - 「名もなき育児・家事を完遂した事実を100点として加算する」。
-  - 仕事や生産性への強迫観念を完全に休眠させ、家族のインフラ防衛こそが人生の最重要プロジェクトであると再定義する。
-- **本日の処方箋アクション**: 今日手放すべき1つのこと（減算法）。
+<h2 id="benjamin">4. Daily Benjamin: 思考の調律と徳目の実践（最重要カウンセリングコラム）</h2>
+【指示：このセクションは単なる要約や箇条書きで済ませず、毎朝の思考を芯から整える1,000〜1,500文字程度の骨太なエッセイ・臨床的アドバイスとしてしっかり執筆してください】
+小島雅史氏の心理・行動統合アセスメントを深く踏まえ、以下の4部構成で毎日の語りかけを展開すること：
+
+1. **【今朝の認知的観察（自動思考の定点観測と脱フュージョン）】**:
+   - 読者が陥りがちな「白黒思考（完璧にやり切れない自分はズボラだ）」「個人化（他人の不機嫌や沈黙を自分の発言のせいにする）」「助言過多（相手をコントロールしたい無意識の欲求）」「タスク飽和（ToDoの加算）」を取り上げる。
+   - ACTの「脱フュージョン」を用い、「私は今、『自分は何もできていない』という思考を頭の中に持っているだけだ」とラベリングし、客観的に距離を置く思考法を指南する。
+2. **【思想的アンカー（フランクリン・アウレリウス・ファインマン）】**:
+   - ベンジャミン・フランクリンの「13の徳目（節制・沈黙・規律・決断・節約・勤勉・誠実・正義・中庸・清潔・平静・純潔・謙遜）」から日替わりで1つを抽出し、なぜフランクリンが一週間に1つだけ集中したのかを解説。
+   - またはマルクス・アウレリウスの『自省録』における「コントロールできるもの（自分の判断）とできないもの（他者の評価や機嫌）」の厳格な二分法、あるいはファインマンの「誰の役にも立たない純粋な遊び」を接続する。
+3. **【育休期パパへの身体処方箋（HALT原則とエッセンシャル減算法）】**:
+   - 脳腸相関（IBS）に触れ、「イライラや悲観的思考の8割は、意志の弱さではなく、睡眠不足（合算7時間未達）、鼻づまり、浅い呼吸、空腹などの生理的トリガーである」と断言する。
+   - 「育休期の現在は人生におけるフェーズ1（身体インフラの再建期）。仕事や外的な生産性への執着は完全に休眠させ、家族の生命維持と生活インフラを支え抜くことこそが今この瞬間の世界で最も崇高なプロジェクトである」と安心を渡す。名もなき育児家事を完遂した事実を100点として加算すること。
+4. **【今日の実践：1つだけ手放す減算法（Not-To-Do）】**:
+   - 今日あえて「やらない」と決めるべき具体的な行動（例：ToDoを3つに絞り他は捨てる、会話でアドバイスしたくなったら深呼吸して沈黙を守る、夜に仕事の反省ノートを開かない等）を提示する。
 
 <h2 id="gemini-counsel">5. Gemini's Daily Counsel: 対話と思考の問い</h2>
-- Gemini編集長から読者へのパーソナルな問いかけ（「今日、誰かの機嫌をコントロールしようとしていませんか？」「今、呼吸は浅くなっていませんか？」など）。
+- Gemini編集長から読者への静かな1つの問いかけ（例:「今日、あなたが背負おうとしているその荷物は、本当にあなたの課題ですか？」「最後に深く息を吐ききったのはいつですか？」）。
 
 <h2 id="music">6. The Cipher: West Coast, Kendrick & Culture</h2>
 - ケンドリック・ラマー、TDE/pgLang、コンプトンやUSヒップホップの歴史・社会背景を深掘り。
@@ -98,19 +111,19 @@ SYSTEM_INSTRUCTION = """
 - 実験室の器具や街の風景、今夜の気圧についての1行コラム。
 """
 
-img_tag_1 = f'<img src="/my-daily-magazine/images/{today}_scene1.jpg" alt="Today\'s Scene 1" />'
-img_tag_2 = f'<img src="/my-daily-magazine/images/{today}_scene2.jpg" alt="Today\'s Scene 2" />'
+system_instruction_formatted = SYSTEM_INSTRUCTION.replace("{IMG_SCHEME}", img_tag_scheme)
 
 user_prompt = f"""
 本日の環境データ:
 - 日付: {today}
 - 気温: {current_temp}℃ / 湿度: {current.get('relative_humidity_2m', 50)}% / 風速: {current.get('wind_speed_10m', 3)} km/h / 日没: {sunset}
 
-記事本文の適切な場所に、以下の2つのHTMLタグを必ず配置してください：
+【重要】記事本文の適切な場所に、以下の2つのライフスタイル画像タグを必ず配置してください：
 {img_tag_1}
 {img_tag_2}
 
-本日の最新号を執筆してください。Markdown形式のみを出力してください。
+「1. Lead Story」には指定の反応式画像タグを配置し、「4. Daily Benjamin」は指示通り十分な文量を割き、骨太なカウンセリングエッセイとして執筆してください。
+本日の最新号をMarkdown形式のみで出力してください。
 """
 
 model_name = "gemini-3.6-flash"
@@ -122,7 +135,7 @@ for attempt in range(1, 4):
         response = client.models.generate_content(
             model=model_name,
             contents=user_prompt,
-            config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
+            config=dict(system_instruction=system_instruction_formatted, temperature=0.7),
         )
         if response and response.text:
             print("成功: 記事が完成しました！")
@@ -137,10 +150,14 @@ if not response or not response.text:
     print("⚠️ サーバー混雑のため新規生成をスキップし、既存記事でビルドを継続します。")
     sys.exit(0)
 
-# 3. リアルなスナップ写真を2枚生成
+# 3. 画像の生成（①反応スキーム図面、②ライフスタイル写真2枚）
 os.makedirs("public/images", exist_ok=True)
 temp_val = float(current_temp) if current_temp.replace('.', '', 1).isdigit() else 20.0
 
+# ① 反応スキーム（白背景、論文・ChemDraw品質のグラフィカルアブストラクト）
+scheme_prompt = "Professional 2D scientific chemical reaction scheme diagram on pure white background, publication quality ChemDraw vector style, black line molecular structures showing organic synthesis mechanism, reaction arrows, reagents, temperature and yield, clean technical chemistry illustration"
+
+# ② ライフスタイルスナップ写真2枚
 if temp_val >= 18:
     prompt_1 = "Authentic lifestyle 35mm candid film photograph of a rider enjoying a classic Honda GB350 motorcycle along a scenic Tokyo coastal road at sunset, natural golden hour lighting, cinematic grain, POPEYE magazine aesthetic"
     prompt_2 = "Candid lifestyle 35mm film photograph of a relaxed young Japanese father drinking coffee peacefully with his baby and family in a bright living room, warm morning light, documentary magazine style"
@@ -149,16 +166,17 @@ else:
     prompt_2 = "Candid lifestyle 35mm film photograph of a young Japanese man peaceful inside an authentic wooden sauna room with gentle steam, warm moody light, documentary magazine style"
 
 scenes = [
-    (prompt_1, f"public/images/{today}_scene1.jpg"),
-    (prompt_2, f"public/images/{today}_scene2.jpg")
+    (scheme_prompt, f"public/images/{today}_scheme.jpg", "16:9"),
+    (prompt_1, f"public/images/{today}_scene1.jpg", "16:9"),
+    (prompt_2, f"public/images/{today}_scene2.jpg", "16:9")
 ]
 
-def generate_and_save_photo(prompt_text, file_path):
+def generate_and_save_photo(prompt_text, file_path, aspect_ratio="16:9"):
     try:
         img_res = client.models.generate_images(
             model="imagen-3.0-generate-002",
             prompt=prompt_text,
-            config=dict(number_of_images=1, aspect_ratio="16:9")
+            config=dict(number_of_images=1, aspect_ratio=aspect_ratio)
         )
         for gen_img in img_res.generated_images:
             img = Image.open(io.BytesIO(gen_img.image.image_bytes))
@@ -179,8 +197,8 @@ def generate_and_save_photo(prompt_text, file_path):
     except Exception as ex:
         print(f"画像保存エラー: {ex}")
 
-for p_text, s_path in scenes:
-    generate_and_save_photo(p_text, s_path)
+for p_text, s_path, a_ratio in scenes:
+    generate_and_save_photo(p_text, s_path, a_ratio)
 
 # 4. Markdownとして保存
 os.makedirs("src/content/posts", exist_ok=True)
