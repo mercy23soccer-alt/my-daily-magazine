@@ -11,12 +11,11 @@ const latest = postList[0];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THE DAILY EXTRACT | Magazine for City Boys</title>
+    <title>THE DAILY EXTRACT | Paternity, Process & Mind</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Noto+Serif+JP:wght@400;700&family=Oswald:wght@700&family=Work+Sans:ital,wght@0,800;1,900&display=swap" rel="stylesheet" />
     
-    <!-- デザイン剥がれを防止するため is:inline でインライン注入 -->
     <style is:inline>
       :root {
         --paper: #f8f6f0;
@@ -26,20 +25,20 @@ const latest = postList[0];
         --orange: #e85933;
         --line: #1a1918;
         --gray-box: #ede9df;
+        --blue-accent: #2c5282;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html { scroll-behavior: smooth; background-color: var(--desk); }
       body {
         color: var(--ink);
         font-family: "Noto Serif JP", serif;
-        line-height: 1.9;
+        line-height: 1.95;
         padding: 2.5rem 1rem 4rem;
         -webkit-font-smoothing: antialiased;
       }
 
-      /* 雑誌の紙面 */
       .magazine {
-        max-width: 860px;
+        max-width: 880px;
         margin: 0 auto;
         background-color: var(--paper);
         border: 2px solid var(--line);
@@ -47,7 +46,6 @@ const latest = postList[0];
         padding: clamp(1.5rem, 5vw, 3.5rem);
       }
 
-      /* 最上部ヘッダーバー */
       .top-bar {
         display: flex;
         justify-content: space-between;
@@ -65,7 +63,6 @@ const latest = postList[0];
         border: 1.5px solid var(--line);
         padding: 0.2rem 0.6rem;
         font-weight: 800;
-        letter-spacing: 0.05em;
       }
       .archive-btn {
         text-decoration: none;
@@ -75,15 +72,8 @@ const latest = postList[0];
         padding: 0.2rem 0.6rem;
         font-weight: 700;
         box-shadow: 2px 2px 0 var(--line);
-        transition: 0.1s;
-      }
-      .archive-btn:hover {
-        background: var(--yellow);
-        transform: translate(-1px, -1px);
-        box-shadow: 3px 3px 0 var(--line);
       }
 
-      /* マストヘッド */
       .masthead {
         text-align: center;
         padding: 2.5rem 0 1.8rem;
@@ -115,9 +105,9 @@ const latest = postList[0];
         font-family: "Chivo Mono", monospace;
         font-size: 0.78rem;
         font-weight: 700;
+        flex-wrap: wrap;
       }
 
-      /* クイック目次タグ */
       .quick-chips {
         display: flex;
         flex-wrap: wrap;
@@ -142,7 +132,6 @@ const latest = postList[0];
         box-shadow: 2px 2px 0 var(--line);
       }
 
-      /* モーニングラジオ（オーディオデッキ風） */
       .radio-panel {
         background: #1a1918;
         color: #fff;
@@ -172,10 +161,7 @@ const latest = postList[0];
         color: #bbb;
       }
 
-      /* 記事本文 */
-      .article-body {
-        margin-top: 1.5rem;
-      }
+      .article-body { margin-top: 1.5rem; }
       .article-body h2 {
         font-family: "Oswald", sans-serif;
         font-size: 1.45rem;
@@ -191,24 +177,66 @@ const latest = postList[0];
         align-items: center;
         gap: 0.5rem;
       }
-      .article-body h2::before {
-        content: "■";
-        color: var(--orange);
-        font-size: 0.85rem;
-      }
+      .article-body h2::before { content: "■"; color: var(--orange); font-size: 0.85rem; }
       .article-body h3 {
         font-family: "Noto Serif JP", serif;
         font-size: 1.15rem;
         font-weight: 700;
         margin: 1.8rem 0 0.6rem;
       }
-      .article-body p {
-        margin-bottom: 1.5rem;
-        text-align: justify;
-        font-size: 0.96rem;
+      .article-body p { margin-bottom: 1.5rem; text-align: justify; font-size: 0.98rem; }
+
+      /* メイリオ指定・視覚的フローチャート */
+      .flow-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.6rem;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: #ffffff;
+        border: 2px solid var(--line);
+        box-shadow: 6px 6px 0 var(--line);
+        font-family: "Meiryo", "Hiragino Kaku Gothic ProN", sans-serif;
+        overflow-x: auto;
+      }
+      .flow-card {
+        flex: 1;
+        min-width: 170px;
+        background: #fbfaf8;
+        border: 1.5px solid #2d3748;
+        padding: 0.9rem;
+        border-radius: 4px;
+        box-shadow: 2px 2px 0 #cbd5e0;
+      }
+      .flow-step {
+        font-size: 0.7rem;
+        font-weight: 800;
+        background: var(--yellow);
+        padding: 0.15rem 0.4rem;
+        border: 1px solid #000;
+        display: inline-block;
+        margin-bottom: 0.4rem;
+      }
+      .flow-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 0.3rem;
+      }
+      .flow-body {
+        font-size: 0.8rem;
+        color: #4a5568;
+        line-height: 1.45;
+      }
+      .flow-arrow {
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: var(--orange);
+        user-select: none;
       }
 
-      /* 35mmスナップ写真（ポラロイド風額装） */
+      /* 35mmポラロイド風スナップ写真 */
       .article-body img {
         width: 100%;
         max-width: 100%;
@@ -222,20 +250,6 @@ const latest = postList[0];
         filter: contrast(1.03) saturate(1.05);
       }
 
-      /* 化学反応式・コード枠（黒板風） */
-      .article-body pre {
-        background: #1c1d1f;
-        color: #f0f0f0;
-        padding: 1.4rem;
-        border: 2px solid var(--line);
-        box-shadow: 4px 4px 0 var(--line);
-        overflow-x: auto;
-        font-family: "Chivo Mono", monospace;
-        font-size: 0.84rem;
-        line-height: 1.5;
-        margin: 1.8rem 0;
-      }
-
       /* リンク */
       .article-body a {
         color: var(--orange);
@@ -244,22 +258,68 @@ const latest = postList[0];
         border-bottom: 1.5px solid var(--orange);
         padding-bottom: 1px;
       }
-      .article-body a:hover {
+      .article-body a:hover { background: var(--yellow); color: #000; }
+      .article-body ul, .article-body ol { margin: 1.2rem 0 1.8rem 1.4rem; }
+      .article-body li { margin-bottom: 0.6rem; font-size: 0.96rem; }
+
+      /* インタラクティブ Gemini Console */
+      .gemini-console {
+        margin-top: 4rem;
+        background: #1a1918;
+        color: #f7fafc;
+        border: 2px solid var(--line);
+        box-shadow: 6px 6px 0 var(--line);
+        padding: 1.8rem;
+        font-family: "Meiryo", sans-serif;
+      }
+      .console-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #4a5568;
+        padding-bottom: 0.8rem;
+        margin-bottom: 1.2rem;
+      }
+      .console-title {
+        font-weight: 800;
+        color: var(--yellow);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .console-input-area {
+        display: flex;
+        gap: 0.6rem;
+      }
+      .console-input {
+        flex: 1;
+        padding: 0.7rem 1rem;
+        border: 1px solid #718096;
+        background: #2d3748;
+        color: #fff;
+        font-size: 0.9rem;
+      }
+      .console-btn {
         background: var(--yellow);
         color: #000;
+        font-weight: 700;
+        border: none;
+        padding: 0.7rem 1.4rem;
+        cursor: pointer;
+      }
+      .console-output {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #2d3748;
+        border-left: 3px solid var(--yellow);
+        font-size: 0.9rem;
+        line-height: 1.7;
+        min-height: 60px;
+        display: none;
       }
 
-      .article-body ul, .article-body ol {
-        margin: 1.2rem 0 1.8rem 1.4rem;
-      }
-      .article-body li {
-        margin-bottom: 0.6rem;
-        font-size: 0.95rem;
-      }
-
-      /* フッター奥付 */
       .colophon {
-        margin-top: 4.5rem;
+        margin-top: 4rem;
         border-top: 2px solid var(--line);
         padding-top: 1.8rem;
         text-align: center;
@@ -268,14 +328,15 @@ const latest = postList[0];
         color: #777;
       }
       @media (max-width: 600px) {
-        .magazine { padding: 1.5rem 1rem; box-shadow: none; }
+        .magazine { padding: 1.5rem 1rem; }
+        .flow-wrapper { flex-direction: column; align-items: stretch; }
+        .flow-arrow { text-align: center; transform: rotate(90deg); margin: 0.3rem 0; }
         .radio-panel { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
       }
     </style>
   </head>
   <body>
     <article class="magazine">
-      <!-- Top Meta -->
       <div class="top-bar">
         <div>
           <span class="badge-edition">DAILY ISSUE</span>
@@ -286,31 +347,29 @@ const latest = postList[0];
         </div>
       </div>
 
-      <!-- Masthead -->
       <header class="masthead">
-        <p class="tagline">CHEMICAL PROCESS, HIP-HOP CIPHER & THE CITY ESCAPE</p>
+        <p class="tagline">PATERNITY, CHEMICAL PROCESS & COGNITIVE RESTORATION</p>
         <h1 class="logo">THE DAILY EXTRACT</h1>
         <div class="issue-sub">
-          <span>RIDER: HONDA GB350</span>
+          <span>ROLE: PATERNITY LEAVE</span>
           <span>·</span>
-          <span>TEMP: {latest ? latest.frontmatter.temp : ""}</span>
+          <span>MOTORCYCLE: HONDA GB350</span>
           <span>·</span>
           <span>SUNSET: {latest ? latest.frontmatter.sunset : ""}</span>
         </div>
       </header>
 
-      <!-- Quick Jump Navigation -->
       <nav class="quick-chips">
         <a href="#lead-story" class="chip-link">🧪 論文スキーム</a>
-        <a href="#news" class="chip-link">📰 ニュース5選</a>
+        <a href="#news" class="chip-link">📰 育休・一次ニュース</a>
         <a href="#market" class="chip-link">📈 注目株</a>
+        <a href="#benjamin" class="chip-link">🧘 デイリーベンジャミン</a>
+        <a href="#gemini-counsel" class="chip-link">🤖 Gemini's Counsel</a>
         <a href="#music" class="chip-link">🎤 音楽/英語</a>
         <a href="#book" class="chip-link">📚 推薦本</a>
-        <a href="#curiosity" class="chip-link">🧭 越境コラム</a>
         <a href="#escape" class="chip-link">🧖 サウナ/日常</a>
       </nav>
 
-      <!-- Morning Radio Panel -->
       <div class="radio-panel">
         <div>
           <button id="radio-toggle" class="radio-btn">📻 PLAY MORNING RADIO</button>
@@ -318,7 +377,6 @@ const latest = postList[0];
         <div id="radio-status" class="radio-status">AUDIO SYNTHESIS: READY</div>
       </div>
 
-      <!-- Main Contents -->
       <main id="article-content" class="article-body">
         {latest ? (
           <latest.Content />
@@ -327,15 +385,29 @@ const latest = postList[0];
         )}
       </main>
 
-      <!-- Footer Colophon -->
+      <!-- 誌面埋め込み Gemini Console -->
+      <section class="gemini-console">
+        <div class="console-header">
+          <div class="console-title">🤖 GEMINI CONCIERGE — 育児・思考の壁打ち</div>
+          <span style="font-size: 0.75rem; color: #a0aec0;">CBT & Essential Coaching</span>
+        </div>
+        <p style="font-size: 0.85rem; color: #cbd5e0; margin-bottom: 0.8rem;">
+          育児中の焦燥感、タスク過多、他者への助言過多など、今抱えているモヤモヤを吐き出してください。認知行動療法（脱フュージョン・減算法）の観点で客観的に調律します。
+        </p>
+        <div class="console-input-area">
+          <input type="text" id="console-query" class="console-input" placeholder="例: ToDoが多すぎて焦る、睡眠が足りなくてイライラする..." />
+          <button id="console-submit" class="console-btn">調律する</button>
+        </div>
+        <div id="console-result" class="console-output"></div>
+      </section>
+
       <footer class="colophon">
-        <p>© 2026 THE DAILY EXTRACT — PRINTED DIGITALLY FOR PRIVATE USE.</p>
+        <p>© 2026 THE DAILY EXTRACT — AUTONOMOUSLY CURATED FOR KOJIMA MASASHI.</p>
       </footer>
     </article>
 
-    <!-- Scripts: Audio Synthesis & External Links New Tab -->
     <script is:inline>
-      // 1. 記事内の外部リンクをすべて自動で「別タブ（target="_blank"）」で開く
+      // 1. 外部リンクをすべて自動で別タブ化
       document.querySelectorAll("#article-content a").forEach((link) => {
         if (link.hostname && link.hostname !== window.location.hostname) {
           link.target = "_blank";
@@ -343,11 +415,63 @@ const latest = postList[0];
         }
       });
 
-      // 2. モーニングラジオ（音声合成）
+      // 2. 音声合成（句点分割でブラウザ制限を完全回避）
+      function splitTextIntoChunks(text, maxLen = 90) {
+        const sentences = text.split(/(?<=[。！？\n])/);
+        const chunks = [];
+        let current = "";
+        for (const s of sentences) {
+          if (!s.trim()) continue;
+          if ((current + s).length > maxLen) {
+            if (current) chunks.push(current.trim());
+            current = s;
+          } else {
+            current += s;
+          }
+        }
+        if (current.trim()) chunks.push(current.trim());
+        return chunks;
+      }
+
       const btn = document.getElementById("radio-toggle");
       const status = document.getElementById("radio-status");
       let isPlaying = false;
-      let utterance = null;
+      let chunks = [];
+      let currentIdx = 0;
+
+      function stopRadio() {
+        window.speechSynthesis.cancel();
+        isPlaying = false;
+        btn.innerText = "📻 PLAY MORNING RADIO";
+        status.innerText = "AUDIO SYNTHESIS: STOPPED";
+      }
+
+      function speakNextChunk() {
+        if (!isPlaying) return;
+        if (currentIdx >= chunks.length) {
+          isPlaying = false;
+          btn.innerText = "📻 PLAY MORNING RADIO";
+          status.innerText = "AUDIO SYNTHESIS: FINISHED";
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(chunks[currentIdx]);
+        utterance.lang = "ja-JP";
+        utterance.rate = 1.05;
+
+        utterance.onend = () => {
+          currentIdx++;
+          speakNextChunk();
+        };
+
+        utterance.onerror = () => {
+          currentIdx++;
+          if (currentIdx < chunks.length) speakNextChunk();
+          else stopRadio();
+        };
+
+        window.speechSynthesis.speak(utterance);
+      }
 
       btn.addEventListener("click", () => {
         if (!("speechSynthesis" in window)) {
@@ -356,41 +480,52 @@ const latest = postList[0];
         }
 
         if (isPlaying) {
-          window.speechSynthesis.cancel();
-          isPlaying = false;
-          btn.innerText = "📻 PLAY MORNING RADIO";
-          status.innerText = "AUDIO SYNTHESIS: STOPPED";
+          stopRadio();
           return;
         }
 
         const content = document.getElementById("article-content");
         if (!content) return;
 
-        const textToRead = content.innerText
+        const rawText = content.innerText
           .replace(/https?:\/\/\S+/g, "")
           .replace(/\[DOI:[^\]]+\]/g, "")
-          .substring(0, 4000);
+          .replace(/[#*`_■§➔]/g, "")
+          .trim();
 
-        utterance = new SpeechSynthesisUtterance(textToRead);
-        utterance.lang = "ja-JP";
-        utterance.rate = 1.05;
+        chunks = splitTextIntoChunks(rawText, 90);
+        if (chunks.length === 0) return;
 
-        utterance.onend = () => {
-          isPlaying = false;
-          btn.innerText = "📻 PLAY MORNING RADIO";
-          status.innerText = "AUDIO SYNTHESIS: FINISHED";
-        };
-
-        utterance.onerror = () => {
-          isPlaying = false;
-          btn.innerText = "📻 PLAY MORNING RADIO";
-          status.innerText = "AUDIO SYNTHESIS: ERROR";
-        };
-
-        window.speechSynthesis.speak(utterance);
+        window.speechSynthesis.cancel();
         isPlaying = true;
+        currentIdx = 0;
         btn.innerText = "⏹ STOP RADIO";
         status.innerText = "BROADCASTING NOW...";
+
+        speakNextChunk();
+      });
+
+      // 3. Gemini Console クライアント調律ロジック
+      const qInput = document.getElementById("console-query");
+      const qSubmit = document.getElementById("console-submit");
+      const qResult = document.getElementById("console-result");
+
+      qSubmit.addEventListener("click", () => {
+        const text = qInput.value.trim();
+        if (!text) return;
+
+        qResult.style.display = "block";
+        qResult.innerHTML = "<em>思考を調律中...</em>";
+
+        setTimeout(() => {
+          // CBT・脱フュージョン・減算法に基づく即時アンカー処方
+          qResult.innerHTML = `
+            <strong>【Geminiの調律フィードバック】</strong><br>
+            ・<strong>脱フュージョン</strong>: あなたは今、「${text}」という思考を持っています。それは絶対の事実ではなく、脳を通過する一時的な言葉です。<br>
+            ・<strong>HALTの点検</strong>: まず睡眠合算7時間、鼻づまり、空腹、身体の緊張を確認してください。思考の焦りは身体疲労の合図です。<br>
+            ・<strong>本日の減算法</strong>: 今日の最優先タスクは「家族と生き延びること」のみ。それ以外のToDoは実行キューから削除して横になりましょう。
+          `;
+        }, 600);
       });
     </script>
   </body>
