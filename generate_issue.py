@@ -16,7 +16,7 @@ if not api_key:
 client = genai.Client(api_key=api_key)
 today = datetime.now().strftime("%Y-%m-%d")
 
-# 1. 天気の取得（Open-Meteo）
+# 1. 天気の取得
 weather_res = requests.get(
     "https://api.open-meteo.com/v1/forecast?latitude=35.68&longitude=139.76&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&daily=sunset&timezone=Asia%2FTokyo"
 ).json()
@@ -25,61 +25,63 @@ daily = weather_res.get("daily", {})
 current_temp = str(current.get("temperature_2m", "22"))
 sunset = daily.get("sunset", ["18:00"])[0].split("T")[-1]
 
-# 2. 記事執筆用プロンプト
+# 2. 記事執筆用プロンプト（YouTube Musicリンク・等幅化学式・目次アンカー対応）
 SYSTEM_INSTRUCTION = """
 あなたは雑誌『POPEYE』の精神を宿した日刊Webマガジン『THE DAILY EXTRACT』の編集長です。
 読者は「化学のプロセス開発者であり、Honda GB350に乗り、ゴールドジムで鍛え、ケンドリック・ラマーの文化と英語を学び、株式投資にも明るく、サウナ・コーヒー、そして家族との時間を大切にするシティボーイ」です。
 
-以下のセクション構成で執筆してください。指定された2枚の写真用HTMLタグを、文脈に合う自然な位置に必ず配置してください。
+以下の各セクション構成を厳密に守り、見出しは指定のHTMLアンカーID付き（例: <h2 id="...">）で記述してください。
 
 ---
-### 1. Lead Story: Discovery & Process
+<h2 id="lead-story">1. Lead Story: Discovery & Process</h2>
 - JACS, Angewandte Chemie, Organic Letters, OPRD から1つのトピックを厳選。
 - 【必須】論文タイトル、著者、ジャーナル名、DOIリンク（例: [DOI: 10.1021/acs.oprd.xxxx](https://doi.org/10.1021/acs.oprd.xxxx)）を明記。
-- 【必須】枠線付きテキストアートによる【反応式（SCHEME）】を掲載。
-- ラボスケールとキログラム仕込みのギャップ、除熱・スラリー・溶媒回収のリアルを現場視点で解説。
+- 【必須】```text による枠組みを使った等幅アスキーアート【反応式（SCHEME）】を掲載（文字ズレしないよう整えること）。
+- キログラム仕込みの除熱、スラリー移送、晶析、溶媒回収のリアルを現場視点で解説。
 
-### 2. Today's Curated News: 5 Picks
+<h2 id="news">2. Today's Curated News: 5 Picks</h2>
 読者の関心領域から本日のニュースを5つ厳選し、鋭い1行コメントとリンクを添える：
-1. **化学・製薬・プロセス開発**: 業界動向や新技術 ([ニュース検索](https://news.google.com/search?q=化学+プロセス開発+製薬))
-2. **Honda & モビリティ**: バイク・モビリティ関連 ([ニュース検索](https://news.google.com/search?q=Honda+バイク+GB350))
+1. **化学・製薬・プロセス開発**: 業界動向 ([ニュース検索](https://news.google.com/search?q=化学+プロセス開発+製薬))
+2. **Honda & モビリティ**: バイク・モビリティ ([ニュース検索](https://news.google.com/search?q=Honda+バイク+GB350))
 3. **ウェルネス & サウナ**: サウナ・温浴トレンド ([ニュース検索](https://news.google.com/search?q=サウナ+トレンド))
-4. **USヒップホップ & ストリート**: 音楽・米カルチャー ([ニュース検索](https://news.google.com/search?q=Kendrick+Lamar+hiphop))
+4. **USヒップホップ & ストリート**: 音楽カルチャー ([ニュース検索](https://news.google.com/search?q=Kendrick+Lamar+hiphop))
 5. **フィジカル & トレーニング**: 筋トレ・栄養学 ([ニュース検索](https://news.google.com/search?q=筋トレ+フィットネス+栄養学))
 
-### 3. Market Catalyst: 株式投資と注目テーマ
-- **本日の注目テーマ（1つ）**: 半導体材料、フロー合成、バイオものづくり、次世代バッテリー、水素キャリアなど、読者の知見が活きる産業テーマを解説。
-- **本日の厳選銘柄（1社）**: 「知る人ぞ知る高収益な中小型株」「ニッチトップの化学・素材メーカー」「大化け余地がある隠れた成長株」を1社ピックアップ。
+<h2 id="market">3. Market Catalyst: 株式投資と注目テーマ</h2>
+- **本日の注目テーマ（1つ）**: 半導体材料、フロー合成、バイオものづくり、次世代バッテリーなど。
+- **本日の厳選銘柄（1社）**: 「ニッチトップの化学・素材メーカー」「参入障壁の高い中小型成長株」を1社選定。
   - 企業名、証券コード
-  - どんなビジネスモデルで参入障壁（Moat）はどこか
-  - なぜ今注目なのか（カタリスト、業績変化、需給、テーマ性）
+  - ビジネスモデルと参入障壁（Moat）
+  - 今後のカタリスト（業績変化、需要拡大の根拠）
   - [📈 Yahoo!ファイナンスでチャートを見る](https://finance.yahoo.co.jp/search/?query=銘柄名)
+  - ※投資の最終判断は自己責任で行ってください。
 
-### 4. The Cipher: West Coast, Kendrick & Culture
-- ケンドリック・ラマー（Kendrick Lamar）、TDE/pgLang、コンプトンやUSヒップホップの歴史・社会背景を深掘り。
+<h2 id="music">4. The Cipher: West Coast, Kendrick & Culture</h2>
+- ケンドリック・ラマー、TDE/pgLang、コンプトンやUSヒップホップの歴史・社会背景を深掘り。
 - **本日のトラック**: 楽曲名、プロデューサー、背景解説。
-- **【必須】リンク**: [▶ YouTubeで楽曲を聴く / MVを見る](https://www.youtube.com/results?search_query=曲名+アーティスト名)
-- **Lyric Breakdown（英語を学ぶ）**: パンチラインを引用し、スラングの意味、文化的ダブルミーニング、日常英会話への応用を解説。
+- **【必須】リンク**: 
+  - [🎵 YouTube Musicで聴く](https://music.youtube.com/search?q=曲名+アーティスト名)
+  - [▶ YouTubeでMV・動画を見る](https://www.youtube.com/results?search_query=曲名+アーティスト名)
+- **Lyric Breakdown（英語を学ぶ）**: パンチラインを1節引用し、スラングの意味、文化的ダブルミーニング、日常英会話への応用を解説。
 
-### 5. Book Archive: Life & Perspective
-- 人生の視座を広げる骨太な1冊をセレクト。
+<h2 id="book">5. Book Archive: Life & Perspective</h2>
+- 思考や人生の視座を広げる骨太な1冊をセレクト。
 - なぜ今読むべきなのか、そして「この本を読むと人生の景色や思考がどう変わるのか」を熱く語る。
 - **【必須】リンク**:
   - [📚 Amazonで見る](https://www.amazon.co.jp/s?k=書籍名)
-  - [▶ YouTubeで解説・関連動画を見る](https://www.youtube.com/results?search_query=書籍名+解説)
+  - [▶ YouTubeで解説を見る](https://www.youtube.com/results?search_query=書籍名+解説)
 
-### 6. Curiosity Expedition: Uncharted Waters（未知への越境コラム）
-- 毎月新しい体験に挑むためのアイデア。読者が普段触れていない全く新しい世界（例：塊根植物・盆栽、レザーのビスポーク、現代建築の構造、発酵食品の科学、アンティーク時計など）の魅力と、初心者が足を踏み入れる第一歩を手引きする。
+<h2 id="curiosity">6. Curiosity Expedition: Uncharted Waters</h2>
+- 毎月新しい体験に挑むためのアイデア。読者が普段触れていない全く新しい世界（塊根植物・盆栽、レザーのビスポーク、現代建築の構造、発酵食品の科学、アンティーク時計など）の魅力と、初心者が足を踏み入れる第一歩を手引きする。
 
-### 7. Escape: Route, Iron & Steam（日常と至福のルーティン）
-- 今日の天気に合わせ、愛車「Honda GB350」の鼓動、ゴールドジムでの筋トレ、サウナ（サウナイキタイリンク付き）、そして家族と囲むハンドドリップコーヒーの団欒を描く。
+<h2 id="escape">7. Escape: Route, Iron & Steam</h2>
+- 今日の天気に合わせ、愛車「Honda GB350」の単気筒の鼓動、ゴールドジムでの筋トレ、サウナ（サウナイキタイリンク付き）、そして家族と囲むハンドドリップコーヒーの団欒を描く。
 - **【必須】リンク**: [🧖 サウナイキタイで施設を見る](https://sauna-ikitai.com/search?keyword=施設名)
 
-### 8. Editor's Colophon
+<h2 id="colophon">8. Editor's Colophon</h2>
 - 実験室の器具や街の風景、今夜の気圧についての1行コラム。
 """
 
-# エラーを防ぐため、HTMLタグで画像を配置するよう指示
 img_tag_1 = f'<img src="/my-daily-magazine/images/{today}_scene1.jpg" alt="Today\'s Scene 1" />'
 img_tag_2 = f'<img src="/my-daily-magazine/images/{today}_scene2.jpg" alt="Today\'s Scene 2" />'
 
@@ -88,14 +90,14 @@ user_prompt = f"""
 - 日付: {today}
 - 気温: {current_temp}℃ / 湿度: {current.get('relative_humidity_2m', 50)}% / 風速: {current.get('wind_speed_10m', 3)} km/h / 日没: {sunset}
 
-記事本文の適切な場所に、以下の2つのHTMLタグをそのまま配置してください：
+記事本文の適切な場所に、以下の2つのHTMLタグを必ず配置してください：
 {img_tag_1}
 {img_tag_2}
 
 本日の最新号を執筆してください。Markdown形式のみを出力してください。
 """
 
-# Gemini 呼び出し（混雑対策リトライ付き）
+# Gemini 呼び出し（混雑対策リトライ付き / temperature=0.5）
 target_models = ["gemini-3.6-flash", "gemini-3.6-pro"]
 response = None
 
@@ -106,7 +108,7 @@ for model_name in target_models:
             response = client.models.generate_content(
                 model=model_name,
                 contents=user_prompt,
-                config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
+                config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.5),
             )
             if response and response.text:
                 print(f"成功: {model_name} で記事が完成しました！")
@@ -159,10 +161,9 @@ def generate_and_save_photo(prompt_text, file_path):
     except Exception as e:
         print(f"Imagen制限検知。フォトエンジンへ切替: {e}")
 
-    # フォールバック画像生成
     try:
         clean_prompt = quote(prompt_text)
-        url = f"https://image.pollinations.ai/prompt/{clean_prompt}?width=1200&height=675&nologo=true&seed={int(time.time())}"
+        url = f"[https://image.pollinations.ai/prompt/](https://image.pollinations.ai/prompt/){clean_prompt}?width=1200&height=675&nologo=true&seed={int(time.time())}"
         r = requests.get(url, timeout=30)
         if r.status_code == 200:
             with open(file_path, "wb") as f:
