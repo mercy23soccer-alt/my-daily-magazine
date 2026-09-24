@@ -124,14 +124,22 @@ const latest = postList[0];
         margin-bottom: 1.4rem;
         text-align: justify;
       }
-      /* Snap Photos */
+      /* 35mm Snapshot Styling */
       .article-body img {
         width: 100%;
+        max-width: 100%;
         height: auto;
         display: block;
-        margin: 2rem 0;
+        margin: 2.2rem 0;
         border: 2px solid var(--border);
-        box-shadow: 4px 4px 0px var(--border);
+        box-shadow: 6px 6px 0px var(--border);
+        filter: contrast(1.04) saturate(1.05);
+      }
+      .article-body ul, .article-body ol {
+        margin: 1rem 0 1.5rem 1.5rem;
+      }
+      .article-body li {
+        margin-bottom: 0.6rem;
       }
       /* Scheme & Box */
       .article-body pre {
