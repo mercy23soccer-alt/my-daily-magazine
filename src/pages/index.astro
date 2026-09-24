@@ -25,7 +25,6 @@ const latest = postList[0];
         --orange: #e85933;
         --line: #1a1918;
         --gray-box: #ede9df;
-        --blue-accent: #2c5282;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html { scroll-behavior: smooth; background-color: var(--desk); }
@@ -186,6 +185,34 @@ const latest = postList[0];
       }
       .article-body p { margin-bottom: 1.5rem; text-align: justify; font-size: 0.98rem; }
 
+      /* 化学反応スキーム専用コンテナ（白背景・論文図面風） */
+      .scheme-container {
+        margin: 2rem 0;
+        background: #ffffff;
+        border: 2px solid var(--line);
+        box-shadow: 6px 6px 0 var(--line);
+        padding: 1rem;
+        text-align: center;
+      }
+      .chem-scheme-img {
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+      }
+      .scheme-caption {
+        margin-top: 0.6rem !important;
+        margin-bottom: 0 !important;
+        font-family: "Meiryo", sans-serif;
+        font-size: 0.78rem !important;
+        color: #4a5568 !important;
+        font-weight: 700;
+      }
+
       /* メイリオ指定・視覚的フローチャート */
       .flow-wrapper {
         display: flex;
@@ -236,8 +263,8 @@ const latest = postList[0];
         user-select: none;
       }
 
-      /* 35mmポラロイド風スナップ写真 */
-      .article-body img {
+      /* 35mmスナップ写真（ポラロイド風額装） */
+      .article-body img:not(.chem-scheme-img) {
         width: 100%;
         max-width: 100%;
         height: auto;
@@ -287,10 +314,7 @@ const latest = postList[0];
         align-items: center;
         gap: 0.5rem;
       }
-      .console-input-area {
-        display: flex;
-        gap: 0.6rem;
-      }
+      .console-input-area { display: flex; gap: 0.6rem; }
       .console-input {
         flex: 1;
         padding: 0.7rem 1rem;
@@ -360,7 +384,7 @@ const latest = postList[0];
       </header>
 
       <nav class="quick-chips">
-        <a href="#lead-story" class="chip-link">🧪 論文スキーム</a>
+        <a href="#lead-story" class="chip-link">🧪 論文・スキーム図</a>
         <a href="#news" class="chip-link">📰 育休・一次ニュース</a>
         <a href="#market" class="chip-link">📈 注目株</a>
         <a href="#benjamin" class="chip-link">🧘 デイリーベンジャミン</a>
@@ -385,7 +409,6 @@ const latest = postList[0];
         )}
       </main>
 
-      <!-- 誌面埋め込み Gemini Console -->
       <section class="gemini-console">
         <div class="console-header">
           <div class="console-title">🤖 GEMINI CONCIERGE — 育児・思考の壁打ち</div>
@@ -490,7 +513,7 @@ const latest = postList[0];
         const rawText = content.innerText
           .replace(/https?:\/\/\S+/g, "")
           .replace(/\[DOI:[^\]]+\]/g, "")
-          .replace(/[#*`_■§➔]/g, "")
+          .replace(/[#*`_■§➔▲]/g, "")
           .trim();
 
         chunks = splitTextIntoChunks(rawText, 90);
@@ -518,7 +541,6 @@ const latest = postList[0];
         qResult.innerHTML = "<em>思考を調律中...</em>";
 
         setTimeout(() => {
-          // CBT・脱フュージョン・減算法に基づく即時アンカー処方
           qResult.innerHTML = `
             <strong>【Geminiの調律フィードバック】</strong><br>
             ・<strong>脱フュージョン</strong>: あなたは今、「${text}」という思考を持っています。それは絶対の事実ではなく、脳を通過する一時的な言葉です。<br>
