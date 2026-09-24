@@ -24,7 +24,7 @@ daily = weather_res.get("daily", {})
 current_temp = current.get("temperature_2m", "22")
 sunset = daily.get("sunset", ["18:00"])[0].split("T")[-1]
 
-# 2. 記事執筆用プロンプト（GB350 / 詳細サウナ / 論文リンク）
+# 2. 記事執筆用プロンプト（POPEYE風 × GB350 × サウナ × 論文DOI）
 SYSTEM_INSTRUCTION = """
 あなたは雑誌『POPEYE』のスタイルを極めた日刊Webマガジン『THE DAILY EXTRACT』の編集長です。
 読者は「化学のプロセス開発者であり、Honda GB350を相棒にし、サウナの熱環境にうるさく、グッドミュージックを愛するシティボーイ」です。
@@ -55,22 +55,27 @@ user_prompt = f"""
 本日のIssue記事を執筆してください。Markdown形式のみを出力してください。
 """
 
-# 混雑（503エラー）対策：最大3回自動でリトライする
+# 混雑対策：本命が混んでいたら予備モデルに自動で切り替える
+models_to_try = ["gemini-3.6-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
 response = None
-for attempt in range(3):
+
+for model_name in models_to_try:
+    print(f"モデル {model_name} で記事執筆を試行中...")
     try:
         response = client.models.generate_content(
-            model="gemini-3.6-flash",
+            model=model_name,
             contents=user_prompt,
             config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
         )
-        break
+        if response and response.text:
+            print(f"成功: {model_name} で記事が書き上がりました！")
+            break
     except Exception as e:
-        print(f"AI混雑のため再試行します (回数: {attempt + 1}/3)... {e}")
-        time.sleep(5)
+        print(f"{model_name} が混雑中のため予備モデルに切り替えます: {e}")
+        time.sleep(3)
 
 if not response:
-    print("AIの応答を取得できませんでした。")
+    print("すべてのモデルが混雑のため取得できませんでした。")
     sys.exit(1)
 
 # 3. 本日のグラフィック（イラスト）をAIで自動生成
