@@ -3,7 +3,6 @@ import sys
 import io
 import time
 import glob
-import re
 import requests
 from datetime import datetime
 from urllib.parse import quote
@@ -18,125 +17,138 @@ if not api_key:
 client = genai.Client(api_key=api_key)
 today = datetime.now().strftime("%Y-%m-%d")
 
-# 1. 天気の取得
+# 1. 東京・豊島区の天気を取得
 weather_res = requests.get(
-    "https://api.open-meteo.com/v1/forecast?latitude=35.68&longitude=139.76&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&daily=sunset&timezone=Asia%2FTokyo"
+    "https://api.open-meteo.com/v1/forecast?latitude=35.73&longitude=139.71&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&daily=sunset&timezone=Asia%2FTokyo"
 ).json()
 current = weather_res.get("current", {})
 daily = weather_res.get("daily", {})
-current_temp = str(current.get("temperature_2m", "22"))
+current_temp = str(current.get("temperature_2m", "20"))
 sunset = daily.get("sunset", ["18:00"])[0].split("T")[-1]
 
-# 2. 直近の過去記事を読み込み、トピック重複を防止
+# 2. 東京23区の厳格ローテーション選定（毎日異なる区を循環）
+TOKYO_23_WARDS = [
+    "千代田区", "中央区", "港区", "新宿区", "文京区", "台東区", "墨田区", "江東区",
+    "品川区", "目黒区", "大田区", "世田谷区", "渋谷区", "中野区", "杉並区", "豊島区",
+    "北区", "荒川区", "板橋区", "練馬区", "足立区", "葛飾区", "江戸川区"
+]
+day_index = datetime.now().toordinal() % len(TOKYO_23_WARDS)
+target_ward = TOKYO_23_WARDS[day_index]
+
+# 3. 過去号の被り防止チェック
 past_posts = sorted(glob.glob("src/content/posts/*.md"), reverse=True)
 past_context = ""
 if past_posts:
     try:
         with open(past_posts[0], "r", encoding="utf-8") as f:
-            past_context = f"\n【重要：前回号のトピック（これらと内容・銘柄・選曲・書籍・小説・サウナ施設・紹介芸人・論文が絶対に重複しないこと）】\n{f.read()[:2000]}\n"
+            past_context = f"\n【重要：前回号のトピック（これらと散歩先・紹介芸人・ランキング・アップルパイ・探求テーマ・書籍・ニュース・図書館・論文が絶対に重複しないこと）】\n{f.read()[:2500]}\n"
     except Exception as e:
         print(f"過去記事読み込みスキップ: {e}")
 
-# 画像タグ定義
-img_tag_1 = f'<div class="magazine-photo-box"><img src="/my-daily-magazine/images/{today}_scene1.jpg" alt="Today\'s Scene 1" /><p class="photo-caption">SCENE 01 / TOKYO CITY LIFE</p></div>'
-img_tag_2 = f'<div class="magazine-photo-box"><img src="/my-daily-magazine/images/{today}_scene2.jpg" alt="Today\'s Scene 2" /><p class="photo-caption">SCENE 02 / STEAM, ROAST & HOME</p></div>'
+# 4. 雑誌用写真タグ
+img_tag_1 = f'<div class="magazine-photo-box"><img src="/father-daily-magazine/images/{today}_scene1.jpg" alt="Today\'s Scene 1" /><p class="photo-caption">TOKYO MORNING WALK / FLÂNEUR ARCHIVE</p></div>'
+img_tag_2 = f'<div class="magazine-photo-box"><img src="/father-daily-magazine/images/{today}_scene2.jpg" alt="Today\'s Scene 2" /><p class="photo-caption">BOOK, SWEET & QUIET TIME</p></div>'
 
-# 3. 記事執筆用プロンプト
+# 5. プロンプト
 SYSTEM_INSTRUCTION = f"""
-あなたは雑誌『POPEYE』の知性とシティボーイ精神を宿した日刊プライベートマガジン『ZAZZY』の編集長です。
-読者は「化学のプロセス開発者（サイエンスの専門知）であり、現在【育児休業中】の父親。Honda GB350に乗り、ゴールドジムで鍛え、妻とともにロバート秋山、真空ジェシカ、マユリカ、ランジャタイ、ママタルト、ダイアンなどのお笑いラジオを愛し、ケンドリック・ラマーの文化と英語を学び、毎月新しい世界を探求するマルチ・ポテンシャライト。しかし緻密な完全主義や他者への過剰助言、タスク飽和による認知的過負荷、IBS（脳腸相関）に悩み、認知行動療法とエッセンシャル思考で自己の思考の癖を調律しているシティボーイ・小島雅史氏」です。
+あなたは東京の散歩、書物、出版文化、スイーツ、未知なるビジネス、そして知性派・アンダーグラウンドなお笑いを深く愛する大人のための日刊プライベートマガジン『THE TOKYO FLÂNEUR（トウキョウ・フラヌール - 東京逍遥録）』の編集長です。
+読者は「東京の街歩きを愛し、ラーメンズ、ランジャタイ、ヨネダ2000、チャンス大城など尖った笑いや唯一無二の芸人を深く面白がり、豊島区（池袋・目白・巣鴨・雑司が谷等）に明るく、日経新聞の経済動向を鋭くチェックし、出版業界・全国の個性的な図書館・ブックオフの動向を追い、エビデンスに基づく健康法を実践し、時折美味しいアップルパイに舌鼓を打ち、お孫さん（赤ちゃん）の確かな発達科学に関心を持ち、未知なる技術テーマや書店員目線の良書を探求する、粋で知的好奇心に溢れた紳士」です。
 {past_context}
-
-【執筆ルール】
-- 本文の冒頭にタイトルやメタデータ（title:, date:, temp:, bike: など）は一切書かないでください。いきなり「01. Lead Story」の見出しから書き始めてください。
-- 日常の思考やメンタル、ビジネス、カルチャーを語る際に、「除熱」「触媒」「スラリー」「晶析」「仕込み」「反応熱」といった理系・化学用語を比喩として使うことは一切禁止します。
-- 洗練されたカルチャー誌の編集者のように、都会的で軽やか、情緒と知性が調和した美しい日本語で表現してください。
 
 見出しは指定のHTMLタグ（アンカーID付き）で記述し、まとめサイトではなく公式サイト・一次情報への直接リンクを必ず配置してください。
 
 ---
-<h2 id="lead-story">01. Lead Story: Science & Discovery</h2>
-- JACS, Angewandte Chemie, Organic Letters, OPRD から注目の論文を1本厳選（過去号と被らないこと）。
-- 【必須】論文タイトル、著者、ジャーナル名、DOIリンクを明記。
-- 【重要：フローチャートは前後に必ず空行を入れ、完全に閉じること】
-以下のHTMLコードをそのまま独立したブロックとして出力してください：
+<h2 id="walk">01. Tokyo Flâneur: 東京23区 日替わり逍遥録（本日の区：{target_ward}）</h2>
+- 本日は「{target_ward}」を特集。
+- 一般的な観光名所ではなく、「古道・暗渠・高低差のある坂道」「近代建築の痕跡」「文豪・芸術家の足跡」など、歩いて初めてわかるディープな街の歴史と記憶を解説。
+- **【必須】リンク**:
+  - [🗺 Google マップで「{target_ward}の名所」を見る](https://www.google.com/maps/search/{quote(target_ward + ' 史跡 名所')})
+  - [🏛 {target_ward} 公式観光・郷土ポータル](https://www.google.com/search?q={quote(target_ward + ' 郷土資料館 観光協会 公式')})
 
-<div class="flow-wrapper">
-  <div class="flow-card"><span class="flow-step">STEP 1</span><div class="flow-title">工程名</div><div class="flow-body">条件・溶媒・設定</div></div>
-  <div class="flow-arrow">➔</div>
-  <div class="flow-card"><span class="flow-step">STEP 2</span><div class="flow-title">工程名</div><div class="flow-body">結晶化・制御ポイント</div></div>
-  <div class="flow-arrow">➔</div>
-  <div class="flow-card"><span class="flow-step">STEP 3</span><div class="flow-title">工程名</div><div class="flow-body">分離・精製・収率</div></div>
-</div>
+<h2 id="toshima">02. Toshima Local Focus: 豊島区の定点観測</h2>
+- 池袋、雑司が谷、巣鴨、目白、大塚、要町など、ホームグラウンドである豊島区の文化イベント、名店、再開発、街の歴史を1つ深掘り。
+- **【必須】リンク**: [🏛 豊島区公式ポータル](https://www.city.toshima.lg.jp/) / [池袋経済新聞](https://ikebukuro.keizai.biz/)
 
-- 現場の知恵をスマートなサイエンスエッセイとして解説。
+<h2 id="comedy">03. The Subversive Laugh: クセ強芸人とコントの解体新書</h2>
+- **本日のピックアップ**: ラーメンズ（小林賢太郎・片桐仁）、ランジャタイ、ヨネダ2000、チャンス大城、金属バット、Aマッソ、男性ブランコなど、独自の世界観と狂気を持つ芸人を日替わりで1組厳選（過去号と被らないこと）。
+- なぜそのネタ・人物が面白いのか。構成の妙、偏執的な情熱、ラジオやライブでのエピソードを熱く解説。
+- **【必須】リンク**: 
+  - [▶ YouTubeでおすすめネタ・動画を見る](https://www.youtube.com/results?search_query=芸人名+コント+漫才)
+  - [📻 お笑いナタリーで最新情報を追う](https://natalie.mu/owarai)
 
-<h2 id="benjamin">02. Special Column: Daily Benjamin — 思考の調律と徳目の実践</h2>
-【最重要：毎朝の心を芯から整える1,200〜1,500文字の骨太な本格エッセイとしてしっかり執筆すること（化学比喩は禁止）】
-1. **今朝の認知的観察（脱フュージョン）**: 白黒思考、個人化、助言過多への客観視。
-2. **思想的アンカー**: フランクリンの13の徳目、マルクス・アウレリウスの自省録、ファインマンの遊び。
-3. **育休期パパへの身体処方箋（HALT原則）**: 睡眠不足、呼吸、IBS、名もなき育児家事の肯定。
-4. **本日の手放しアクション（減算法）**: あえてやらないNot-To-Do。
+<h2 id="ranking">04. Tokyo Index: 東京〇〇ランキング Top 5</h2>
+- お題は日替わりで独自選定（例：23区の「坂道の多さ」「緑被率」「純喫茶の密度」「古書店数」「平均標高」「地価上昇率」「治安の良さ」などユニークなテーマ）。
+- 1位から5位までをランキング形式で発表し、各区の意外な特徴や背景を切れ味鋭く解説。
+- **【必須】リンク**: [📊 東京都総務局統計部](https://www.toukei.metro.tokyo.lg.jp/)
 
-<h2 id="news">03. Curated News & Macro: 世界経済と暮らしのインパクト</h2>
-1. **日経・経済/産業動向**: 素材・半導体の構造変化 ([日本経済新聞 / ビジネス](https://www.nikkei.com/business/))
-2. **Abemaニュース / 社会トレンド**: 育休、働き方のリアル ([ABEMA TIMES](https://times.abema.tv/))
-3. **世界マクロ市況の定点観測**: 米国市場、日経平均、ドル円、米長期金利。
-4. **本日の注目企業（1社）**: 参入障壁の高いニッチトップ銘柄。
-   - [📈 Yahoo!ファイナンスでチャートを見る](https://finance.yahoo.co.jp/search/?query=銘柄名)
+<h2 id="apple-pie">05. The Sweet Spot: 散歩の寄り道・至高のアップルパイ</h2>
+- 都内の老舗洋菓子店、名門クラシックホテル、街の隠れ家ベーカリーなどから、実在する名作アップルパイを日替わりで1店紹介（過去号と被らないこと）。
+- パイ生地の折り込み・バターの香り、リンゴの品種やシナモンの効かせ方、焼き上がりの美しさを描写。
+- **【必須】リンク**: [🥧 食べログで店舗詳細を見る](https://tabelog.com/tokyo/rstLst/?vs=1&sa=&sk=店舗名+アップルパイ)
 
-<h2 id="baby">04. Baby & Paternity: 赤ちゃん関連の重要情報（厳選3選）</h2>
-1. **乳幼児の睡眠科学・ネントレ** ([こども家庭庁](https://www.cfa.go.jp/))
-2. **月齢に応じた発達とふれあい遊び** ([日本小児科学会](https://www.jpeds.or.jp/))
-3. **夫婦の疲労回復と生活インフラ分担** ([厚生労働省 e-ヘルスネット](https://www.e-healthnet.mhlw.go.jp/))
+<h2 id="curiosity">06. Curiosity & Business: 未知なる探求テーマ ＆ 注目企業</h2>
+- 日常生活の枠を大きく超える、知的好奇心を刺激するディープな探求テーマを1つ提示（例：深海探査技術、宮大工の木組み工法、宇宙デブリ回収、昆虫バイオ、超高精度ガラス研磨、特殊活版印刷など）。
+- その最前線で独自の強みを持つ「日本の注目企業（ニッチトップ企業や注目のスタートアップ）」を1社紹介し、技術やビジネスモデルの面白さを解説。
+- **【必須】リンク**:
+  - [🏢 企業公式サイト](https://www.google.com/search?q=企業名+公式)
+  - [📈 Yahoo!ファイナンスで会社情報を見る](https://finance.yahoo.co.jp/search/?query=企業名)
 
-<h2 id="comedy">05. The Laugh & Radio: お笑い・深夜ラジオ解体新書</h2>
-- ロバート秋山、真空ジェシカ、マユリカ、ランジャタイ、ママタルト、ダイアンなどから日替わりで1組を深掘り。
-- [▶ YouTubeでお笑い・ラジオを見る](https://www.youtube.com/results?search_query=芸人名+ラジオ+コント)
-- [📻 お笑いナタリーで最新ニュースを見る](https://natalie.mu/owarai)
+<h2 id="bookseller-choice">07. Books for Booksellers: 書店員に捧ぐ、推薦の1冊</h2>
+- 本のプロである書店員が思わず唸り、仕掛けたくなるような「骨太な小説」または「思考の枠を広げるビジネス・教養本」を日替わりで1冊厳選。
+- なぜ今この本なのか、プロの目利きに響く文体や構成、読後感を熱量高くレコメンド。
+- **【必須】リンク**:
+  - [📚 Amazonで見る](https://www.amazon.co.jp/s?k=書籍名)
+  - [▶ YouTubeで書評・解説を見る](https://www.youtube.com/results?search_query=書籍名+書評)
 
-<h2 id="curiosity">06. Curiosity Expedition: 未知なる世界への招待</h2>
-- 読者の普段の関心から外れた「未開拓の知的好奇心領域」を紹介（現代アート、塊根植物、時計機構、建築など）。
+<h2 id="baby">08. Baby & Science: 赤ちゃんの科学と成長便り（厳選2選）</h2>
+お孫さんの健やかな成長を科学的に見守るための、医学論文・小児科学等の確かなエビデンスに基づく知見を2点解説：
+1. **乳幼児の脳発達・感覚統合**: 抱っこ、外気浴、声かけが赤ちゃんの神経発達に与える影響 ([日本小児科学会](https://www.jpeds.or.jp/))
+2. **睡眠と生体リズムの科学**: 月齢ごとの体内時計の整え方と最新研究 ([こども家庭庁](https://www.cfa.go.jp/))
 
-<h2 id="evidence">07. Evidence Wellness: 最新論文が教える心身の整え方</h2>
-- PubMed等の論文に基づく、睡眠・自律神経・疲労回復の知性。
-- [🔬 PubMed最新研究を検索](https://pubmed.ncbi.nlm.nih.gov/)
+<h2 id="nikkei">09. Nikkei Daily Briefing: 日経新聞 厳選ニュース5選 & 背景解説</h2>
+日本経済新聞の最新トピックから、日本経済・世界情勢・産業構造の重要ニュースを5つ厳選。
+単なる見出しではなく、経済の背景や「今後の社会にどう影響するのか」を大人の視点で鋭く解説：
+1. **金融・マクロ経済**: 金利、為替、日銀動向 ([日本経済新聞 / 経済](https://www.nikkei.com/economy/))
+2. **産業・テクノロジー**: 半導体、自動車、先端素材 ([日本経済新聞 / ビジネス](https://www.nikkei.com/business/))
+3. **企業経営・M&A**: 注目企業の再編戦略 ([日本経済新聞 / 企業](https://www.nikkei.com/business/companies/))
+4. **国際情勢・サプライチェーン**: 地政学リスクと国際流通 ([日本経済新聞 / 国際](https://www.nikkei.com/international/))
+5. **社会・市場トレンド**: 人口動態、新興市場 ([日本経済新聞 / マーケット](https://www.nikkei.com/markets/))
 
-<h2 id="novel">08. Book Archive: 人生を揺らすオススメの小説</h2>
-- 感性を刺激する骨太な傑作小説を1冊セレクト。
-- [📚 Amazonで見る](https://www.amazon.co.jp/s?k=書籍名)
-- [▶ YouTubeで解説を見る](https://www.youtube.com/results?search_query=書籍名+小説+解説)
+<h2 id="books-libraries">10. Book & Library Chronicle: 出版・図書館・ブックオフ</h2>
+本と書店文化を取り巻く3つの視点を毎日詳しくお届け：
+1. **日本の出版・書店業界の最新動向**: 書店の新業態、取次流通、文庫・新書の売れ筋動向 ([新文化オンライン](https://www.shinbunka.co.jp/))
+2. **全国のユニークな名図書館**: 建築美、驚きの蔵書、カフェ併設の全国の公立・私設図書館を日替わりで1館フィーチャー ([カーリル 全国図書館検索](https://calil.jp/))
+3. **ブックオフ & リユース最前線**: ブックオフの新業態、リユース市場、掘り出し物探しの面白さ ([BOOKOFF 公式](https://www.bookoff.co.jp/))
 
-<h2 id="music">09. The Cipher: West Coast, Kendrick & Culture</h2>
-- ケンドリック・ラマー等の楽曲、リリック解説、生きた英語。
-- [🎵 YouTube Musicで聴く](https://music.youtube.com/search?q=曲名+アーティスト名)
+<h2 id="health">11. Evidence Longevity: 最新論文が教える健康科学（厳選2選）</h2>
+PubMed等の信頼できる査読論文から、生涯現役で元気に歩き、思考をクリアに保つための健康科学を2点解説：
+1. **脳機能・認知のクリアリング**: 記憶力維持、脳の可塑性を保つ生活習慣 ([PubMed 認知機能研究](https://pubmed.ncbi.nlm.nih.gov/))
+2. **血管・歩行・自律神経の強化**: 散歩の効果、動脈の柔軟性を保つ生化学 ([厚生労働省 e-ヘルスネット](https://www.e-healthnet.mhlw.go.jp/))
 
-<h2 id="escape">10. Escape: Sauna Destination, Route & Home</h2>
-- 実在する名銭湯・サウナ施設を1館。GB350で走るルートと自宅珈琲。
-- [🧖 サウナイキタイで詳細を見る](https://sauna-ikitai.com/search?keyword=施設名)
-
-<h2 id="colophon">11. Editor's Colophon</h2>
-- 東京の空模様、気圧、今日を穏やかに過ごすための1行コラム。
+<h2 id="colophon">12. Editor's Colophon: 珈琲と日和</h2>
+- 今日の東京・豊島区の気圧や風、散歩の合間にふと立ち寄りたくなる名喫茶の情景を綴る1行。
 """
 
 user_prompt = f"""
 本日の環境データ:
-- 日付: {today} / 気温: {current_temp}℃ / 日没: {sunset}
+- 日付: {today} / 東京・豊島区の気温: {current_temp}℃ / 日没: {sunset}
+- 本日の特集区: {target_ward}
 
 記事本文の適切な場所に、以下の2つのライフスタイル写真タグを必ず配置してください：
 {img_tag_1}
 {img_tag_2}
 
-【重要】本文の先頭に「TITLE:」や「DATE:」などのメタデータは絶対に含めないでください。
-化学系の比喩表現は使わず、POPEYEエディトリアル文体で執筆してください。
+各セクションは指定に従って知的かつ読み応えのある文量で執筆し、全セクションの直通リンクを正確に記載してください。
 過去号との被りを避け、Markdown形式のみで出力してください。
 """
 
+# 多重フォールバックモデル一覧（安定性の高い順に試行）
 CANDIDATE_MODELS = [
-    "gemini-3.8-flash",
-    "gemini-3.8-pro",
-    "gemini-2.0-flash",
-    "gemini-1.5-flash"
+    "gemini-2.0-flash",       # 現在もっとも可用性が高く安定したモデル
+    "gemini-2.0-flash-lite",  # 軽量・高応答性モデル
+    "gemini-3.8-flash",       # 最新モデル（混雑時はスキップ）
+    "gemini-1.5-flash",       # 実績多数の安定モデル
+    "gemini-1.5-pro"          # 最終バックアップ高精度モデル
 ]
 
 response_text = None
@@ -155,37 +167,44 @@ for model_name in CANDIDATE_MODELS:
                 response_text = res.text
                 break
         except Exception as e:
-            print(f"⚠️ {model_name} (試行 {attempt}/2) で失敗: {str(e)[:100]}")
-            time.sleep(6)
+            err_msg = str(e)
+            print(f"⚠️ {model_name} (試行 {attempt}/2) で失敗: {err_msg[:120]}")
+            time.sleep(attempt * 4)  # 4秒、8秒と段階的に待機
     if response_text:
         break
 
+# 万が一Google API全体が完全停止していた場合のフェイルセーフ
 if not response_text:
-    print("❌ 記事生成に失敗しました。")
-    sys.exit(1)
+    print("⚠️ API全モデル混雑のため、緊急エディションを生成してサイト停止を防止します。")
+    response_text = f"""
+<h2 id="walk">01. Tokyo Flâneur: 東京23区 日替わり逍遥録（本日の区：{target_ward}）</h2>
+本日は「{target_ward}」の路地と歴史を逍遥します。街の記憶を辿る散歩へ出かけましょう。
+- [🗺 Google マップで名所を見る](https://www.google.com/maps/search/{quote(target_ward + ' 史跡 名所')})
 
-# 万が一本文冒頭にメタデータが漏れた場合の強制除去クリーニング
-clean_text = re.sub(
-    r'^(title:.*?\n|TITLE:.*?\n|date:.*?\n|DATE:.*?\n|temp:.*?\n|TEMP:.*?\n|sunset:.*?\n|SUNSET:.*?\n|wind:.*?\n|WIND:.*?\n|bike:.*?\n|BIKE:.*?\n)+',
-    '',
-    response_text.strip(),
-    flags=re.MULTILINE | re.IGNORECASE
-).strip()
+{img_tag_1}
 
-# 万が一フローチャートの閉じタグが欠落していた場合の自動修復
-if '<div class="flow-wrapper">' in clean_text:
-    parts = clean_text.split('<div class="flow-wrapper">')
-    reconstructed = parts[0]
-    for p in parts[1:]:
-        if '</div>' not in p or p.find('</div>') > 1000:
-            p = p.replace('\n\n', '</div>\n\n', 1)
-        reconstructed += '<div class="flow-wrapper">' + p
-    clean_text = reconstructed
+<h2 id="toshima">02. Toshima Local Focus: 豊島区の定点観測</h2>
+豊島区の文化・歴史・街並みの最新動向をお届けします。
+- [🏛 豊島区公式ポータル](https://www.city.toshima.lg.jp/) / [池袋経済新聞](https://ikebukuro.keizai.biz/)
 
-# 4. リアルなライフスタイル写真2枚を生成
+<h2 id="comedy">03. The Subversive Laugh: クセ強芸人とコントの解体新書</h2>
+独自の美学と狂気を持つコントの世界を深掘りします。
+- [▶ YouTubeでおすすめネタを見る](https://www.youtube.com/results?search_query=ラーメンズ+コント)
+
+<h2 id="apple-pie">05. The Sweet Spot: 散歩の寄り道・至高のアップルパイ</h2>
+散歩の途中に立ち寄りたい、都内の名作アップルパイ。
+- [🥧 食べログで探す](https://tabelog.com/tokyo/rstLst/?vs=1&sa=&sk=アップルパイ)
+
+{img_tag_2}
+
+<h2 id="colophon">12. Editor's Colophon: 珈琲と日和</h2>
+東京の空と心地よい風を感じながら、良い一日を。
+"""
+
+# 6. 東京の街歩き・書斎風のライフスタイル写真2枚を生成
 os.makedirs("public/images", exist_ok=True)
-prompt_1 = "Authentic lifestyle 35mm candid film photograph of a rider enjoying a classic Honda GB350 motorcycle along a scenic Tokyo coastal road at sunset, natural golden hour lighting, cinematic grain, POPEYE magazine aesthetic"
-prompt_2 = "Candid lifestyle 35mm film photograph of a relaxed young Japanese father drinking coffee peacefully with his baby and family in a bright living room, warm morning light, POPEYE magazine documentary style"
+prompt_1 = "Authentic candid 35mm film photograph of a historic quiet brick street and quaint bookstore in Tokyo under pleasant morning sunlight, nostalgic documentary street photography, retro Tokyo aesthetic"
+prompt_2 = "Cozy atmospheric 35mm film photograph of a classic Tokyo kissaten coffee shop counter with ceramic dripper, freshly baked warm apple pie on a vintage plate, soft ambient morning light"
 
 scenes = [
     (prompt_1, f"public/images/{today}_scene1.jpg"),
@@ -214,28 +233,28 @@ def generate_and_save_photo(prompt_text, file_path):
         if r.status_code == 200:
             with open(file_path, "wb") as f:
                 f.write(r.content)
-            print(f"フォトエンジンで生成保存完了: {file_path}")
+            print(f"フォトエンジンで保存完了: {file_path}")
     except Exception as ex:
         print(f"画像保存エラー: {ex}")
 
 for p_text, s_path in scenes:
     generate_and_save_photo(p_text, s_path)
 
-# 5. Markdownとして保存（フロントマターを先頭に厳密配置）
+# 7. 保存
 os.makedirs("src/content/posts", exist_ok=True)
-frontmatter_block = f"""---
+frontmatter = f"""---
 title: "Issue - {today}"
 date: "{today}"
 temp: "{current_temp}°C"
 sunset: "{sunset}"
-wind: "{current.get('wind_speed_10m', '3')} km/h"
-bike: "Honda GB350"
+ward: "{target_ward}"
+location: "Tokyo / Toshima"
 ---
 
 """
 
 file_path = f"src/content/posts/{today}.md"
 with open(file_path, "w", encoding="utf-8") as f:
-    f.write(frontmatter_block + clean_text)
+    f.write(frontmatter + response_text)
 
 print(f"Successfully published issue: {file_path}")
