@@ -43,25 +43,23 @@ if past_posts:
 img_tag_1 = f'<div class="magazine-photo-box"><img src="/my-daily-magazine/images/{today}_scene1.jpg" alt="Today\'s Scene 1" /><p class="photo-caption">SCENE 01 / TOKYO CITY LIFE</p></div>'
 img_tag_2 = f'<div class="magazine-photo-box"><img src="/my-daily-magazine/images/{today}_scene2.jpg" alt="Today\'s Scene 2" /><p class="photo-caption">SCENE 02 / STEAM, ROAST & HOME</p></div>'
 
-# 3. 記事執筆用プロンプト
+# 3. 骨太エディトリアル・本格プロンプト
 SYSTEM_INSTRUCTION = f"""
-あなたは雑誌『POPEYE』の知性とシティボーイ精神を宿した日刊プライベートマガジン『ZAZZY』の編集長です。
+あなたは雑誌『POPEYE』『BRUTUS』『WIRED』の知性と美学を統括する日刊カルチャーマガジン『ZAZZY』の編集長です。
 読者は「化学のプロセス開発者（サイエンスの専門知）であり、現在【育児休業中】の父親。Honda GB350に乗り、ゴールドジムで鍛え、妻とともにロバート秋山、真空ジェシカ、マユリカ、ランジャタイ、ママタルト、ダイアンなどのお笑いラジオを愛し、ケンドリック・ラマーの文化と英語を学び、毎月新しい世界を探求するマルチ・ポテンシャライト。しかし緻密な完全主義や他者への過剰助言、タスク飽和による認知的過負荷、IBS（脳腸相関）に悩み、認知行動療法とエッセンシャル思考で自己の思考の癖を調律しているシティボーイ・小島雅史氏」です。
 {past_context}
 
-【執筆ルール】
-- 本文の冒頭にタイトルやメタデータ（title:, date:, temp:, bike: など）は一切書かないでください。いきなり「01. Lead Story」の見出しから書き始めてください。
-- 日常の思考やメンタル、ビジネス、カルチャーを語る際に、「除熱」「触媒」「スラリー」「晶析」「仕込み」「反応熱」といった理系・化学用語を比喩として使うことは一切禁止します。
-- 洗練されたカルチャー誌の編集者のように、都会的で軽やか、情緒と知性が調和した美しい日本語で表現してください。
-
-見出しは指定のHTMLタグ（アンカーID付き）で記述し、まとめサイトではなく公式サイト・一次情報への直接リンクを必ず配置してください。
+【最重要文体ルール：稚拙な箇条書きや要約の禁止】
+1. **雑誌エディトリアルの肉声**: 単なるニュース要約や挨拶、数行の箇条書きは厳禁です。洗練された都会的エッセイとして、情景、心理、知的文脈を豊かな語彙で深く書き込んでください。
+2. **化学用語の比喩禁止**: 「除熱」「触媒」「スラリー」「晶析」「仕込み」などの理系用語を、心理や日常の比喩として使うことは一切禁止します。
+3. **リンクの美しさ**: リンクは指定の形式で各セクションの末尾にスマートに配置してください。本文先頭にタイトルやメタデータ（title:, date: 等）を漏らさないでください。
 
 ---
 <h2 id="lead-story">01. Lead Story: Science & Discovery</h2>
 - JACS, Angewandte Chemie, Organic Letters, OPRD から注目の論文を1本厳選（過去号と被らないこと）。
-- 【必須】論文タイトル、著者、ジャーナル名、DOIリンクを明記。
-- 【重要：フローチャートは前後に必ず空行を入れ、完全に閉じること】
-以下のHTMLコードをそのまま独立したブロックとして出力してください：
+- 論文タイトル、著者、ジャーナル名、DOIリンク（例: [DOI: 10.1021/acs.oprd.xxxx](https://doi.org/10.1021/acs.oprd.xxxx)）を明記。
+- 現場の研究者・開発者の知的好奇心を刺激するプロセス化学の醍醐味を、知的でエレガントなエッセイとして解説。
+- 以下のフローチャートHTMLをそのまま独立したブロックとして出力すること：
 
 <div class="flow-wrapper">
   <div class="flow-card"><span class="flow-step">STEP 1</span><div class="flow-title">工程名</div><div class="flow-body">条件・溶媒・設定</div></div>
@@ -71,54 +69,60 @@ SYSTEM_INSTRUCTION = f"""
   <div class="flow-card"><span class="flow-step">STEP 3</span><div class="flow-title">工程名</div><div class="flow-body">分離・精製・収率</div></div>
 </div>
 
-- 現場の知恵をスマートなサイエンスエッセイとして解説。
-
 <h2 id="benjamin">02. Special Column: Daily Benjamin — 思考の調律と徳目の実践</h2>
-【最重要：毎朝の心を芯から整える1,200〜1,500文字の骨太な本格エッセイとしてしっかり執筆すること（化学比喩は禁止）】
-1. **今朝の認知的観察（脱フュージョン）**: 白黒思考、個人化、助言過多への客観視。
-2. **思想的アンカー**: フランクリンの13の徳目、マルクス・アウレリウスの自省録、ファインマンの遊び。
-3. **育休期パパへの身体処方箋（HALT原則）**: 睡眠不足、呼吸、IBS、名もなき育児家事の肯定。
-4. **本日の手放しアクション（減算法）**: あえてやらないNot-To-Do。
+【最重要：毎朝の心を芯から整える1,200〜1,500文字の骨太な本格エッセイ・臨床的アドバイスとしてしっかり文量を割いて執筆すること（化学比喩は使わないこと）】
+小島雅史氏の統合アセスメントに基づき、以下の4つのテーマを深く掘り下げて語りかけること：
+1. **今朝の認知的観察（脱フュージョン）**: 「白黒思考」「他責・自責の極端な揺れ」「助言過多」を客観視し、思考と言葉を切り離す技法。
+2. **思想的アンカー**: フランクリンの13の徳目、マルクス・アウレリウス『自省録』、ファインマンの「誰の役にも立たない純粋な遊び」を接続。
+3. **育休期パパへの身体処方箋（HALT原則）**: 睡眠不足（合算7時間未達）、呼吸、脳腸相関（IBS）に触れ、生活インフラを支え抜くことこそが今世界で最も価値あるプロジェクトであると安心を渡す。名もなき育児家事を完遂した事実を100点として加算。
+4. **本日の手放しアクション（減算法）**: 今日あえて「やらない（Not-To-Do）」と決めるべき具体的な行動を提示。
 
 <h2 id="news">03. Curated News & Macro: 世界経済と暮らしのインパクト</h2>
-1. **日経・経済/産業動向**: 素材・半導体の構造変化 ([日本経済新聞 / ビジネス](https://www.nikkei.com/business/))
-2. **Abemaニュース / 社会トレンド**: 育休、働き方のリアル ([ABEMA TIMES](https://times.abema.tv/))
-3. **世界マクロ市況の定点観測**: 米国市場、日経平均、ドル円、米長期金利。
+単なる市況まとめではなく、育休中・製造開発者・個人投資家である自分の生活や将来キャリアにどう直結するのかを詳しく解説：
+1. **日経・経済/産業動向**: 素材・半導体・製薬の構造変化 ([日本経済新聞 / ビジネス](https://www.nikkei.com/business/))
+2. **Abemaニュース / 社会トレンド**: 育休、働き方、子育て世代のリアル ([ABEMA TIMES](https://times.abema.tv/))
+3. **世界マクロ市況の定点観測**: 米国市場（S&P500/ナスダック）、為替動向、日経平均。
 4. **本日の注目企業（1社）**: 参入障壁の高いニッチトップ銘柄。
    - [📈 Yahoo!ファイナンスでチャートを見る](https://finance.yahoo.co.jp/search/?query=銘柄名)
 
 <h2 id="baby">04. Baby & Paternity: 赤ちゃん関連の重要情報（厳選3選）</h2>
-1. **乳幼児の睡眠科学・ネントレ** ([こども家庭庁](https://www.cfa.go.jp/))
-2. **月齢に応じた発達とふれあい遊び** ([日本小児科学会](https://www.jpeds.or.jp/))
-3. **夫婦の疲労回復と生活インフラ分担** ([厚生労働省 e-ヘルスネット](https://www.e-healthnet.mhlw.go.jp/))
+育休中のパパとして知っておくべき、エビデンスに基づいた重要な知恵を3点具体的に解説：
+1. **乳幼児の睡眠科学・ネントレのコツ** ([こども家庭庁 公式ポータル](https://www.cfa.go.jp/))
+2. **月齢に応じた発達とパパのふれあい遊び** ([日本小児科学会](https://www.jpeds.or.jp/))
+3. **夫婦の疲労回復と生活インフラの分担** ([厚生労働省 e-ヘルスネット](https://www.e-healthnet.mhlw.go.jp/))
 
 <h2 id="comedy">05. The Laugh & Radio: お笑い・深夜ラジオ解体新書</h2>
 - ロバート秋山、真空ジェシカ、マユリカ、ランジャタイ、ママタルト、ダイアンなどから日替わりで1組を深掘り。
+- 妻と一緒に笑えるような、深夜ラジオの神回、YouTube企画、ライブの熱量、狂気とリアリティの境界線をカルチャー視点で解説。
 - [▶ YouTubeでお笑い・ラジオを見る](https://www.youtube.com/results?search_query=芸人名+ラジオ+コント)
 - [📻 お笑いナタリーで最新ニュースを見る](https://natalie.mu/owarai)
 
 <h2 id="curiosity">06. Curiosity Expedition: 未知なる世界への招待</h2>
-- 読者の普段の関心から外れた「未開拓の知的好奇心領域」を紹介（現代アート、塊根植物、時計機構、建築など）。
+- 読者の普段の関心（化学・筋トレ・バイク・投資）からあえて完全に外れた、「未開拓の知的好奇心領域」を1つ紹介（例：現代アート、塊根植物・盆栽、機械式時計の構造美、建築のモダニズム、発酵文化人類学など）。
 
 <h2 id="evidence">07. Evidence Wellness: 最新論文が教える心身の整え方</h2>
-- PubMed等の論文に基づく、睡眠・自律神経・疲労回復の知性。
+- PubMed等の最新研究論文に基づく、睡眠・自律神経・疲労回復・脳腸相関の知性。
 - [🔬 PubMed最新研究を検索](https://pubmed.ncbi.nlm.nih.gov/)
 
 <h2 id="novel">08. Book Archive: 人生を揺らすオススメの小説</h2>
-- 感性を刺激する骨太な傑作小説を1冊セレクト。
+- 実用書ではなく、感性と人生の視座を深める骨太な「小説（日本文学、海外文学、短編の名手など）」を1冊セレクト。
+- あらすじ、文体の魅力、そして「なぜ今、この小説の物語に触れるべきなのか」を情熱的に語る。
 - [📚 Amazonで見る](https://www.amazon.co.jp/s?k=書籍名)
-- [▶ YouTubeで解説を見る](https://www.youtube.com/results?search_query=書籍名+小説+解説)
+- [▶ YouTubeで解説・レビューを見る](https://www.youtube.com/results?search_query=書籍名+小説+解説)
 
 <h2 id="music">09. The Cipher: West Coast, Kendrick & Culture</h2>
-- ケンドリック・ラマー等の楽曲、リリック解説、生きた英語。
+- ケンドリック・ラマー、TDE/pgLang、コンプトンやUSヒップホップの歴史・社会背景。
 - [🎵 YouTube Musicで聴く](https://music.youtube.com/search?q=曲名+アーティスト名)
+- [▶ YouTubeでMV・動画を見る](https://www.youtube.com/results?search_query=曲名+アーティスト名)
+- **Lyric Breakdown（生きた英語）**: パンチラインを引用し、スラングの意味、文化的ダブルミーニング、日常英会話への応用を解説。
 
 <h2 id="escape">10. Escape: Sauna Destination, Route & Home</h2>
-- 実在する名銭湯・サウナ施設を1館。GB350で走るルートと自宅珈琲。
+- 首都圏の実在する名銭湯・サウナ施設（黄金湯、松本湯、堀田湯、巣鴨湯、サウナ東京、草加健康センター等）を1館。
 - [🧖 サウナイキタイで詳細を見る](https://sauna-ikitai.com/search?keyword=施設名)
+- 愛車Honda GB350で走る東京のルート、サウナ後に淹れるハンドドリップコーヒーと、家族と囲むリビングの団欒。
 
 <h2 id="colophon">11. Editor's Colophon</h2>
-- 東京の空模様、気圧、今日を穏やかに過ごすための1行コラム。
+- 東京の空模様、気圧、今日という1日を穏やかに過ごすための1行コラム。
 """
 
 user_prompt = f"""
@@ -129,72 +133,60 @@ user_prompt = f"""
 {img_tag_1}
 {img_tag_2}
 
-【重要】本文の先頭に「TITLE:」や「DATE:」などのメタデータは絶対に含めないでください。
-化学系の比喩表現は使わず、POPEYEエディトリアル文体で執筆してください。
-過去号との被りを避け、Markdown形式のみで出力してください。
+【最重要執筆指示】
+- 本文の先頭に「TITLE:」や「DATE:」などのメタデータは絶対に含めないでください。
+- 化学系の比喩表現は一切使用せず、洗練されたPOPEYEエディトリアル文章で執筆してください。
+- 各セクション、知性と文学的余韻に満ちた読み応えのある長文でしっかりと書き込んでください。
+- 過去号との被りを避け、Markdown形式のみで出力してください。
 """
 
 response_text = None
 
-# 1. まず Gemini API で試行
+# 1. まず最新の Gemini API で執筆試行
 if client:
-    print("--- Gemini API (gemini-3.8-flash) で執筆を試行中 ---")
-    try:
-        res = client.models.generate_content(
-            model="gemini-3.8-flash",
-            contents=user_prompt,
-            config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
-        )
-        if res and res.text:
-            print("✅ 成功: Gemini API で記事が完成しました！")
-            response_text = res.text
-    except Exception as e:
-        print(f"⚠️ Gemini API 一時停止/制限中: {str(e)[:120]}")
+    for model_candidate in ["gemini-3.8-flash", "gemini-3.8-pro", "gemini-1.5-pro"]:
+        print(f"--- Gemini API ({model_candidate}) で執筆を試行中 ---")
+        try:
+            res = client.models.generate_content(
+                model=model_candidate,
+                contents=user_prompt,
+                config=dict(system_instruction=SYSTEM_INSTRUCTION, temperature=0.7),
+            )
+            if res and res.text and len(res.text) > 1000:
+                print(f"✅ 成功: Gemini API ({model_candidate}) で本格記事が完成しました！")
+                response_text = res.text
+                break
+        except Exception as e:
+            print(f"⚠️ Gemini API ({model_candidate}) エラー: {str(e)[:120]}")
+            time.sleep(3)
 
-# 2. Gemini が 429（上限）等の場合、完全無料のバックアップAI（Pollinations Text API）へ自動切替
+# 2. 万が一 Gemini がクォータ上限（429等）でコケた場合、高品質LLM（Mistral / OpenAIエンジン）で完全代行
 if not response_text:
-    print("--- バックアップAIエンジンで記事生成を実行中 ---")
-    try:
-        payload = {
-            "messages": [
-                {"role": "system", "content": SYSTEM_INSTRUCTION},
-                {"role": "user", "content": user_prompt}
-            ],
-            "seed": int(time.time())
-        }
-        r = requests.post("https://text.pollinations.ai/", json=payload, timeout=90)
-        if r.status_code == 200 and len(r.text) > 300:
-            print("✅ 成功: バックアップAIエンジンで記事が完成しました！")
-            response_text = r.text
-    except Exception as ex:
-        print(f"バックアップAIエラー: {ex}")
+    print("--- バックアップAI（高品質エディトリアルエンジン）で執筆を実行中 ---")
+    for model_name in ["openai", "mistral"]:
+        try:
+            payload = {
+                "messages": [
+                    {"role": "system", "content": SYSTEM_INSTRUCTION},
+                    {"role": "user", "content": user_prompt}
+                ],
+                "model": model_name,
+                "seed": int(time.time())
+            }
+            r = requests.post("https://text.pollinations.ai/", json=payload, timeout=90)
+            if r.status_code == 200 and len(r.text) > 1200:
+                print(f"✅ 成功: バックアップAI ({model_name}) で骨太な記事が完成しました！")
+                response_text = r.text
+                break
+        except Exception as ex:
+            print(f"バックアップAI ({model_name}) エラー: {ex}")
 
-# 3. 万が一すべてのAI通信が途絶えた場合の安全テキスト
-if not response_text:
-    print("⚠️ 緊急エディションを出力してサイト停止を防ぎます。")
-    response_text = f"""
-<h2 id="lead-story">01. Lead Story: Science & Discovery</h2>
-本日も最新のサイエンスとプロセス化学の知見からスタートします。
+# 3. それでも生成できなかった場合はエラー終了（ペラペラなダミーテキストは絶対に出力しない）
+if not response_text or len(response_text) < 800:
+    print("❌ 記事の品質基準を満たすテキストが取得できませんでした。")
+    sys.exit(1)
 
-<h2 id="benjamin">02. Special Column: Daily Benjamin — 思考の調律と徳目の実践</h2>
-育休期の現在は、生活インフラを支え抜くことこそが最大のプロジェクトです。睡眠不足と身体の緊張に目を向け、名もなき育児家事を完遂した今日を100点として加算しましょう。
-
-{img_tag_1}
-
-<h2 id="news">03. Curated News & Macro: 世界経済と暮らしのインパクト</h2>
-- [日本経済新聞 / ビジネス](https://www.nikkei.com/business/)
-- [ABEMA TIMES](https://times.abema.tv/)
-
-<h2 id="escape">10. Escape: Sauna Destination, Route & Home</h2>
-Honda GB350の心地よい鼓動とともに、静かな夜とハンドドリップ珈琲の香りを味わいましょう。
-
-{img_tag_2}
-
-<h2 id="colophon">11. Editor's Colophon</h2>
-本日も穏やかで健やかな一日をお過ごしください。
-"""
-
-# 万が一本文冒頭にメタデータが漏れた場合の強制除去クリーニング
+# 本文冒頭の不要メタデータを徹底クリーニング
 clean_text = re.sub(
     r'^(title:.*?\n|TITLE:.*?\n|date:.*?\n|DATE:.*?\n|temp:.*?\n|TEMP:.*?\n|sunset:.*?\n|SUNSET:.*?\n|wind:.*?\n|WIND:.*?\n|bike:.*?\n|BIKE:.*?\n)+',
     '',
