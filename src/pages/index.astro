@@ -11,10 +11,10 @@ const latest = postList[0];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zazzy | Paternity, Culture & Mind</title>
+    <title>ZAZZY | Paternity, Culture & Mind</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Noto+Sans+JP:wght@400;500;700;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet" />
     
     <style is:inline>
       :root {
@@ -69,21 +69,24 @@ const latest = postList[0];
         font-weight: 800;
         letter-spacing: 0.1em;
       }
-      .archive-link {
+      .archive-btn-top {
         color: var(--navy);
         text-decoration: none;
         border: 1.5px solid var(--border-color);
-        padding: 0.2rem 0.6rem;
+        padding: 0.25rem 0.75rem;
         background: var(--yellow);
-        font-weight: 700;
-        transition: 0.1s;
+        font-weight: 800;
+        transition: 0.15s;
+        box-shadow: 2px 2px 0px rgba(17, 34, 51, 0.1);
       }
-      .archive-link:hover { background: #fff; }
+      .archive-btn-top:hover {
+        background: #fff;
+        transform: translateY(-1px);
+      }
 
-      /* Zazzy マストヘッド */
       .masthead {
         text-align: center;
-        padding: 3rem 0 2rem;
+        padding: 3rem 0 1.5rem;
         border-bottom: 3px solid var(--border-color);
       }
       .sub-title {
@@ -105,15 +108,55 @@ const latest = postList[0];
         color: var(--navy);
         text-transform: uppercase;
       }
-      .lead-paternity {
-        margin-top: 1.2rem;
+
+      /* 【新設】POPEYE風・本日のシティディスパッチ（環境・愛車カルテ） */
+      .city-dispatch-board {
+        margin: 1.8rem 0 1.2rem;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        box-shadow: 4px 4px 0px rgba(17, 34, 51, 0.08);
+        padding: 1.2rem 1.4rem;
+        border-radius: 4px;
+      }
+      .dispatch-header {
         font-family: "Chivo Mono", monospace;
-        font-size: 0.8rem;
-        font-weight: 700;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: var(--red);
+        border-bottom: 1.5px solid #e0dfd5;
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.8rem;
         display: flex;
-        justify-content: center;
-        gap: 1.2rem;
+        justify-content: space-between;
         flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .dispatch-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.88rem;
+        color: var(--navy);
+      }
+      .dispatch-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .dispatch-val {
+        font-weight: 800;
+      }
+      .dispatch-bike-badge {
+        background: var(--navy);
+        color: var(--white);
+        font-family: "Montserrat", sans-serif;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.82rem;
+        font-weight: 800;
+        border-radius: 3px;
+        letter-spacing: 0.05em;
       }
 
       .editorial-nav {
@@ -139,7 +182,6 @@ const latest = postList[0];
         background: var(--yellow);
         transform: translateY(-2px);
       }
-      .nav-pill.highlight { border-color: var(--navy); }
 
       .radio-bar {
         background: var(--navy);
@@ -184,6 +226,9 @@ const latest = postList[0];
         padding: 0.6rem 1rem;
         margin: 4rem 0 1.5rem;
         scroll-margin-top: 2rem;
+        clear: both;
+        width: 100%;
+        display: block;
       }
 
       #benjamin {
@@ -205,18 +250,22 @@ const latest = postList[0];
         font-weight: 700;
         margin: 2rem 0 0.8rem;
         color: var(--navy);
+        clear: both;
       }
       .article-content p {
         margin-bottom: 1.6rem;
         text-align: justify;
         font-size: 0.98rem;
         color: #2b2d42;
+        clear: both;
       }
 
+      /* 【バグ根絶】フローチャートレイアウト */
       .flow-wrapper {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: flex-start;
         gap: 0.8rem;
         margin: 2.2rem 0;
         padding: 1.4rem;
@@ -225,9 +274,11 @@ const latest = postList[0];
         box-shadow: 4px 4px 0px rgba(17, 34, 51, 0.1);
         font-family: "Meiryo", "Hiragino Kaku Gothic ProN", sans-serif;
         overflow-x: auto;
+        clear: both;
+        width: 100%;
       }
       .flow-card {
-        flex: 1;
+        flex: 1 1 200px;
         min-width: 180px;
         background: var(--card-bg);
         border: 1.5px solid #2d3748;
@@ -256,13 +307,25 @@ const latest = postList[0];
         line-height: 1.5;
       }
       .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 1.4rem;
         font-weight: 900;
         color: var(--red);
         user-select: none;
       }
 
-      .magazine-photo-box { margin: 3rem 0; }
+      .flow-wrapper > p,
+      .flow-wrapper > h2,
+      .flow-wrapper > h3,
+      .flow-wrapper > div:not(.flow-card):not(.flow-arrow) {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+      }
+
+      .magazine-photo-box { margin: 3rem 0; clear: both; }
       .magazine-photo-box img {
         width: 100%;
         height: auto;
@@ -291,7 +354,7 @@ const latest = postList[0];
         background: var(--yellow);
         color: #000;
       }
-      .article-content ul, .article-content ol { margin: 1.2rem 0 1.8rem 1.4rem; }
+      .article-content ul, .article-content ol { margin: 1.2rem 0 1.8rem 1.4rem; clear: both; }
       .article-content li { margin-bottom: 0.8rem; font-size: 0.98rem; }
 
       .gemini-console {
@@ -299,6 +362,7 @@ const latest = postList[0];
         background: #fdfbf7;
         border: 2px solid var(--border-color);
         padding: 2rem;
+        clear: both;
       }
       .console-header {
         display: flex;
@@ -353,6 +417,7 @@ const latest = postList[0];
         font-family: "Chivo Mono", monospace;
         font-size: 0.72rem;
         color: var(--sub-text);
+        clear: both;
       }
 
       @media (max-width: 600px) {
@@ -360,6 +425,7 @@ const latest = postList[0];
         .flow-wrapper { flex-direction: column; align-items: stretch; }
         .flow-arrow { text-align: center; transform: rotate(90deg); margin: 0.2rem 0; }
         .radio-bar { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+        .dispatch-grid { flex-direction: column; gap: 0.6rem; }
       }
     </style>
   </head>
@@ -371,21 +437,44 @@ const latest = postList[0];
           <span>TOKYO / {latest ? latest.frontmatter.date : ""}</span>
         </div>
         <div>
-          <a href="/my-daily-magazine/archive/" class="archive-link">ARCHIVE (全号一覧) ↗</a>
+          <a href="/my-daily-magazine/archive/" class="archive-btn-top">📚 バックナンバー一覧 ↗</a>
         </div>
       </div>
 
       <header class="masthead">
         <p class="sub-title">A MAGAZINE FOR PATERNITY, CULTURE & THE CITY</p>
         <h1 class="main-logo">ZAZZY</h1>
-        <div class="lead-paternity">
-          <span>SPECIAL: PATERNITY LEAVE</span>
-          <span>·</span>
-          <span>BIKE: HONDA GB350</span>
-          <span>·</span>
-          <span>SUNSET: {latest ? latest.frontmatter.sunset : ""}</span>
-        </div>
       </header>
+
+      <!-- 【新設】本日のシティディスパッチボード -->
+      <section class="city-dispatch-board">
+        <div class="dispatch-header">
+          <span>❖ CITY BOARD / TOKYO ENVIRONMENT</span>
+          <span>SPECIAL: PATERNITY LEAVE</span>
+        </div>
+        <div class="dispatch-grid">
+          <div class="dispatch-item">
+            <span>🗓 DATE:</span>
+            <span class="dispatch-val">{latest ? latest.frontmatter.date : "TODAY"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>🏍 BIKE:</span>
+            <span class="dispatch-bike-badge">{latest && latest.frontmatter.bike ? latest.frontmatter.bike : "HONDA GB350"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>🌡 TEMP:</span>
+            <span class="dispatch-val">{latest && latest.frontmatter.temp ? latest.frontmatter.temp : "20°C"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>🌇 SUNSET:</span>
+            <span class="dispatch-val">{latest && latest.frontmatter.sunset ? latest.frontmatter.sunset : "18:00"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>💨 WIND:</span>
+            <span class="dispatch-val">{latest && latest.frontmatter.wind ? latest.frontmatter.wind : "3 km/h"}</span>
+          </div>
+        </div>
+      </section>
 
       <nav class="editorial-nav">
         <a href="#lead-story" class="nav-pill">01 サイエンス</a>
@@ -431,7 +520,7 @@ const latest = postList[0];
       </section>
 
       <footer class="footer-deck">
-        <p>© 2026 Zazzy — PRINTED DIGITALLY FOR PRIVATE USE.</p>
+        <p>© 2026 ZAZZY — PRINTED DIGITALLY FOR PRIVATE USE.</p>
       </footer>
     </article>
 
@@ -517,7 +606,7 @@ const latest = postList[0];
         const rawText = content.innerText
           .replace(/https?:\/\/\S+/g, "")
           .replace(/\[DOI:[^\]]+\]/g, "")
-          .replace(/[#*`_■§➔▲★🎭🧭🔬📚]/g, "")
+          .replace(/[#*`_■§➔▲★🎭🧭🔬📚❖🗓🏍🌡🌇💨]/g, "")
           .trim();
 
         chunks = splitTextIntoChunks(rawText, 90);
