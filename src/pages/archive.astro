@@ -1,0 +1,178 @@
+---
+const posts = import.meta.glob("../content/posts/*.md", { eager: true });
+const postList: any[] = Object.values(posts);
+postList.sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARCHIVE / バックナンバー目録 | ZAZZY</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Noto+Sans+JP:wght@400;500;700;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet" />
+
+    <style is:inline>
+      :root {
+        --bg: #f4f3ef;
+        --white: #ffffff;
+        --navy: #112233;
+        --yellow: #ffde00;
+        --red: #e63946;
+        --sub-text: #5c677d;
+        --border-color: #112233;
+        --card-bg: #faf9f6;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background-color: var(--bg);
+        color: var(--navy);
+        font-family: "Noto Sans JP", sans-serif;
+        line-height: 1.9;
+        padding: 2.5rem 1rem 5rem;
+      }
+
+      .archive-sheet {
+        max-width: 860px;
+        margin: 0 auto;
+        background-color: var(--white);
+        border: 2px solid var(--border-color);
+        box-shadow: 8px 8px 0px rgba(17, 34, 51, 0.12);
+        padding: clamp(2rem, 5vw, 4rem);
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 0.8rem;
+        margin-bottom: 2.2rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+      .back-btn {
+        text-decoration: none;
+        color: var(--navy);
+        border: 1.5px solid var(--border-color);
+        background: var(--yellow);
+        padding: 0.3rem 0.8rem;
+        font-weight: 800;
+        transition: 0.15s;
+      }
+      .back-btn:hover { background: #fff; }
+
+      .archive-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.6rem;
+        font-weight: 900;
+        font-style: italic;
+        text-align: center;
+        margin-bottom: 0.3rem;
+        color: var(--navy);
+      }
+      .archive-sub {
+        text-align: center;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--sub-text);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.1em;
+      }
+
+      .issue-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+      }
+
+      .issue-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--card-bg);
+        border: 1.5px solid var(--border-color);
+        padding: 1.1rem 1.4rem;
+        text-decoration: none;
+        color: var(--navy);
+        box-shadow: 3px 3px 0px rgba(17, 34, 51, 0.08);
+        transition: 0.12s;
+      }
+      .issue-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 5px 5px 0px rgba(17, 34, 51, 0.15);
+        background: #fff;
+        border-color: var(--red);
+      }
+
+      .issue-left {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+      }
+      .issue-date {
+        font-family: "Chivo Mono", monospace;
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--navy);
+      }
+      .issue-bike {
+        background: var(--navy);
+        color: #fff;
+        font-family: "Montserrat", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 0.15rem 0.5rem;
+        border-radius: 2px;
+      }
+
+      .issue-arrow {
+        font-family: "Montserrat", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 900;
+        color: var(--red);
+      }
+
+      @media (max-width: 600px) {
+        .archive-sheet { padding: 1.6rem 1rem; }
+        .issue-card { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        .issue-arrow { align-self: flex-end; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="archive-sheet">
+      <div class="top-nav">
+        <a href="/my-daily-magazine/" class="back-btn">← 最新号へ戻る</a>
+        <span>TOTAL: {postList.length} ISSUES ARCHIVED</span>
+      </div>
+
+      <h1 class="archive-title">ARCHIVES</h1>
+      <p class="archive-sub">BACK NUMBERS / PATERNITY, CULTURE & MIND</p>
+
+      <ul class="issue-list">
+        {postList.map((post) => {
+          const slug = post.file.split("/").pop().replace(".md", "");
+          return (
+            <li>
+              <a href={`/my-daily-magazine/posts/${slug}/`} class="issue-card">
+                <div class="issue-left">
+                  <span class="issue-date">ISSUE // {post.frontmatter.date}</span>
+                  <span class="issue-bike">BIKE: {post.frontmatter.bike || "HONDA GB350"}</span>
+                  <span style="font-size: 0.82rem; color: var(--sub-text); font-family: 'Chivo Mono';">TEMP: {post.frontmatter.temp}</span>
+                </div>
+                <span class="issue-arrow">READ ISSUE ↗</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </body>
+</html>
