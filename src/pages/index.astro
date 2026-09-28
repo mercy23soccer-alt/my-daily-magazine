@@ -11,104 +11,142 @@ const latest = postList[0];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zazzy | A Daily Journal of Serenity & Mind</title>
+    <title>ZAZZY | Paternity, Culture & Mind</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Noto+Sans+JP:wght@400;500;700;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet" />
     
     <style is:inline>
       :root {
-        --bg: #f9f8f6;
-        --card-bg: #ffffff;
-        --text: #2d312e;
-        --sub-text: #767a77;
-        --accent: #9d8161;
-        --olive: #5d6d5f;
-        --border: #e8e4dc;
-        --highlight: #f4eee1;
+        --bg: #f4f3ef;
+        --white: #ffffff;
+        --navy: #112233;
+        --yellow: #ffde00;
+        --red: #e63946;
+        --teal: #2a9d8f;
+        --purple: #6a4c93;
+        --sub-text: #5c677d;
+        --border-color: #112233;
+        --card-bg: #faf9f6;
       }
 
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html { scroll-behavior: smooth; background-color: var(--bg); }
       body {
-        color: var(--text);
-        font-family: "Shippori Mincho", "Noto Sans JP", serif;
-        line-height: 2.1;
-        padding: 2.5rem 1rem 5rem;
+        color: var(--navy);
+        font-family: "Noto Sans JP", sans-serif;
+        line-height: 1.95;
+        padding: 2rem 1rem 4rem;
         -webkit-font-smoothing: antialiased;
       }
 
       .magazine-page {
-        max-width: 860px;
+        max-width: 900px;
         margin: 0 auto;
-        background-color: var(--card-bg);
-        border: 1px solid var(--border);
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-        padding: clamp(2rem, 5vw, 4.2rem);
-        border-radius: 4px;
+        background-color: var(--white);
+        border: 2px solid var(--border-color);
+        box-shadow: 8px 8px 0px rgba(17, 34, 51, 0.12);
+        padding: clamp(1.8rem, 5vw, 4rem);
       }
 
       .folio-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 2px solid var(--border-color);
         padding-bottom: 0.8rem;
-        font-size: 0.78rem;
-        color: var(--sub-text);
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
         letter-spacing: 0.05em;
         flex-wrap: wrap;
-        gap: 0.6rem;
+        gap: 0.5rem;
+      }
+      .badge-tag {
+        background-color: var(--navy);
+        color: var(--white);
+        padding: 0.2rem 0.6rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
       }
       .archive-btn-top {
+        color: var(--navy);
         text-decoration: none;
-        color: var(--text);
-        font-family: "Noto Sans JP", sans-serif;
-        font-size: 0.78rem;
-        font-weight: 500;
-        border: 1px solid var(--border);
-        background: var(--bg);
+        border: 1.5px solid var(--border-color);
         padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        background: var(--yellow);
+        font-weight: 800;
         transition: 0.15s;
+        box-shadow: 2px 2px 0px rgba(17, 34, 51, 0.1);
       }
-      .archive-btn-top:hover {
-        background: #efece6;
-        border-color: var(--accent);
-      }
+      .archive-btn-top:hover { background: #fff; transform: translateY(-1px); }
 
       .masthead {
         text-align: center;
-        padding: 3rem 0 2rem;
-        border-bottom: 1px solid var(--border);
+        padding: 3rem 0 1.5rem;
+        border-bottom: 3px solid var(--border-color);
       }
-      .journal-sub {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 0.85rem;
+      .sub-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 800;
         letter-spacing: 0.25em;
+        color: var(--red);
+        margin-bottom: 0.6rem;
         text-transform: uppercase;
-        color: var(--accent);
-        margin-bottom: 0.5rem;
-        font-weight: 600;
       }
       .main-logo {
-        font-family: "Cormorant Garamond", serif;
-        font-size: clamp(3.2rem, 9vw, 5.2rem);
+        font-family: "Montserrat", sans-serif;
+        font-size: clamp(3.2rem, 10vw, 5.8rem);
+        font-weight: 900;
         font-style: italic;
-        font-weight: 500;
-        color: var(--olive);
-        line-height: 0.95;
-        letter-spacing: -0.02em;
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+        color: var(--navy);
+        text-transform: uppercase;
       }
-      .issue-lead {
-        margin-top: 1.2rem;
-        font-size: 0.85rem;
-        color: var(--sub-text);
+
+      .city-dispatch-board {
+        margin: 1.8rem 0 1.2rem;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        box-shadow: 4px 4px 0px rgba(17, 34, 51, 0.08);
+        padding: 1.2rem 1.4rem;
+        border-radius: 4px;
+      }
+      .dispatch-header {
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: var(--red);
+        border-bottom: 1.5px solid #e0dfd5;
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.8rem;
         display: flex;
-        justify-content: center;
-        gap: 1.2rem;
+        justify-content: space-between;
         flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .dispatch-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.88rem;
+        color: var(--navy);
+      }
+      .dispatch-item { display: flex; align-items: center; gap: 0.4rem; }
+      .dispatch-val { font-weight: 800; }
+      .dispatch-bike-badge {
+        background: var(--navy);
+        color: var(--white);
+        font-family: "Montserrat", sans-serif;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.82rem;
+        font-weight: 800;
+        border-radius: 3px;
+        letter-spacing: 0.05em;
       }
 
       .editorial-nav {
@@ -116,122 +154,180 @@ const latest = postList[0];
         flex-wrap: wrap;
         gap: 0.35rem;
         padding: 1.2rem 0;
-        border-bottom: 1px dashed var(--border);
+        border-bottom: 1px dashed #ccc;
       }
-      .nav-tag {
-        font-family: "Noto Sans JP", sans-serif;
-        font-size: 0.72rem;
+      .nav-pill {
+        font-family: "Montserrat", sans-serif;
+        font-size: 0.68rem;
+        font-weight: 800;
         text-decoration: none;
-        color: var(--text);
-        background: var(--bg);
-        border: 1px solid var(--border);
-        padding: 0.25rem 0.65rem;
+        color: var(--navy);
+        background: #f0f0eb;
+        border: 1.5px solid var(--border-color);
+        padding: 0.25rem 0.55rem;
         border-radius: 20px;
         transition: 0.15s;
       }
-      .nav-tag:hover, .nav-tag.highlight {
-        background: var(--highlight);
-        border-color: var(--accent);
-        color: var(--olive);
+      .nav-pill:hover, .nav-pill.highlight {
+        background: var(--yellow);
+        transform: translateY(-2px);
       }
 
       .radio-bar {
-        background: var(--olive);
-        color: #ffffff;
-        padding: 0.9rem 1.4rem;
+        background: var(--navy);
+        color: var(--white);
+        padding: 1rem 1.4rem;
         margin: 1.8rem 0 2.8rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(93, 109, 95, 0.15);
+        border-radius: 8px;
+        box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
         gap: 1rem;
       }
       .radio-btn {
-        background: #ffffff;
-        color: var(--olive);
+        background: var(--yellow);
+        color: var(--navy);
         border: none;
-        font-family: "Noto Sans JP", sans-serif;
-        font-weight: 700;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 800;
         font-size: 0.82rem;
-        padding: 0.45rem 1.2rem;
-        border-radius: 20px;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
         cursor: pointer;
-        transition: 0.15s;
+        transition: 0.1s;
       }
-      .radio-btn:hover { background: #f3efe8; }
+      .radio-btn:hover { filter: brightness(1.05); }
       .radio-info {
+        font-family: "Chivo Mono", monospace;
         font-size: 0.75rem;
-        color: #e4ebe5;
-        letter-spacing: 0.05em;
+        color: #ccd6f6;
       }
 
       .article-content { margin-top: 1.5rem; }
       .article-content h2 {
-        font-family: "Shippori Mincho", serif;
+        font-family: "Montserrat", sans-serif;
         font-size: 1.35rem;
-        font-weight: 700;
-        background: #fbfaf8;
-        border-left: 4px solid var(--olive);
+        font-weight: 900;
+        text-transform: uppercase;
+        background: #f5f4ef;
+        border-left: 6px solid var(--navy);
         padding: 0.6rem 1rem;
         margin: 4rem 0 1.5rem;
         scroll-margin-top: 2rem;
+        clear: both;
+        width: 100%;
+        display: block;
       }
+
+      #benjamin { background: #fdfaf2 !important; border-left: 6px solid var(--red) !important; }
+      #niche-stock { background: #f0f7f4 !important; border-left: 6px solid #2d6a4f !important; }
+      #comedy { background: #f4faf8 !important; border-left: 6px solid var(--teal) !important; }
+      #bike { background: #fefae0 !important; border-left: 6px solid #d4a373 !important; }
+      #sauna { background: #edf2f4 !important; border-left: 6px solid #457b9d !important; }
+
       .article-content h3 {
-        font-size: 1.15rem;
+        font-family: "Shippori Mincho", serif;
+        font-size: 1.18rem;
         font-weight: 700;
         margin: 2rem 0 0.8rem;
-        color: var(--olive);
+        color: var(--navy);
+        clear: both;
       }
       .article-content p {
         margin-bottom: 1.6rem;
         text-align: justify;
-        font-size: 1.02rem;
-        color: #363b37;
+        font-size: 0.98rem;
+        color: #2b2d42;
+        clear: both;
       }
-      .article-content a {
-        color: var(--accent);
-        text-decoration: none;
-        border-bottom: 1px solid var(--accent);
-        padding-bottom: 1px;
-        transition: 0.1s;
-      }
-      .article-content a:hover {
-        background: var(--highlight);
-        color: var(--olive);
-      }
-      .article-content ul, .article-content ol { margin: 1.2rem 0 1.8rem 1.4rem; }
-      .article-content li { margin-bottom: 0.8rem; font-size: 1.02rem; }
 
-      .magazine-photo-box { margin: 3rem 0; }
+      .flow-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0.8rem;
+        margin: 2.2rem 0;
+        padding: 1.4rem;
+        background: #ffffff;
+        border: 2px solid var(--border-color);
+        box-shadow: 4px 4px 0px rgba(17, 34, 51, 0.1);
+        overflow-x: auto;
+        clear: both;
+        width: 100%;
+      }
+      .flow-card {
+        flex: 1 1 200px;
+        min-width: 180px;
+        background: var(--card-bg);
+        border: 1.5px solid #2d3748;
+        padding: 1rem;
+        border-radius: 6px;
+      }
+      .flow-step {
+        font-size: 0.72rem;
+        font-weight: 800;
+        background: var(--yellow);
+        padding: 0.15rem 0.5rem;
+        border: 1px solid #000;
+        display: inline-block;
+        margin-bottom: 0.4rem;
+        border-radius: 2px;
+      }
+      .flow-title { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+      .flow-body { font-size: 0.82rem; color: var(--sub-text); line-height: 1.5; }
+      .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: var(--red);
+      }
+
+      .magazine-photo-box { margin: 3rem 0; clear: both; }
       .magazine-photo-box img {
         width: 100%;
         height: auto;
         display: block;
-        border-radius: 4px;
-        border: 1px solid var(--border);
+        border: 2px solid var(--border-color);
       }
       .photo-caption {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 0.78rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
         color: var(--sub-text);
         margin-top: 0.5rem;
         text-align: right;
-        letter-spacing: 0.1em;
       }
+
+      .article-content a {
+        color: var(--red);
+        text-decoration: none;
+        font-weight: 700;
+        border-bottom: 2px solid var(--red);
+      }
+      .article-content a:hover { background: var(--yellow); color: #000; }
+      .article-content ul, .article-content ol { margin: 1.2rem 0 1.8rem 1.4rem; clear: both; }
+      .article-content li { margin-bottom: 0.8rem; font-size: 0.98rem; }
 
       .footer-deck {
         margin-top: 5rem;
-        border-top: 1px solid var(--border);
+        border-top: 2px solid var(--border-color);
         padding-top: 2rem;
         text-align: center;
-        font-size: 0.78rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
         color: var(--sub-text);
+        clear: both;
       }
 
       @media (max-width: 600px) {
-        body { padding: 1.5rem 0.8rem 3.5rem; }
-        .magazine-page { padding: 1.8rem 1.2rem; }
+        .magazine-page { padding: 1.5rem 1rem; box-shadow: none; }
+        .flow-wrapper { flex-direction: column; align-items: stretch; }
+        .flow-arrow { text-align: center; transform: rotate(90deg); margin: 0.2rem 0; }
         .radio-bar { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
       }
     </style>
@@ -240,46 +336,68 @@ const latest = postList[0];
     <article class="magazine-page">
       <div class="folio-bar">
         <div>
-          <span>ZAZZY MAGAZINE</span>
-          <span>·</span>
-          <span>NAGAREYAMA / {latest ? latest.frontmatter.date : ""}</span>
+          <span class="badge-tag">CITY BOY'S JOURNAL</span>
+          <span>TOKYO / {latest ? latest.frontmatter.date : ""}</span>
         </div>
         <div>
-          <a href="/her-daily-magazine/archive/" class="archive-btn-top">🌿 バックナンバー一覧 ↗</a>
+          <a href="/my-daily-magazine/archive/" class="archive-btn-top">📚 バックナンバー一覧 ↗</a>
         </div>
       </div>
 
       <header class="masthead">
-        <p class="journal-sub">A DAILY CHRONICLE OF SERENITY, BEAUTY & HOME</p>
-        <h1 class="main-logo">Zazzy</h1>
-        <div class="issue-lead">
-          <span>流山おおたかの森</span>
-          <span>·</span>
-          <span>気温: {latest ? latest.frontmatter.temp : ""}</span>
-          <span>·</span>
-          <span>日没: {latest ? latest.frontmatter.sunset : ""}</span>
-        </div>
+        <p class="sub-title">A MAGAZINE FOR PATERNITY, CULTURE & THE CITY</p>
+        <h1 class="main-logo">ZAZZY</h1>
       </header>
 
-      <!-- 全13コーナー完全対応ナビゲーション -->
+      <section class="city-dispatch-board">
+        <div class="dispatch-header">
+          <span>❖ CITY BOARD / TOKYO ENVIRONMENT</span>
+          <span>SPECIAL: PATERNITY LEAVE</span>
+        </div>
+        <div class="dispatch-grid">
+          <div class="dispatch-item">
+            <span>🗓 DATE:</span>
+            <span class="dispatch-val">{latest ? latest.frontmatter.date : "TODAY"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>🏍 BIKE:</span>
+            <span class="dispatch-bike-badge">{latest && latest.frontmatter.bike ? latest.frontmatter.bike : "HONDA GB350"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>🌡 TEMP:</span>
+            <span class="dispatch-val">{latest && latest.frontmatter.temp ? latest.frontmatter.temp : "20°C"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>🌇 SUNSET:</span>
+            <span class="dispatch-val">{latest && latest.frontmatter.sunset ? latest.frontmatter.sunset : "18:00"}</span>
+          </div>
+          <div class="dispatch-item">
+            <span>💨 WIND:</span>
+            <span class="dispatch-val">{latest && latest.frontmatter.wind ? latest.frontmatter.wind : "3 km/h"}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 全14コーナー完全対応ナビゲーション -->
       <nav class="editorial-nav">
-        <a href="#minimal" class="nav-tag">01 調律と減算法</a>
-        <a href="#laugh" class="nav-tag highlight">🎭 02 芸人ネタ3選</a>
-        <a href="#comedy-history" class="nav-tag highlight">🎙 03 平成お笑い史</a>
-        <a href="#baby" class="nav-tag">👶 04 赤ちゃん3選</a>
-        <a href="#baby-travel" class="nav-tag highlight">🚗 05 赤ちゃん旅行</a>
-        <a href="#uniqlo" class="nav-tag">👗 06 ユニクロ特集</a>
-        <a href="#sauna-spa" class="nav-tag highlight">🧖 07 サウナ＆スパ</a>
-        <a href="#chill-hiphop" class="nav-tag">🎵 08 チル音楽</a>
-        <a href="#stream" class="nav-tag">📺 09 おすすめ配信</a>
-        <a href="#otaka" class="nav-tag">🌿 10 おおたかの森</a>
-        <a href="#book" class="nav-tag">📖 11 本とことば</a>
-        <a href="#refresh" class="nav-tag">☕ 12 ティータイム</a>
+        <a href="#lead-story" class="nav-pill">01 化学論文3選</a>
+        <a href="#benjamin" class="nav-pill highlight">★ 02 デイリーベンジャミン</a>
+        <a href="#niche-stock" class="nav-pill highlight">📈 03 ニッチ株</a>
+        <a href="#news" class="nav-pill">04 経済マクロ</a>
+        <a href="#baby" class="nav-pill">05 赤ちゃん3選</a>
+        <a href="#comedy" class="nav-pill highlight">🎭 06 コア芸人3選</a>
+        <a href="#curiosity" class="nav-pill">07 未知の世界</a>
+        <a href="#workout" class="nav-pill">💪 08 筋トレ</a>
+        <a href="#bike" class="nav-pill highlight">🏍 09 名車バイク</a>
+        <a href="#sauna" class="nav-pill highlight">🧖 10 サウナ詳細</a>
+        <a href="#evidence" class="nav-pill">🔬 11 論文健康</a>
+        <a href="#novel" class="nav-pill">📚 12 推薦小説</a>
+        <a href="#music" class="nav-pill">🎵 13 音楽/英語</a>
       </nav>
 
       <div class="radio-bar">
         <div>
-          <button id="radio-toggle" class="radio-btn">▶ 音声で聴く（朝のラジオ）</button>
+          <button id="radio-toggle" class="radio-btn">▶ PLAY MORNING RADIO</button>
         </div>
         <div id="radio-status" class="radio-info">AUDIO SYNTHESIS: READY</div>
       </div>
@@ -288,12 +406,12 @@ const latest = postList[0];
         {latest ? (
           <latest.Content />
         ) : (
-          <p>朝刊を発行中です。Actionsから実行してください。</p>
+          <p>最新号を発行中です。Actionsから実行してください。</p>
         )}
       </main>
 
       <footer class="footer-deck">
-        <p>© 2026 Zazzy — PRINTED DIGITALLY FOR PRIVATE LIVING.</p>
+        <p>© 2026 ZAZZY — PRINTED DIGITALLY FOR PRIVATE USE.</p>
       </footer>
     </article>
 
@@ -331,7 +449,7 @@ const latest = postList[0];
       function stopRadio() {
         window.speechSynthesis.cancel();
         isPlaying = false;
-        btn.innerText = "▶ 音声で聴く（朝のラジオ）";
+        btn.innerText = "▶ PLAY MORNING RADIO";
         status.innerText = "AUDIO SYNTHESIS: STOPPED";
       }
 
@@ -339,14 +457,14 @@ const latest = postList[0];
         if (!isPlaying) return;
         if (currentIdx >= chunks.length) {
           isPlaying = false;
-          btn.innerText = "▶ 音声で聴く（朝のラジオ）";
+          btn.innerText = "▶ PLAY MORNING RADIO";
           status.innerText = "AUDIO SYNTHESIS: FINISHED";
           return;
         }
 
         const utterance = new SpeechSynthesisUtterance(chunks[currentIdx]);
         utterance.lang = "ja-JP";
-        utterance.rate = 1.0;
+        utterance.rate = 1.05;
 
         utterance.onend = () => {
           currentIdx++;
@@ -378,7 +496,7 @@ const latest = postList[0];
 
         const rawText = content.innerText
           .replace(/https?:\/\/\S+/g, "")
-          .replace(/[#*`_■§➔▲★🌿📻👶📖🎭👗☕🎙🧖🚗📺🎵]/g, "")
+          .replace(/[#*`_■§➔▲★🎭🧭🔬📚❖🗓🏍🌡🌇💨💪🎵🧖📈]/g, "")
           .trim();
 
         chunks = splitTextIntoChunks(rawText, 90);
@@ -387,7 +505,7 @@ const latest = postList[0];
         window.speechSynthesis.cancel();
         isPlaying = true;
         currentIdx = 0;
-        btn.innerText = "⏹ 朗読を停止";
+        btn.innerText = "⏹ STOP RADIO";
         status.innerText = "ON AIR : READING MORNING ISSUE";
 
         speakNextChunk();
