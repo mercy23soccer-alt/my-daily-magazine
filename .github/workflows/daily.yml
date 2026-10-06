@@ -15,10 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -43,7 +40,13 @@ jobs:
         run: |
           python generate_issue.py
 
-      # 先に Node.js でビルドを行い、確実に出力成果物を作成
+      - name: Commit article
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-publish daily issue" && git push origin main)
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -55,7 +58,6 @@ jobs:
       - name: Build Astro site
         run: npm run build
 
-      # GitHub Pages へのアップロードとデプロイを即時完了させる
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -64,14 +66,13 @@ jobs:
         with:
           path: './dist'
 
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      # デプロイ完了後、最後に生成された記事を git に安全に保存
-      - name: Commit article and photos
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-publish daily issue [skip ci]" && git push origin main)
