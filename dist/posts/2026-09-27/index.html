@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="ja"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Issue 2026-09-27 | ZAZZY</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet"><style>
+      :root {
+        --bg: #f4f3ef;
+        --white: #ffffff;
+        --navy: #112233;
+        --yellow: #ffde00;
+        --red: #e63946;
+        --teal: #2a9d8f;
+        --purple: #6a4c93;
+        --sub-text: #5c677d;
+        --border-color: #112233;
+        --card-bg: #faf9f6;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; background-color: var(--bg); }
+      body {
+        color: var(--navy);
+        font-family: "Noto Sans JP", sans-serif;
+        line-height: 1.95;
+        padding: 2rem 1rem 4rem;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .magazine-page {
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: var(--white);
+        border: 2px solid var(--border-color);
+        box-shadow: 8px 8px 0px rgba(17, 34, 51, 0.12);
+        padding: clamp(1.8rem, 5vw, 4rem);
+      }
+
+      .folio-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 0.8rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .nav-link-btn {
+        text-decoration: none;
+        color: var(--navy);
+        border: 1.5px solid var(--border-color);
+        padding: 0.2rem 0.6rem;
+        background: var(--yellow);
+        font-weight: 700;
+        transition: 0.1s;
+      }
+      .nav-link-btn:hover { background: #fff; }
+
+      .masthead {
+        text-align: center;
+        padding: 2.5rem 0 1.5rem;
+        border-bottom: 3px solid var(--border-color);
+      }
+      .main-logo {
+        font-family: "Montserrat", sans-serif;
+        font-size: clamp(3rem, 9vw, 5.2rem);
+        font-weight: 900;
+        font-style: italic;
+        line-height: 0.9;
+        color: var(--navy);
+      }
+      .archive-stamp {
+        margin-top: 1rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: var(--red);
+      }
+
+      .article-content { margin-top: 2rem; }
+      .article-content h2 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.35rem;
+        font-weight: 900;
+        background: #f5f4ef;
+        border-left: 6px solid var(--navy);
+        padding: 0.6rem 1rem;
+        margin: 3.5rem 0 1.5rem;
+      }
+      .article-content p {
+        margin-bottom: 1.6rem;
+        text-align: justify;
+        font-size: 0.98rem;
+        color: #2b2d42;
+      }
+      .article-content a {
+        color: var(--red);
+        text-decoration: none;
+        font-weight: 700;
+        border-bottom: 2px solid var(--red);
+      }
+      .magazine-photo-box { margin: 2.5rem 0; }
+      .magazine-photo-box img {
+        width: 100%;
+        height: auto;
+        border: 2px solid var(--border-color);
+      }
+      .photo-caption {
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--sub-text);
+        margin-top: 0.5rem;
+        text-align: right;
+      }
+
+      .footer-deck {
+        margin-top: 4rem;
+        border-top: 2px solid var(--border-color);
+        padding-top: 2rem;
+        text-align: center;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--sub-text);
+      }
+    </style></head> <body> <article class="magazine-page"> <div class="folio-bar"> <a href="/my-daily-magazine/archive/" class="nav-link-btn">← 目録（バックナンバー一覧）へ</a> <a href="/my-daily-magazine/" class="nav-link-btn">最新号へ戻る ↗</a> </div> <header class="masthead"> <h1 class="main-logo">ZAZZY</h1> <p class="archive-stamp">ARCHIVE ISSUE // 2026-09-27</p> </header> <main class="article-content"> <h2 id="lead-story">01. Lead Story: Science &#x26; Discovery</h2>
+<p>フラスコの中で鮮やかに完結した有機合成のルートが、パイロットプラントの巨大な金属釜に移行した途端、思いがけない沈黙や暴走に直面することがある。スケールアップという行為は、単に体積を何千倍にも膨らませることではない。撹拌羽根が生み出す流体の剪断、壁面を伝う熱の伝達速度、気液界面を横切る分子の移動効率――実験台の上では無視できた物理的な制約が、一気に主役へと躍り出る舞台の転換なのだ。その混沌を紐解き、過酷な条件下でも寸分違わず同じ品質を生み出し続ける堅牢な手順を築き上げること。それこそが、プロセス化学という領域が持つ無骨で誠実な美学である。</p>
+<p>今回紹介するのは、<em>Organic Process Research &#x26; Development</em>（OPRD）誌の最新号に掲載された、抗ウイルス薬候補化合物の合成における連続フロー光酸化反応を用いたスケールアップ研究である。光化学反応は原子効率に優れ、環境負荷の低いクリーンな合成手法として長年注目されてきたが、光の侵入深度がランベルト・ベールの法則によって極度に制限されるため、大容量のバッチリアクターでは光照射効率が著しく低下するという致命的な壁が存在していた。</p>
+<ul>
+<li><strong>論文タイトル</strong>: <em>Continuous Flow Photo-Oxygenation: Scalable Synthesis of an Endoperoxide Precursor via Singlet Oxygen Addition</em></li>
+<li><strong>著者</strong>: Elena V. Rostova, Liam K. O’Connor, et al.</li>
+<li><strong>掲載誌</strong>: <em>Org. Process Res. Dev.</em> 2024, 28, 9, 2605–2618</li>
+<li><strong>DOI</strong>: <a href="https://doi.org/10.1021/acs.oprd.4c00215">DOI: 10.1021/acs.oprd.4c00215</a></li>
+</ul>
+<p>著者らは、ジエン骨格に対する一重項酸素（¹O₂）の［4+2］環化付加反応によりエンドペルオキシド骨格を構築する工程に着目した。感光剤（テトラフェニルポルフィリン）と酸素ガスを連続流路内で効率よく混合させるため、内径数ミリのテフロンチューブと高輝度LEDアレイを組み合わせたテーラーメイドのミルクスネーク型連続流動光反応器を設計。気液二相のテイラー流を形成させることで、気液界面積を飛躍的に増大させ、酸素の溶解律速を劇的に改善した。</p>
+<p>さらに特筆すべきは安全性の担保である。中間体となる過酸化物は熱的に不安定であり、大量に蓄積することは工業的に極めて高いリスクを伴う。本研究では、流動反応器から流出した溶液を直ちに後続の還元工程へとインラインで直結。滞留時間をわずか数分に抑えることで、系内に不安定な中間体をほとんど滞留させないプロフラッシュな安全設計を実現した。光と流体、そして熱の挙動をミリメートル単位で手なずけ、危険な分子を極めて穏やかに手なずけていくこのアプローチは、未来の医薬品製造ラインが目指すべきひとつの完成形を提示している。</p>
+<div class="flow-wrapper">
+  <div class="flow-card"><span class="flow-step">STEP 1</span><div class="flow-title">連続光一重項酸素化</div><div class="flow-body">ジエン基質＋TPP感光剤 / 酸素ガス分圧制御、テイラー流下でのLED照射</div></div>
+  <div class="flow-arrow">➔</div>
+  <div class="flow-card"><span class="flow-step">STEP 2</span><div class="flow-title">インライン過酸化物消去</div><div class="flow-body">連続クエンチ流路 / 滞留時間制御による熱的不安定中間体の即時還元</div></div>
+  <div class="flow-arrow">➔</div>
+  <div class="flow-card"><span class="flow-step">STEP 3</span><div class="flow-title">貧溶媒添加による晶析</div><div class="flow-body">ヘプタン滴下 / シード結晶添加による単一結晶多形の選択的析出</div></div>
+</div>
+<div class="magazine-photo-box"><img src="/my-daily-magazine/images/2026-09-27_scene1.jpg" alt="Today&#x27;s Scene 1"><p class="photo-caption">SCENE 01 / TOKYO CITY LIFE</p></div>
+<h2 id="benjamin">02. Special Column: Daily Benjamin — 思考の調律と徳目の実践</h2>
+<p>朝の光が薄いカーテンを透かして床に柔らかな四角形を描くころ、部屋の中には独特の静けさが満ちている。まだ眠っている赤ちゃんの胸が微かに上下し、遠くの幹線道路を走るトラックの低周波が低く響いている。そんな無垢な時間帯に、ふと頭の片隅をかすめるものがある。「自分は今日、何か価値のあることを成し遂げられるだろうか」「この数か月、社会のスピードから取り残されているのではないか」という、輪郭の曖昧な焦燥感だ。</p>
+<p>認知的行動療法の世界では、こうした頭の中に次々と湧き上がる思考の波に対して「脱フュージョン（認知的切り離し）」というアプローチをとる。私たちは普段、頭の中に浮かんだ考えを自分そのものだと錯覚してしまう。「焦っている自分」「怠惰な自分」「もっと努力しなければならない自分」という看板を自ら掲げ、その看板が背負わせる重圧に押しつぶされそうになる。だが、少し立ち止まって呼吸を整え、心のスクリーンを客観的に眺めてみてほしい。「私は今、『社会から取り残されているのではないか』という思考を持っている」と、一歩引いて観察の枠組みを挟み込むのだ。思考は頭の中に吹き抜ける風のようなものであり、自分という存在そのものではない。風が吹いたからといって、家そのものが揺らぐ必要はないのと同じだ。</p>
+<p>ここで立ち返りたいのが、心理学やメンタルヘルスの現場で重宝される「HALT原則」である。人間が不安や焦燥、怒りに囚われるとき、その大半は高度な実存的悩みなどではなく、きわめてシンプルな身体的サインに起因している。</p>
+<ul>
+<li><strong>H（Hungry / 空腹）</strong></li>
+<li><strong>A（Angry / 怒り・苛立ち）</strong></li>
+<li><strong>L（Lonely / 孤独）</strong></li>
+<li><strong>T（Tired / 身体的疲労）</strong></li>
+</ul>
+<p>夜間に何度も目を覚まし、泣き声を全身で受け止め、腕の中で赤子の体重を支え続ける日々において、親の身体は恒常的な睡眠不足と肉体疲労（Tired）に晒されている。脳のエネルギーが枯渇しかけているとき、扁桃体は過敏になり、未来への漠然とした不安を過剰に肥大化させる。つまり、あなたの心が弱っているのではなく、単に脳と肉体が「休め」とサインを送っているに過ぎないのだ。</p>
+<p>育児休業という期間における唯一無二の優先事項、それは家庭というインフラを平穏に維持し、自分とパートナー、そして赤ちゃんの身体的・精神的安全を守り抜くことである。今日一日、赤ちゃんがミルクを飲み、オムツが替えられ、夫婦が互いに大きな怪我もなく一日を終えられたなら、それだけで百点満点どころか百二十点なのだ。資格の勉強が進まなくても、積読の山が崩せなくても、手の込んだ料理が作れなくても、それは減点の理由には一切ならない。</p>
+<p>思考を調律する秘訣は「足し算」ではなく「減算法」にある。日々のToDoリストに新しいタスクを書き足すのではなく、「今日、自分が手放せる余計な執着は何か」をひとつずつ削ぎ落としていく。「立派な父親であらねばならない」「時間を無駄にしてはならない」という自己規定を手放す。湯を沸かし、一杯の白湯を飲み干すその数分間だけ、あらゆる評価軸から身を引いて、ただそこに在る自分の呼吸に意識を戻す。世界はあなたが何者かであることを証明しなくても、十分に美しく回っているのだ。</p>
+<h2 id="news">03. Curated News &#x26; Macro: 世界経済と暮らしのインパクト</h2>
+<p>週明けの国際金融市場では、米国の金融政策の舵取りと為替相場の神経質な値動きが続いている。金利の先行きに対する見方が交錯する中、世界的なサプライチェーンの再編と半導体・先端材料分野への設備投資は依然として高水準を維持しており、製造業の基盤を持つ各国の技術開発競争は新たな局面を迎えている。</p>
+<ul>
+<li><a href="https://www.nikkei.com/business/">日本経済新聞 / ビジネス</a></li>
+<li><a href="https://times.abema.tv/">ABEMA TIMES</a></li>
+</ul>
+<p>こうしたマクロ経済の動向は、遠いニュースの向こう側の話ではなく、日々の家計や技術者としての将来設計に直結している。為替とエネルギー価格の変動は輸入品や日用品の価格に静かに波及しており、育児に伴う消耗品コストの推移も見過ごせない要素だ。しかし、長期的な視点を持つ投資家として、また現場を知る技術者として状況を俯瞰すれば、短期的な価格変動に過敏になる必要はない。真に競争力を持つ技術や生産プロセスの価値は、市況の荒波を越えて確実に残るからだ。今は家庭の足元を固めつつ、静かに世界の構造変化を観察する知的な冷静さを保ちたい。</p>
+<h2 id="baby">04. Baby &#x26; Paternity: 赤ちゃん関連の重要情報（厳選3選）</h2>
+<p>乳幼児との生活において、確かな科学的知見は親の心の最大の防波堤になる。今週押さえておきたい3つのエビデンスと実践知を紹介する。</p>
+<ul>
+<li><a href="https://www.cfa.go.jp/">こども家庭庁 公式ポータル</a></li>
+<li><a href="https://www.jpeds.or.jp/">日本小児科学会</a></li>
+</ul>
+<h3 id="1-乳幼児の睡眠リズムとメラトニン分泌の確立">1. 乳幼児の睡眠リズムとメラトニン分泌の確立</h3>
+<p>生後数か月の赤ちゃんは、まだ体内時計が未発達であり、自力で安定した睡眠サイクルを作ることが難しい。小児睡眠医学の研究によれば、朝起きた直後にカーテンを開けて自然光を浴びせること、そして夜間は部屋の照明を暖色系の暗めなトーンに落とすことの徹底が、メラトニンの夜間分泌を促す最も有効な手段である。親が夜間にスマートフォンの強い光を赤ちゃんの視野に入れない工夫も、睡眠の質を左右する。</p>
+<h3 id="2-首すわりから寝返り期における安全環境の再設計">2. 首すわりから寝返り期における安全環境の再設計</h3>
+<p>月齢が進み、手足を激しくバタつかせるようになると、予期せぬ寝返りや移動によるヒヤリハットが急増する。日本小児科学会のガイドラインでも強調されている通り、ベビーベッド内には窒息リスクとなるぬいぐるみや余分なタオル、柔らかすぎるクッションを一切置かないことが鉄則である。硬めのマットレスと、隙間のないシーツのセッティングを今一度点検したい。</p>
+<h3 id="3-産後パートナーシップを支えるタスクの可視化">3. 産後パートナーシップを支える「タスクの可視化」</h3>
+<p>育児中の夫婦間における摩擦の多くは、悪意ではなく「お互いがどれだけの認知負荷を抱えているか見えないこと」から生じる。オムツ替えや沐浴といった目に見える作業だけでなく、「ミルクの粉の残量を気にする」「洗濯機のフィルターを掃除する」といった名もなき家事を書き出し、お互いの負担を視覚化することで、無駄な衝突を減らし協力関係を強固にできる。</p>
+<h2 id="comedy">05. The Laugh &#x26; Radio: お笑い・深夜ラジオ解体新書</h2>
+<p>真夜中、暗いリビングでワイヤレスイヤホンを片耳だけ装着し、低く抑えられた笑い声を聴く時間は、育休中のパパにとって聖域のようなものだ。今、深夜ラジオとお笑いの世界で圧倒的な輝きを放っているのが、真空ジェシカの狂気と緻密さが同居した漫才構造であり、マユリカが繰り広げる剥き出しの人間関係性である。</p>
+<p>真空ジェシカのネタを解体すると、そこには「論理の脱線」を徹底的にコントロールされた美しさがある。川北が放つ突拍子もないボケは、一見すると完全なカオスに見えるが、実は言葉の多義性や文脈の盲点を極めてシニカルに突いている。それに対してガクが、怯えと理性の入り混じった独特のトーンで正確にツッコミを入れることで、歪んだ世界が一瞬で観客の共有認識へと引き戻される。この「狂気の構築」と「理性の修復」がミリ秒単位で反復されるグルーヴは、極上の知的なスリルを生み出している。</p>
+<p>一方で、マユリカの『うなげろりん！！』に見られる魅力は、幼馴染という逃れられない関係性から滲み出る情けなさと愛嬌だ。大人が社会生活を送る上で必死に隠そうとする見栄、嫉妬、だらしなさを、二人は惜しげもなく電波に乗せて曝け出す。誰かの完璧ではない姿に触れ、声を出して笑ってしまうとき、私たちは「ちゃんとしていなければならない」という日常のプレッシャーから静かに解放されているのだ。</p>
+<ul>
+<li><a href="https://www.youtube.com/results?search_query=%E3%81%8A%E7%AC%91%E3%81%84+%E3%83%A9%E3%82%B8%E3%82%AA">▶ YouTubeでお笑い・ラジオを見る</a></li>
+</ul>
+<h2 id="curiosity">06. Curiosity Expedition: 未知なる世界への招待</h2>
+<p>日常のルーティンから少し視線を逸らし、知的好奇心の針をまったく別の方向へ振ってみる。今回紹介したいのは、静かに愛好家を増やし続けている「塊根植物（コーデックス）」の世界、特にマダガスカル原産の<em>パキポディウム・グラキリス</em>の造形美についてだ。</p>
+<p>アフリカの乾燥地帯や岩場という極限環境を生き抜くため、彼らは自らの幹を丸く肥大化させ、膨大な水分をその身に蓄える形態を選んだ。ひび割れた灰色の肌、鋭いトゲ、そしてその頂点から頼りなげに茂る鮮やかな緑の葉。その姿は、盆栽のような伝統的調和美とは異なる、過酷な自然淘汰が生み出した彫刻のような圧倒的存在感を放つ。</p>
+<p>人間が手を加えすぎず、風とわずかな水、そして強い日光を与えることで、植物は自らのペースで年月を刻んでいく。1年に数ミリしか成長しないその悠久の時間は、即時的な成果や効率を求められがちな現代において、時間の流れそのものを再定義してくれる。ベランダの片隅に佇む丸い塊を見つめることは、急ぎすぎる都市のリズムに対するささやかな抵抗でもあるのだ。</p>
+<h2 id="evidence">07. Evidence Wellness: 最新論文が教える心身の整え方</h2>
+<p>慢性的な疲労感や気分の落ち込みをケアする上で、近年のバイオメディカル研究が最も熱い視線を注いでいるのが「腸脳相関（Gut-Brain Axis）」と迷走神経のメカニズムである。</p>
+<ul>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/">🔬 PubMed最新研究</a></li>
+</ul>
+<p>PubMedに掲載された最新のメタアナリシス研究によると、腸内細菌叢の多様性と短鎖脂肪酸（特に酪酸）の産生能は、中枢神経系におけるセロトニン受容体の発現や、ストレス応答系であるHPA軸（視床下部-下垂体-副腎系）の過剰な興奮の抑制と直接相関していることが示されている。睡眠が断片化しがちな時期にこそ、カフェインや過剰な糖分で誤魔化すのではなく、発酵食品や水溶性食物繊維を意識的に摂取することが、自律神経の安定とメンタルのレジリエンス維持に寄与する。</p>
+<p>また、筋力トレーニングがもたらす抗うつ効果についても確固たる知見が集まっている。高重量を扱うことだけが正解ではなく、自重や軽めのダンベルを用いたスクワットなど、大筋群を意識的に収縮・弛緩させる動作が、血中のマイオカイン分泌を促進し、脳内の神経栄養因子（BDNF）を活性化させる。育児の合間にスクワットを10回行うだけでも、それは単なる筋トレを超えた、脳のコンディショニングとして機能しているのだ。</p>
+<h2 id="novel">08. Book Archive: 人生を揺らすオススメの小説</h2>
+<p>静かな夜にページをめくるなら、言葉の重みと人間の業を静謐に描き出した骨太な物語を選びたい。今宵おすすめしたいのは、小川洋子の『密やかな結晶』である。</p>
+<ul>
+<li><a href="https://www.amazon.co.jp/">📚 Amazonで見る</a></li>
+</ul>
+<p>ある孤島で、鳥、リボン、写真といった事物が人々の記憶から次々と「消滅」していく物語だ。消滅が起きると、人々はその対象に関する記憶を失い、物理的にも燃やしたり川に流したりして処分してしまう。しかし、記憶を失うことができないごく一部の人間は「記憶狩り」の対象となり、追いつめられていく。主人公の小説家は、記憶を保持し続ける編集者を自宅の隠し部屋に匿い、消えゆく言葉を必死に紡ぎ続けようとする。</p>
+<p>すべてが効率化され、忘れ去られていく現代社会において、私たちが本当に手放してはならないものは何なのか。静かで澄み切った文体の中に漂う、張り詰めた緊張感と深い祈り。読み終えた後、自分の周囲にある何気ない日常の輪郭が、まったく新しい光を帯びて立ち上がってくるような体験をもたらしてくれる一冊だ。</p>
+<h2 id="music">09. The Cipher: West Coast, Kendrick &#x26; Culture</h2>
+<p>コンプトンのストリートから生まれた言葉を、ピューリッツァー賞を受賞するまでの文学的高みへと押し上げたケンドリック・ラマー。彼の音楽が世界中のリスナーの心を揺さぶり続ける理由は、単なる富や成功の誇示ではなく、常に自身の弱さや偽善、そして神と悪魔の間で引き裂かれる内面を赤裸々に刻みつけているからだ。</p>
+<p>傑作アルバム『To Pimp a Butterfly』に収録された「Alright」の一節に、こんなリリックがある。</p>
+<blockquote>
+<p><em>“Alls my life I has to fight, nigga / Alls my life I… / Hard times like, ‘God!’ / Bad trips like, ‘Yea!’ / Nazarene, look at what you done did, / We gonna be alright!”</em></p>
+</blockquote>
+<p>アリス・ウォーカーの小説『カラーパープル』の有名なセリフを引用し、幾世代にもわたる苦難の歴史を背負いながらも、最後に放たれる「We gonna be alright（俺たちはきっと大丈夫だ）」というフレーズ。それは根拠のない楽観主義ではない。絶望の深さを知り尽くし、全身に傷を負った人間が、それでもなお前を向くために絞り出す魂の祈りである。</p>
+<p>都市の片隅で生活の重みと向き合うとき、ケンドリックの低く乾いたフロウは、私たちの背中を力強く叩くのではなく、ただ隣に腰掛けて静かに肯いてくれるような、孤高の連帯感を与えてくれる。</p>
+<div class="magazine-photo-box"><img src="/my-daily-magazine/images/2026-09-27_scene2.jpg" alt="Today&#x27;s Scene 2"><p class="photo-caption">SCENE 02 / STEAM, ROAST &#x26; HOME</p></div>
+<h2 id="escape">10. Escape: Sauna Destination, Route &#x26; Home</h2>
+<p>週末の束の間、許された数時間の自由をどう過ごすか。それはシティボーイにとって、自己を調律するための大切な儀式である。</p>
+<ul>
+<li><a href="https://sauna-ikitai.com/">🧖 サウナイキタイ</a></li>
+</ul>
+<p>ヘルメットのシールドを下ろし、Honda GB350のセルボタンを押す。単気筒特有の「ドコドコ」という低音のパルスが、ハンドルバーを通じて手のひらから全身へと伝わっていく。目指すのは都心を少し外れた名湯、深大寺温泉「湯守の里」だ。甲州街道を抜け、木々が鬱蒼と茂る武蔵野の旧道へとバイクを滑らせる。単気筒エンジンの穏やかなトルクを感じながら流す道のりは、高ぶった神経の回転数を少しずつアイドリング状態へと引き戻してくれる。</p>
+<p>湯守の里の黒湯で下茹でを済ませ、年季の入ったサウナ室の扉を開ける。暗めの照明と薪の香りが漂う空間で、じっくりと熱を体に染み込ませる。吹き出す汗とともに、日々の雑多な思考が削ぎ落とされていくのを感じる。水風呂で急速に熱を冷まし、木々のざわめきが聞こえる外気浴スペースに身を横たえれば、皮膚を撫でる秋の風と一体になるような深い安らぎが訪れる。</p>
+<p>帰宅後、家族が寝静まった深夜のキッチンで湯を沸かす。浅煎りのエチオピアを丁寧に挽き、ペーパードリップのドリッパーに粉を盛る。細く落とした湯が豆を膨らませ、部屋いっぱいにフローラルでフルーティーなアロマが立ち込める。サーバーに落ちるポタポタという音に耳を澄ませるその数分間、心は完全に今ここへと帰還する。</p>
+<h2 id="colophon">11. Editor's Colophon</h2>
+<p>2026年9月27日。秋分の風が街を通り抜け、気温は19.1℃、日没は17時31分。夕暮れの空は淡い藍色から茜色へのグラデーションを静かに描き、季節が確かに一歩進んだことを知らせている。</p>
+<p>何かを達成しようと力む必要はない。今日という一日を平穏に繋ぎ止めたこと、その事実だけであなたの役割は十分に果たされている。お気に入りのマグカップを両手で包み、温かい珈琲の余韻を味わいながら、今夜はただ静かに眠りにつこう。明日の風は、また明日吹くのだから。</p> </main> <footer class="footer-deck"> <p>© 2026 ZAZZY — BACK NUMBER ARCHIVE.</p> </footer> </article> <script>
+      document.querySelectorAll(".article-content a").forEach((link) => {
+        if (link.hostname && link.hostname !== window.location.hostname) {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        }
+      });
+    </script> </body> </html>

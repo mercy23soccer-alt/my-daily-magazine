@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="ja"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Issue 2026-09-24 | ZAZZY</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@500;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet"><style>
+      :root {
+        --bg: #f4f3ef;
+        --white: #ffffff;
+        --navy: #112233;
+        --yellow: #ffde00;
+        --red: #e63946;
+        --teal: #2a9d8f;
+        --purple: #6a4c93;
+        --sub-text: #5c677d;
+        --border-color: #112233;
+        --card-bg: #faf9f6;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; background-color: var(--bg); }
+      body {
+        color: var(--navy);
+        font-family: "Noto Sans JP", sans-serif;
+        line-height: 1.95;
+        padding: 2rem 1rem 4rem;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .magazine-page {
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: var(--white);
+        border: 2px solid var(--border-color);
+        box-shadow: 8px 8px 0px rgba(17, 34, 51, 0.12);
+        padding: clamp(1.8rem, 5vw, 4rem);
+      }
+
+      .folio-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 0.8rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .nav-link-btn {
+        text-decoration: none;
+        color: var(--navy);
+        border: 1.5px solid var(--border-color);
+        padding: 0.2rem 0.6rem;
+        background: var(--yellow);
+        font-weight: 700;
+        transition: 0.1s;
+      }
+      .nav-link-btn:hover { background: #fff; }
+
+      .masthead {
+        text-align: center;
+        padding: 2.5rem 0 1.5rem;
+        border-bottom: 3px solid var(--border-color);
+      }
+      .main-logo {
+        font-family: "Montserrat", sans-serif;
+        font-size: clamp(3rem, 9vw, 5.2rem);
+        font-weight: 900;
+        font-style: italic;
+        line-height: 0.9;
+        color: var(--navy);
+      }
+      .archive-stamp {
+        margin-top: 1rem;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: var(--red);
+      }
+
+      .article-content { margin-top: 2rem; }
+      .article-content h2 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.35rem;
+        font-weight: 900;
+        background: #f5f4ef;
+        border-left: 6px solid var(--navy);
+        padding: 0.6rem 1rem;
+        margin: 3.5rem 0 1.5rem;
+      }
+      .article-content p {
+        margin-bottom: 1.6rem;
+        text-align: justify;
+        font-size: 0.98rem;
+        color: #2b2d42;
+      }
+      .article-content a {
+        color: var(--red);
+        text-decoration: none;
+        font-weight: 700;
+        border-bottom: 2px solid var(--red);
+      }
+      .magazine-photo-box { margin: 2.5rem 0; }
+      .magazine-photo-box img {
+        width: 100%;
+        height: auto;
+        border: 2px solid var(--border-color);
+      }
+      .photo-caption {
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--sub-text);
+        margin-top: 0.5rem;
+        text-align: right;
+      }
+
+      .footer-deck {
+        margin-top: 4rem;
+        border-top: 2px solid var(--border-color);
+        padding-top: 2rem;
+        text-align: center;
+        font-family: "Chivo Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--sub-text);
+      }
+    </style></head> <body> <article class="magazine-page"> <div class="folio-bar"> <a href="/my-daily-magazine/archive/" class="nav-link-btn">← 目録（バックナンバー一覧）へ</a> <a href="/my-daily-magazine/" class="nav-link-btn">最新号へ戻る ↗</a> </div> <header class="masthead"> <h1 class="main-logo">ZAZZY</h1> <p class="archive-stamp">ARCHIVE ISSUE // 2026-09-24</p> </header> <main class="article-content"> <h1 id="the-daily-extract">THE DAILY EXTRACT</h1>
+<p><strong>Issue No. 412 | Thursday, September 24, 2026</strong>
+<em>An Urban Private Magazine for Massashi Kojima</em></p>
+<hr>
+<h2 id="lead-story">1. Lead Story: Discovery &#x26; Process</h2>
+<h3 id="スラリーの閉塞を打破する濡れ性制御と連続晶析キロスケール化における伝熱流動のリアル">スラリーの閉塞を打破する「濡れ性制御」と連続晶析：キロスケール化における伝熱・流動のリアル</h3>
+<p>プロセス化学の現場において、反応そのものの収率向上以上に開発者を悩ませるのは、最終工程における晶析とスラリーのハンドリングです。高潮湿な気候下やスケールアップ時には、結晶の油状化（Oiling Out）や撹拌翼・配管への固着、伝熱面の閉塞が致命的なボトルネックとなります。本日ピックアップするのは、連続流晶析における核発生と流体力学を厳密に制御し、10 kgスケールでの安定運転を実現した最新のOPRD論文です。</p>
+<ul>
+<li><strong>論文タイトル</strong>: Optimization and Scale-Up of Continuous Flow Crystallization for a Polymorphic API: Controlling Oiling-Out and Slurry Transport</li>
+<li><strong>著者</strong>: Marcus Vance, Helena Rostova, and David K. Chen</li>
+<li><strong>掲載誌</strong>: <em>Org. Process Res. Dev.</em> <strong>2026</strong>, <em>30</em>, 8, 1420–1431.</li>
+<li><strong>DOI</strong>: <a href="https://doi.org/10.1021/acs.oprd.6c00188">DOI: 10.1021/acs.oprd.6c00188</a></li>
+</ul>
+<div class="scheme-container"><img src="/my-daily-magazine/images/2026-09-24_scheme.jpg" alt="Graphical Abstract &#x26; Reaction Scheme" class="chem-scheme-img"><p class="scheme-caption">▲ Graphical Abstract &#x26; Reaction Scheme（本日の反応機構・合成経路）</p></div>
+<div class="flow-wrapper">
+  <div class="flow-card"><span class="flow-step">STEP 1</span><div class="flow-title">高温溶解・均一化</div><div class="flow-body">65℃ / MeCN-H2O (4:1) / 完全溶解確認と精密ろ過</div></div>
+  <div class="flow-arrow">➔</div>
+  <div class="flow-card"><span class="flow-step">STEP 2</span><div class="flow-title">播種・一次核発生</div><div class="flow-body">42℃に急冷 / 1.5 wt% 種晶添加 / スラリー粘着防止制御</div></div>
+  <div class="flow-arrow">➔</div>
+  <div class="flow-card"><span class="flow-step">STEP 3</span><div class="flow-title">制御冷却・晶析完了</div><div class="flow-body">10℃/h 降温 / 停留時間 4.5h / 除熱速度 3.2 kW/m²</div></div>
+</div>
+<h4 id="プラントの鼓動を感じる編集部の視点">プラントの鼓動を感じる編集部の視点</h4>
+<p>ラボのミリグラムスケールでは美しく結晶化した化合物も、ガラスライニング釜（GL釜）に移した途端、粘稠なガム状物質となって缶壁にへばりつく——化学プロセス開発者なら誰もが一度は冷や汗をかいた経験があるはずです。本論文の真骨頂は、過溶解度領域（MSZW）の緻密なマッピングと、溶媒ブレンドの表面張力を制御することで「Oiling Out」を回避した点にあります。</p>
+<p>特にキログラムスケールへの展開において、釜底弁周辺でのスラリー沈降を防ぐための線速度計算と、 jacket 冷却時の内部応力散逸モデルは秀逸です。除熱が追いつかず局所的な過飽和度急昇を引き起こすリスクに対し、著者らはテーパー型バッフルと微細種晶（シーディング）のタイミングを組み合わせることで、粒径分布（CSD）のシャープな単峰性を維持することに成功しました。</p>
+<p>フラスコの中のミクロな分子構造の舞踏を、トン単位の機械装置の中でいかに破綻なく再現するか。プロセス開発とは、緻密な理屈と物理的泥臭さが交差する、極めて知的でダイナミックな格闘技なのです。</p>
+<hr>
+<h2 id="news">2. Curated News &#x26; Paternity: 5 Picks（一次情報・社会動向）</h2>
+<ol>
+<li><strong>育児科学・男性育休・乳幼児ケア</strong>:
+乳幼児の睡眠周期と室内湿度・湿潤条件の相関に関する最新知見。高湿度環境における気道負荷軽減と夜泣き軽減の生活環境調整ガイドライン。
+<a href="https://www.cfa.go.jp/">こども家庭庁 公式ポータル</a></li>
+<li><strong>化学・製薬プロセス</strong>:
+国内ファインケミカル各社、バイオものづくりと連続フロー合成の融合設備への投資を拡大。スケールアップの高速化が新薬開発競争の鍵に。
+<a href="https://www.nikkan.co.jp/">日刊工業新聞 / 化学</a></li>
+<li><strong>Honda &#x26; モビリティ</strong>:
+Honda、二輪車の空冷単気筒エンジンにおける排ガス規制適合とトルク特性の両立技術に関する特許情報を公開。GBシリーズの魅力を支える技術基盤。
+<a href="https://www.honda.co.jp/motor/">Honda 公式モビリティ</a></li>
+<li><strong>フィジカル・栄養学</strong>:
+自律神経の乱れ（脳腸相関）を抑制する「高タンパク・低FODMAP」アプローチと、自重・短時間負荷による神経系疲労を起こさないコンディショニング。
+<a href="https://www.e-healthnet.mhlw.go.jp/">厚生労働省 e-ヘルスネット</a></li>
+<li><strong>カルチャー・サウナ</strong>:
+「温冷交代浴による自律神経調律メカニズム」を解説する研究。外気浴時の副交感神経優位状態が脳内GABA受容体に与える影響。
+<a href="https://prtimes.jp/">PR TIMES ライフスタイル</a></li>
+</ol>
+<hr>
+<h2 id="market">3. Market Catalyst: 株式投資と注目テーマ</h2>
+<h3 id="本日の注目テーマ半導体製薬分野を支える超高純度ポリマー微細加工技術">本日の注目テーマ：半導体・製薬分野を支える「超高純度ポリマー・微細加工技術」</h3>
+<h4 id="厳選銘柄東洋合成工業株式会社証券コード-4107">厳選銘柄：東洋合成工業株式会社（証券コード: 4107）</h4>
+<ul>
+<li>
+<p><strong>ビジネスモデルと参入障壁（Moat）</strong>:
+東洋合成工業は、半導体フォトレジスト（感光性樹脂）向けの超高純度感光材料において世界トップクラスのシェアを誇るニッチトップ企業です。金属不純物を ppb / ppt レベルで制御する極限の精製・蒸留技術を保有しており、これは一朝一夕の設備投資では再現不可能な技術的参入障壁（Wide Moat）となっています。また、合成香料や医薬品中間体の受託製造（CDMO）においてもプロセス化学の強みを発揮しています。</p>
+</li>
+<li>
+<p><strong>今後のカタリスト（業績変化、需要拡大の根拠）</strong>:
+次世代半導体露光技術（EUV露光）の進展に伴い、同社が強みを持つ高分子感光材料の需要は構造的に拡大しています。さらに、製薬業界向けの連続フロー製造や高薬理活性物質（HPAPI）の封じ込め受託ラインの本格稼働により、ファインケミカル事業の収益性が大幅に底上げされる局面を迎えています。</p>
+</li>
+</ul>
+<p><a href="https://finance.yahoo.co.jp/search/?query=4107">📈 Yahoo!ファイナンスでチャートを見る</a></p>
+<p>※本情報は投資勧誘を目的としたものではありません。投資の最終判断は自己責任で行ってください。</p>
+<hr>
+<h2 id="benjamin">4. Daily Benjamin: 思考の調律と徳目の実践（最重要カウンセリングコラム）</h2>
+<img src="/my-daily-magazine/images/2026-09-24_scene1.jpg" alt="Today&#x27;s Scene 1">
+<h3 id="今朝の認知的観察自動思考の定点観測と脱フュージョン">【今朝の認知的観察（自動思考の定点観測と脱フュージョン）】</h3>
+<p>湿度92%の重たい秋雨の朝。小島さん、今朝の目覚めの感覚はいかがでしょうか。気圧の変化と高い湿度は、自律神経を静かに揺さぶり、脳腸相関を通じてお腹の違和感や「なんとなく気が晴れない」という漠然とした停滞感を連れてきます。</p>
+<p>こんな朝に忍び込んでくるのが、あなた特有の「完全主義的な思考パターン」です。「育休中なのに、今日も予定していた読書や英語の勉強が半分もできなかった」「パートナーの何気ないひと言にうまく返答できず、場を暗くしてしまったかもしれない」。そんな思考が頭をよ出したら、まずは認知行動療法（ACT）の「脱フュージョン」を試みてください。</p>
+<p>「私は今、自分は不十分だという『考え』を持っているな」と、頭の中の思考をノートの文字のように眺めてみる。思考は事実ではなく、ただ脳が自動生成した電気信号に過ぎません。あなたがその思考と一体化（フュージョン）して自分を責める必要は、どこにもないのです。</p>
+<h3 id="思想的アンカーフランクリンアウレリウスファインマン">【思想的アンカー（フランクリン・アウレリウス・ファインマン）】</h3>
+<p>ベンジャミン・フランクリンは、人生を整えるために「13の徳目」を掲げましたが、彼は決してそれらを一度にすべて達成しようとはしませんでした。一週間に1つの徳目だけをターゲットにし、手帳にチェックをつけながら13週間で一巡させるという「一極集中スタイル」をとったのです。</p>
+<p>今週の私たちの徳目は**『平静（Tranquility）』**——「小さなこと、ありふれた事故、または避けられない事故に心を乱すな」。</p>
+<p>マルクス・アウレリウスも『自省録』でこう繰り返しています。「あなたの心がコントロールできるのは、あなたの意見と判断だけである。外の出来事や他人の機嫌は、あなたの領土の外にある」。パートナーの表情、赤ちゃんの突然の夜泣き、気圧の変動。それらはすべてあなたのコントロール外の「天気」です。雨が降ったときに空を怒る人がいないように、外的現象に対してただ「雨が降っているな」と受け入れること。それが平静の第一歩です。</p>
+<p>そして物理学者ファインマンのように、「今日という一日を、誰の役にも立たない純粋な好奇心や、目の前の小さな観察（赤ちゃんの指の動きやコーヒーの泡立ち）のために面白がる」余裕を、ポケットにひとつ忍ばせておきましょう。</p>
+<h3 id="育休期パパへの身体処方箋halt原則とエッセンシャル減算法">【育休期パパへの身体処方箋（HALT原則とエッセンシャル減算法）】</h3>
+<p>IBS（過敏性腸症候群）の不快感やイライラが高まったとき、精神論で解決しようとしては絶対にいけません。CBT（認知行動療法）の観点からも、思考の乱れの8割は生理的状態の乱れから来ています。ここで思い出したいのが**HALT原則（Hungry: 空腹, Angry: 怒り, Lonely: 孤独, Tired: 疲労）**です。</p>
+<p>育児休業中の現在の小島さんは、人生の「フェーズ1：身体インフラと家庭基盤の再建期」にいます。夜間の授乳支援や細切れの睡眠で、身体には「Tired（疲労）」が確実に蓄積しています。睡眠時間が合算で7時間に満たない日は、脳の偏桃体が過剰反応し、ネガティブな自動思考が発生しやすいのが生物学的な事実です。</p>
+<p>「今日は外的な生産性を出せなかった」と落胆する必要は1ミリもありません。オムツを替え、赤ちゃんの命を繋ぎ、部屋に掃除機をかけ、生き抜いた。それだけで、今日のあなたのタスク達成度は「100点満点中120点」です。他者への過剰なアドバイスや完璧な家事の遂行といった「加算」をやめ、今日はとにかく体を温め、消化の良いものを食べ、横になる時間を増やす「減算」を選択してください。</p>
+<h3 id="今日の実践1つだけ手放す減算法not-to-do">【今日の実践：1つだけ手放す減算法（Not-To-Do）】</h3>
+<p>今日、小島さんが手放すべき行動（Not-To-Do）は、**「パートナーの会話に対する『解決策（アドバイス）』の提示」**です。</p>
+<p>相手が育児の疲れや愚痴をこぼしたとき、プロセス開発者としてのあなたの頭脳は瞬時に「原因分析と最適解」を計算し始めるかもしれません。しかし、今日あなたが提供すべきは解法ではなく「ただ聴き、共感する沈黙」です。</p>
+<p>アドバイスしたくなったら、深く息を吐き、口を閉じる。ただ「それは大変だったね」「いつもありがとう」と頷く。相手をコントロールしようとする欲求を手放した瞬間、あなたの脳にかかっていた過剰な認知的負荷はすっと軽くなり、部屋の中に温かな静寂が戻ってきます。</p>
+<hr>
+<h2 id="gemini-counsel">5. Gemini's Daily Counsel: 対話と思考の問い</h2>
+<blockquote>
+<p><strong>「今日、あなたが『自分の力で解決しなければならない』と思い込んでいるその問題は、本当に今、あなたが背負うべき荷物ですか？」</strong></p>
+</blockquote>
+<hr>
+<h2 id="music">6. The Cipher: West Coast, Kendrick &#x26; Culture</h2>
+<h3 id="kendrick-lamar---count-me-out">Kendrick Lamar - “Count Me Out”</h3>
+<ul>
+<li><strong>Producer</strong>: Sounwave, Boi-1da, Dj Dahi, Timbaland, &#x26; Baby Keem</li>
+<li><strong>Album</strong>: <em>Mr. Morale &#x26; The Big Steppers</em> (2022)</li>
+</ul>
+<img src="/my-daily-magazine/images/2026-09-24_scene2.jpg" alt="Today&#x27;s Scene 2">
+<p>ケンドリック・ラマーが自身のセラピーの過程と、内なる完璧主義・トラウマとの対峙を白日の下に晒した屈指の名曲。静寂なアコースティックギターのストロークから一転、重厚なベースと合唱コーラスが交錯するサウンドプロダクションは、葛藤から解凍へと向かう精神のプロセスそのものを描いています。</p>
+<p>コンプトンの街で背負わされた過剰な期待と、自らを「救世主（Savior）」と見なしてしまうエゴ。ケンドリックは「自分は完璧な存在ではない」と認め、他者の期待から自分を「カウントアウト（除外）」することで、初めて真の自己救済へと足を踏み入れました。</p>
+<ul>
+<li><a href="https://music.youtube.com/search?q=Count+Me+Out+Kendrick+Lamar">🎵 YouTube Musicで聴く</a></li>
+<li><a href="https://www.youtube.com/results?search_query=Count+Me+Out+Kendrick+Lamar">▶ YouTubeでMV・動画を見る</a></li>
+</ul>
+<h4 id="lyric-breakdown">Lyric Breakdown</h4>
+<blockquote>
+<p><em>“One of these days, I’m gon’ own fully / Anything I’ve ever done under the sun / Miss me with the bullshit, I’m done.”</em></p>
+</blockquote>
+<ul>
+<li><strong>スラング・文化解説</strong>:
+<ul>
+<li><strong>“Under the sun”</strong>: 「この世のあらゆること」「太陽の下で行ったすべての行動」。自身の過去の過ちや弱さも含めてすべてを肯定し、引き受けるという強い意思表示。</li>
+<li><strong>“Miss me with…”</strong>: 「〜は俺に持ち込むな」「〜は勘弁してくれ」。無意味なドラマや他者からの不必要な雑音（bullshit）をシャットアウトするスラング。</li>
+</ul>
+</li>
+<li><strong>日常英会話への応用</strong>:
+認知的過負荷に陥りそうなとき、心の中でこう呟いてみましょう。「<em>Miss me with the overthinking.</em>（無駄な考えすぎはもう結構）」。他人の機嫌や完璧主義のプレッシャーから距離を置くための、最高にクールなセルフセラピーフレーズです。</li>
+</ul>
+<hr>
+<h2 id="book">7. Book Archive: Life &#x26; Perspective</h2>
+<h3 id="エッセンシャル思考-最少の時間で成果を最大にする">『エッセンシャル思考 最少の時間で成果を最大にする』</h3>
+<ul>
+<li>
+<p><strong>著者</strong>: グレッグ・マキューン（訳: 高橋璃子）/ クロスメディア・パブリッシング</p>
+</li>
+<li>
+<p><a href="https://www.amazon.co.jp/s?k=%E3%82%A8%E3%83%83%E3%82%BB%E3%83%B3%E3%82%B7%E3%83%A3%E3%83%AB%E6%80%9D%E8%80%83+%E3%82%B0%E3%83%AC%E3%83%83%E3%82%B0%E3%83%BB%E3%83%9E%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%B3">📚 Amazonで見る</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/results?search_query=%E3%82%A8%E3%83%83%E3%82%BB%E3%83%B3%E3%82%B7%E3%83%A3%E3%83%AB%E6%80%9D%E8%80%83+%E8%A7%A3%E8%AA%AC">▶ YouTubeで解説を見る</a></p>
+</li>
+</ul>
+<h4 id="なぜ今小島雅史氏が読むべきなのか">なぜ今、小島雅史氏が読むべきなのか？</h4>
+<p>マルチ・ポテンシャライトであり、知的好奇心が旺盛な小島さんにとって、「魅力的な選択肢」や「やるべきだと感じるタスク」は日常の中に無数に溢れてしまいます。しかし、エネルギーを360度の全方位に1ミリずつ分散させても、どこにも到達できません。</p>
+<p>本書が説くのは、「より多くのことを成し遂げる技術」ではなく、「本当に重要なことだけを見極め、それ以外をきっぱりと捨てる技術」です。育休という限定された人生の黄金期において、「何をやらないか」を決める勇気こそが、あなたの心と身体（IBS）を守り、家族との時間を純粋な歓びで満たすための強力なフレームワークとなります。</p>
+<hr>
+<h2 id="escape">8. Escape: Route, Iron &#x26; Steam</h2>
+<p>21.4℃。しとしとと降る秋雨が、街の喧騒を優しくかき消してくれる静かな日。こんな日は、愛車「Honda GB350」の磨き上げ作業にうってつけです。ガレージの中で空冷単気筒の美しいフィンをウエスで拭き上げ、金属の冷たい質感とオイルの香りに没頭する時間は、立派なマインドフルネスとなります。</p>
+<p>ジムに行く時間が取れなくとも大丈夫。赤ちゃんの抱っこを「ケトルベルスクワット」に見立て、背筋を伸ばして足腰に意識を集中させる。ゴールドジムでのハードワークで培ったフォーム意識があれば、日常のあらゆる動作が洗練されたトレーニングへと変わります。</p>
+<p>午後、赤ちゃんが静かな昼寝に入ったら、お気に入りの深煎り豆をハンドドリップで丁寧に淹れましょう。湯気が立ち上るカップを手に、雨の音に耳を澄ませる。夕刻、時間が許せば近くのサウナへ。80度のマイルドなサウナ室でじんわりと深部体温を上げ、水風呂の後は雨の匂いが混じる外気浴スペースで深呼吸。自律神経が整い、体の芯から「これでいいんだ」という安らぎが満ちていくのを感じてください。</p>
+<ul>
+<li><a href="https://sauna-ikitai.com/search?keyword=%E3%82%B5%E3%82%A6%E3%83%8A">🧖 サウナイキタイで施設を見る</a></li>
+</ul>
+<hr>
+<h2 id="colophon">9. Editor's Colophon</h2>
+<p>雨滴がドラフトタワーのガラスを叩く音と、GL釜の静かな撹拌音。実験室の静寂も、いま小島さんが過ごしているリビングの静寂も、本質的には同じ「探求の場」です。今夜は気圧が緩やかに持ち直します。温かいハーブティーを飲み、肩の力を抜いて早めに就寝してください。また明日の朝、この場所でお会いしましょう。</p>
+<p><strong>THE DAILY EXTRACT</strong> — <em>Edited by Gemini, Dedicated to Masafumi Kojima</em></p> </main> <footer class="footer-deck"> <p>© 2026 ZAZZY — BACK NUMBER ARCHIVE.</p> </footer> </article> <script>
+      document.querySelectorAll(".article-content a").forEach((link) => {
+        if (link.hostname && link.hostname !== window.location.hostname) {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        }
+      });
+    </script> </body> </html>
