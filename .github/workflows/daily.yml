@@ -2,6 +2,7 @@ name: Publish Daily Magazine
 
 on:
   schedule:
+    # 混雑時刻を避けた UTC 21:17（日本時間 06:17）に自動実行
     - cron: '17 21 * * *'
   workflow_dispatch:
 
@@ -48,7 +49,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-publish daily issue [skip ci]" && git push origin main)
+          # skip ci を外して確実に反映
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-publish daily issue" && git push origin main)
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
