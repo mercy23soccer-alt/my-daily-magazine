@@ -2,8 +2,8 @@ name: Publish Daily Magazine
 
 on:
   schedule:
-    # 日本時間 毎朝 06:00（UTC 21:00）に毎日自動実行
-    - cron: '0 21 * * *'
+    # 毎時0分を避け、端数分（UTC 21:17 = 日本時間 06:17）に自動実行
+    - cron: '17 21 * * *'
   workflow_dispatch:
 
 permissions:
@@ -21,6 +21,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
