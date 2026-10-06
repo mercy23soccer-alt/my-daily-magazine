@@ -17,7 +17,7 @@ def generate_issue():
 日付: {today}
 洗練された日刊ウェブマガジン『Zazzy』の本日の特集記事を作成してください。
 【条件】
-- テクノロジー、カルチャー、ライフスタイル、関心トピックから2〜3件
+- テクノロジー、カルチャー、ライフスタイルから関心トピック2〜3件
 - 知的で引き締まった文章構成
 - 各見出しはMarkdown（## や ###）を使用
 """
@@ -26,8 +26,9 @@ def generate_issue():
         max_output_tokens=1500,
         system_instruction="あなたは洗練されたカルチャー＆ライフスタイルWebマガジン『Zazzy』の編集長です。要点を簡潔かつ魅力的にまとめてください。"
     )
+    # 最新の推奨軽量モデル gemini-3.8-flash を指定
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=prompt,
         config=config,
     )
