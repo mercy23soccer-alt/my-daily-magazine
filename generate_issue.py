@@ -63,8 +63,9 @@ def generate_issue():
 - 夕暮れの情景、気温、読者への静かなメッセージ
 """
 
+    # エラーメッセージの指示通り、最新の Pro モデルを指定
     response = client.models.generate_content(
-        model="gemini-2.5-pro",
+        model="gemini-3.1-pro-preview",
         contents=prompt,
         config=types.GenerateContentConfig(
             temperature=0.7,
