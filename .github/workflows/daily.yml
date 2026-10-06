@@ -2,7 +2,6 @@ name: Publish Daily Magazine
 
 on:
   schedule:
-    # 混雑時刻を避けた UTC 21:17（日本時間 06:17）に自動実行
     - cron: '17 21 * * *'
   workflow_dispatch:
 
@@ -44,14 +43,7 @@ jobs:
         run: |
           python generate_issue.py
 
-      - name: Commit article and photos
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          # skip ci を外して確実に反映
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-publish daily issue" && git push origin main)
-
+      # 先に Node.js でビルドを行い、確実に出力成果物を作成
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -63,6 +55,7 @@ jobs:
       - name: Build Astro site
         run: npm run build
 
+      # GitHub Pages へのアップロードとデプロイを即時完了させる
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -74,3 +67,11 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # デプロイ完了後、最後に生成された記事を git に安全に保存
+      - name: Commit article and photos
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-publish daily issue [skip ci]" && git push origin main)
