@@ -431,29 +431,7 @@ scenes = [
 def generate_and_save_photo(prompt_text, file_path):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-    # A. Gemini Nano Banana 2.1 (Interactions API)
-    if client:
-        try:
-            img_interaction = client.interactions.create(
-                model="gemini-nano-banana-2.1",
-                input=prompt_text,
-                response_format={
-                    "type": "image",
-                    "aspect_ratio": "16:9",
-                    "image_size": "1K",
-                },
-            )
-            if img_interaction.output_image and img_interaction.output_image.data:
-                img_bytes = base64.b64decode(img_interaction.output_image.data)
-                img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
-                img.save(file_path, "JPEG", quality=90)
-                if os.path.exists(file_path) and os.path.getsize(file_path) > 5000:
-                    print(f"✅ Gemini Nano Banana 2.1で画像生成成功: {file_path}")
-                    return True
-        except Exception as e:
-            print(f"Gemini画像生成スキップ/フォールバック: {str(e)[:120]}")
-
-    # B. Pollinations AI（最大3回リトライ、60秒タイムアウト）
+    # A. Pollinations AI (Flux 無料エンジン・最大3回リトライ、60秒タイムアウト)
     clean_prompt = quote(prompt_text)
     for attempt in range(1, 4):
         try:
