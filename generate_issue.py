@@ -131,8 +131,8 @@ try:
 except Exception as e:
     print(f"天気API取得スキップ（デフォルト値を使用）: {e}")
 
-# 2. 【過去90日分】全記事から重複禁止トピックを自動抽出
-past_posts = sorted(glob.glob("src/content/posts/*.md"), reverse=True)[:90]
+# 2. 【過去45日分】全記事から重複禁止トピックを自動抽出（入力トークン最適化）
+past_posts = sorted(glob.glob("src/content/posts/*.md"), reverse=True)[:45]
 past_used_topics = []
 
 for p in past_posts:
@@ -182,7 +182,7 @@ for p in past_posts:
             seen = set()
             unique_items = [x for x in items if not (x in seen or seen.add(x))]
             if unique_items:
-                past_used_topics.append(f"【{date_label}号】: " + " / ".join(unique_items[:8]))
+                past_used_topics.append(f"【{date_label}号】: " + " / ".join(unique_items[:6]))
     except Exception:
         pass
 
@@ -290,11 +290,14 @@ user_prompt = f"""
 {img_tag_2}
 
 【事前確認指示】
-全14セクションが揃っており、過去90日間のトピックと重複が一切ないことを点検してから出力してください。Markdown形式で出力してください。
+全14セクションが揃っており、過去記事のトピックと重複が一切ないことを点検してからMarkdown形式で出力してください。
+また、14セクションすべてを出力した一番最後に、本日の記事内容に合った雑誌POPEYE風35mmフィルム写真用の英語プロンプト（1文）を以下の2行の形式で添えてください（1つ目は紹介したバイクや都市の機械美、2つ目はサウナ・珈琲・住まいのシーン）：
+PROMPT1: <英語プロンプト1>
+PROMPT2: <英語プロンプト2>
 """
 
 
-def generate_text_with_gemini(prompt_str, sys_inst=None, thinking_level="medium"):
+def generate_text_with_gemini(prompt_str, sys_inst=None, thinking_level="low"):
     """最新の Interactions API (gemini-3.8-flash / gemini-4-argon) を優先使用し、
     万が一古い SDK 環境の場合もフォールバックで対応するヘルパー。"""
     if not client:
@@ -325,9 +328,9 @@ def generate_text_with_gemini(prompt_str, sys_inst=None, thinking_level="medium"
 response_text = None
 
 if client:
-    print("--- Gemini Interactions API で執筆を試行中 ---")
+    print("--- Gemini Interactions API (省エネ・1回統合モード) で執筆を試行中 ---")
     text_out = generate_text_with_gemini(
-        user_prompt, sys_inst=SYSTEM_INSTRUCTION, thinking_level="medium"
+        user_prompt, sys_inst=SYSTEM_INSTRUCTION, thinking_level="low"
     )
     if text_out and len(text_out) > 1400:
         print("✅ 成功: Gemini APIでフルボリューム記事が完成しました！")
@@ -353,10 +356,30 @@ if not response_text or len(response_text) < 900:
     print("❌ 記事生成に失敗しました。")
     sys.exit(1)
 
+# 記事末尾から PROMPT1 / PROMPT2 を抽出し、本文からは除去する（API呼び出し1回化）
+prompt_1 = "Authentic lifestyle 35mm candid film photograph of a classic motorcycle parked along a scenic coastal highway in Japan at sunset, cinematic golden hour lighting, mechanical beauty, POPEYE magazine aesthetic"
+prompt_2 = "Candid lifestyle 35mm film photograph of a cozy Japanese sauna resting space with steam, aromatic cedar wood, relaxed peaceful atmosphere, POPEYE magazine documentary style"
+
+m1 = re.search(r"^PROMPT1:\s*(.+)$", response_text, flags=re.MULTILINE)
+m2 = re.search(r"^PROMPT2:\s*(.+)$", response_text, flags=re.MULTILINE)
+if m1:
+    prompt_1 = (
+        m1.group(1).strip()
+        + ", authentic 35mm film photography, cinematic grain, POPEYE magazine style"
+    )
+if m2:
+    prompt_2 = (
+        m2.group(1).strip()
+        + ", authentic 35mm film photography, natural lighting, candid documentary style"
+    )
+
+clean_text = re.sub(
+    r"^PROMPT[12]:.*?\n?", "", response_text, flags=re.MULTILINE
+).strip()
 clean_text = re.sub(
     r"^(title:.*?\n|TITLE:.*?\n|date:.*?\n|DATE:.*?\n|temp:.*?\n|TEMP:.*?\n|sunset:.*?\n|SUNSET:.*?\n|wind:.*?\n|WIND:.*?\n|bike:.*?\n|BIKE:.*?\n)+",
     "",
-    response_text.strip(),
+    clean_text,
     flags=re.MULTILINE | re.IGNORECASE,
 ).strip()
 
@@ -386,41 +409,6 @@ if '<div class="flow-wrapper">' in clean_text:
 
 # 4. 画像の生成完了確認（2枚揃ってから記事出力へ進む）
 os.makedirs("public/images", exist_ok=True)
-
-prompt_1 = "Authentic lifestyle 35mm candid film photograph of a classic motorcycle parked along a scenic coastal highway in Japan at sunset, cinematic golden hour lighting, mechanical beauty, POPEYE magazine aesthetic"
-prompt_2 = "Candid lifestyle 35mm film photograph of a cozy Japanese sauna resting space with steam, aromatic cedar wood, relaxed peaceful atmosphere, POPEYE magazine documentary style"
-
-if client:
-    try:
-        photo_gen_prompt = f"""
-以下の記事本文を読み、この号に最もふさわしい、雑誌POPEYE風のリアルな35mmフィルム写真のプロンプト（英語・1文・高品質指示）を2つ考案してください。
-1つ目は本日紹介されたバイク名車や都市の機械美、2つ目はサウナ・珈琲・住まい・暮らしの静謐なシーンにしてください。
-出力形式：
-PROMPT1: <英語プロンプト>
-PROMPT2: <英語プロンプト>
-
-記事抜粋：
-{clean_text[:1200]}
-"""
-        p_text_out = generate_text_with_gemini(
-            photo_gen_prompt, sys_inst=None, thinking_level="low"
-        )
-        if p_text_out:
-            m1 = re.search(r"PROMPT1:\s*(.+)", p_text_out)
-            m2 = re.search(r"PROMPT2:\s*(.+)", p_text_out)
-            if m1:
-                prompt_1 = (
-                    m1.group(1).strip()
-                    + ", authentic 35mm film photography, cinematic grain, POPEYE magazine style"
-                )
-            if m2:
-                prompt_2 = (
-                    m2.group(1).strip()
-                    + ", authentic 35mm film photography, natural lighting, candid documentary style"
-                )
-            print("✅ 記事連動型オリジナル画像プロンプトの生成に成功！")
-    except Exception as e:
-        print(f"動的プロンプト生成スキップ: {e}")
 
 scenes = [
     (prompt_1, f"public/images/{today}_scene1.jpg"),
